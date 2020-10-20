@@ -1,17 +1,12 @@
 import MatchDictionaryReverse from '~/matching/DictionaryReverse'
 import checkMatches from '../helper/checkMatches'
-import Options from '~/Options'
-
-Options.setOptions()
 
 describe('dictionary reverse matching', () => {
   const testDicts = {
-    d1: [123, 321, 456, 654],
+    d1: ['123', '321', '456', '654'],
   }
-  Options.setOptions({
-    dictionary: testDicts,
-  })
   const matchDictionaryReverse = new MatchDictionaryReverse({
+    dictionaries: testDicts,
     userInputs: [],
   })
   const password = '0123456789'

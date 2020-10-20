@@ -2,11 +2,69 @@ import utils from './scoring/utils'
 import estimateGuesses from './scoring/estimate'
 import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from './data/const'
 import { Match, ExtendedMatch } from './types'
+import { NormalizedOptions } from './Options'
 
-const scoringHelper = {
-  password: '',
-  optimal: {} as any,
-  excludeAdditive: false,
+function fillArray(size: number, valueType: 'object'): {}[]
+function fillArray(size: number, valueType: 'array'): [][]
+function fillArray(size: number, valueType: 'object' | 'array') {
+  const result: typeof valueType extends 'array' ? string[] : {}[] = []
+  for (let i = 0; i < size; i += 1) {
+    let value: [] | {} = []
+    if (valueType === 'object') {
+      value = {}
+    }
+    result.push(value)
+  }
+  return result
+}
+
+class ScoringHelper {
+  readonly password: string
+
+  readonly excludeAdditive: boolean
+
+  readonly optimal: {
+    // optimal.m[k][sequenceLength] holds final match in the best length-sequenceLength
+    // match sequence covering the
+    // password prefix up to k, inclusive.
+    // if there is no length-sequenceLength sequence that scores better (fewer guesses) than
+    // a shorter match sequence spanning the same prefix,
+    // optimal.m[k][sequenceLength] is undefined.
+    readonly m: any[]
+    // same structure as optimal.m -- holds the product term Prod(m.guesses for m in sequence).
+    // optimal.pi allows for fast (non-looping) updates to the minimization function.
+    readonly pi: any[]
+    // same structure as optimal.m -- holds the overall metric.
+    readonly g: any[]
+  }
+
+  readonly options: NormalizedOptions
+
+  constructor(
+    password: string,
+    excludeAdditive: boolean,
+    options: NormalizedOptions,
+  ) {
+    this.password = password
+    this.excludeAdditive = excludeAdditive
+    const passwordLength = password.length
+    this.optimal = {
+      // optimal.m[k][sequenceLength] holds final match in the best length-sequenceLength
+      // match sequence covering the
+      // password prefix up to k, inclusive.
+      // if there is no length-sequenceLength sequence that scores better (fewer guesses) than
+      // a shorter match sequence spanning the same prefix,
+      // optimal.m[k][sequenceLength] is undefined.
+      m: fillArray(passwordLength, 'object'),
+      // same structure as optimal.m -- holds the product term Prod(m.guesses for m in sequence).
+      // optimal.pi allows for fast (non-looping) updates to the minimization function.
+      pi: fillArray(passwordLength, 'object'),
+      // same structure as optimal.m -- holds the overall metric.
+      g: fillArray(passwordLength, 'object'),
+    }
+    this.options = options
+  }
+
   fillArray(size: number, valueType: 'object' | 'array') {
     const result: typeof valueType extends 'array' ? string[] : {}[] = []
     for (let i = 0; i < size; i += 1) {
@@ -17,7 +75,8 @@ const scoringHelper = {
       result.push(value)
     }
     return result
-  },
+  }
+
   // helper: make bruteforce match objects spanning i to j, inclusive.
   makeBruteforceMatch(i: number, j: number) {
     return {
@@ -26,13 +85,14 @@ const scoringHelper = {
       i,
       j,
     }
-  },
+  }
+
   // helper: considers whether a length-sequenceLength
   // sequence ending at match m is better (fewer guesses)
   // than previously encountered sequences, updating state if so.
   update(match: ExtendedMatch | Match, sequenceLength: number) {
     const k = match.j
-    const estimatedMatch = estimateGuesses(match, this.password)
+    const estimatedMatch = estimateGuesses(match, this.password, this.options)
     let pi = estimatedMatch.guesses as number
     if (sequenceLength > 1) {
       // we're considering a length-sequenceLength sequence ending with match m:
@@ -65,7 +125,7 @@ const scoringHelper = {
       this.optimal.m[k][sequenceLength] = estimatedMatch
       this.optimal.pi[k][sequenceLength] = pi
     }
-  },
+  }
 
   // helper: evaluate bruteforce matches ending at passwordCharIndex.
   bruteforceUpdate(passwordCharIndex: number) {
@@ -91,13 +151,13 @@ const scoringHelper = {
         }
       })
     }
-  },
+  }
 
   // helper: step backwards through optimal.m starting at the end,
   // constructing the final optimal match sequence.
-  unwind(passwordLength: number) {
+  unwind() {
     const optimalMatchSequence: Match[] = []
-    let k = passwordLength - 1
+    let k = this.password.length - 1
     // find the final best sequence length and score
     let sequenceLength = 0
     let g = 2e308
@@ -116,7 +176,7 @@ const scoringHelper = {
       sequenceLength -= 1
     }
     return optimalMatchSequence
-  },
+  }
 }
 
 export default {
@@ -155,16 +215,13 @@ export default {
   mostGuessableMatchSequence(
     password: string,
     matches: ExtendedMatch[],
+    options: NormalizedOptions,
     excludeAdditive = false,
   ) {
-    scoringHelper.password = password
-    scoringHelper.excludeAdditive = excludeAdditive
+    const scoringHelper = new ScoringHelper(password, excludeAdditive, options)
     const passwordLength = password.length
     // partition matches into sublists according to ending index j
-    let matchesByCoordinateJ = scoringHelper.fillArray(
-      passwordLength,
-      'array',
-    ) as any[]
+    let matchesByCoordinateJ = fillArray(passwordLength, 'array') as any[]
 
     matches.forEach((match) => {
       matchesByCoordinateJ[match.j].push(match)
@@ -173,21 +230,6 @@ export default {
     matchesByCoordinateJ = matchesByCoordinateJ.map((match) =>
       match.sort((m1: Match, m2: Match) => m1.i - m2.i),
     )
-
-    scoringHelper.optimal = {
-      // optimal.m[k][sequenceLength] holds final match in the best length-sequenceLength
-      // match sequence covering the
-      // password prefix up to k, inclusive.
-      // if there is no length-sequenceLength sequence that scores better (fewer guesses) than
-      // a shorter match sequence spanning the same prefix,
-      // optimal.m[k][sequenceLength] is undefined.
-      m: scoringHelper.fillArray(passwordLength, 'object'),
-      // same structure as optimal.m -- holds the product term Prod(m.guesses for m in sequence).
-      // optimal.pi allows for fast (non-looping) updates to the minimization function.
-      pi: scoringHelper.fillArray(passwordLength, 'object'),
-      // same structure as optimal.m -- holds the overall metric.
-      g: scoringHelper.fillArray(passwordLength, 'object'),
-    }
 
     for (let k = 0; k < passwordLength; k += 1) {
       matchesByCoordinateJ[k].forEach((match: ExtendedMatch) => {
@@ -203,7 +245,7 @@ export default {
       })
       scoringHelper.bruteforceUpdate(k)
     }
-    const optimalMatchSequence = scoringHelper.unwind(passwordLength)
+    const optimalMatchSequence = scoringHelper.unwind()
     const optimalSequenceLength = optimalMatchSequence.length
     let guesses = 0
     if (password.length === 0) {

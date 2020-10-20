@@ -1,15 +1,12 @@
 import Feedback from '../src/Feedback'
 import translations from '../src/data/feedback/en'
-import Options from '~/Options'
-
-Options.setOptions()
 
 describe('feedback', () => {
   describe('with default translations', () => {
-    const feedbackClass = new Feedback()
+    const feedbackClass = new Feedback(translations)
 
     it('should return no feedback for a good password', () => {
-      const data = feedbackClass.getFeedback(3, [{}])
+      const data = feedbackClass.getFeedback(3, [{} as any])
       expect(data).toEqual({
         warning: '',
         suggestions: [],
@@ -28,7 +25,7 @@ describe('feedback', () => {
     })
 
     it('should return some basic feedback if no feedback could be generated', () => {
-      const data = feedbackClass.getFeedback(1, [{}])
+      const data = feedbackClass.getFeedback(1, [{} as any])
       expect(data).toEqual({
         warning: '',
         suggestions: [translations.suggestions.anotherWord],
@@ -48,7 +45,7 @@ describe('feedback', () => {
       let data = feedbackClass.getFeedback(1, [
         {
           ...options,
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.topTen,
@@ -59,7 +56,7 @@ describe('feedback', () => {
         {
           ...options,
           rank: 100,
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.topHundred,
@@ -70,7 +67,7 @@ describe('feedback', () => {
         {
           ...options,
           rank: 1000,
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.common,
@@ -81,7 +78,7 @@ describe('feedback', () => {
         {
           ...options,
           l33t: true,
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.similarToCommon,
@@ -95,7 +92,7 @@ describe('feedback', () => {
         {
           ...options,
           reversed: true,
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.similarToCommon,
@@ -111,7 +108,7 @@ describe('feedback', () => {
           reversed: true,
           guessesLog10: 5,
           token: 'Tests',
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: '',
@@ -128,7 +125,7 @@ describe('feedback', () => {
           reversed: true,
           guessesLog10: 5,
           token: 'TESTS',
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: '',
@@ -143,7 +140,7 @@ describe('feedback', () => {
         {
           ...options,
           dictionaryName: 'english_wikipedia',
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.wordByItself,
@@ -154,11 +151,11 @@ describe('feedback', () => {
         {
           ...options,
           dictionaryName: 'english_wikipedia',
-        },
+        } as any,
         {
           ...options,
           dictionaryName: 'english_wikipedia',
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: '',
@@ -169,7 +166,7 @@ describe('feedback', () => {
         {
           ...options,
           dictionaryName: 'test_name',
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: '',
@@ -180,7 +177,7 @@ describe('feedback', () => {
         {
           ...options,
           dictionaryName: 'surnames',
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.namesByThemselves,
@@ -190,7 +187,7 @@ describe('feedback', () => {
         {
           ...options,
           dictionaryName: 'maleNames',
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.namesByThemselves,
@@ -201,7 +198,7 @@ describe('feedback', () => {
         {
           ...options,
           dictionaryName: 'femaleNames',
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.namesByThemselves,
@@ -212,11 +209,11 @@ describe('feedback', () => {
         {
           ...options,
           dictionaryName: 'femaleNames',
-        },
+        } as any,
         {
           ...options,
           dictionaryName: 'femaleNames',
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.commonNames,
@@ -234,7 +231,7 @@ describe('feedback', () => {
       let data = feedbackClass.getFeedback(2, [
         {
           ...options,
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.straightRow,
@@ -247,7 +244,7 @@ describe('feedback', () => {
         {
           ...options,
           turns: 2,
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.keyPattern,
@@ -267,7 +264,7 @@ describe('feedback', () => {
       let data = feedbackClass.getFeedback(2, [
         {
           ...options,
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.simpleRepeat,
@@ -280,7 +277,7 @@ describe('feedback', () => {
         {
           ...options,
           baseToken: 'aa',
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.extendedRepeat,
@@ -299,7 +296,7 @@ describe('feedback', () => {
       const data = feedbackClass.getFeedback(2, [
         {
           ...options,
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.sequences,
@@ -319,7 +316,7 @@ describe('feedback', () => {
       const data = feedbackClass.getFeedback(2, [
         {
           ...options,
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.recentYears,
@@ -339,7 +336,7 @@ describe('feedback', () => {
       const data = feedbackClass.getFeedback(2, [
         {
           ...options,
-        },
+        } as any,
       ])
       expect(data).toEqual({
         warning: translations.warnings.dates,

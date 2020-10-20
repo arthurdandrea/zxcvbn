@@ -7,6 +7,8 @@ import Repeat from './matching/Repeat'
 import Sequence from './matching/Sequence'
 import Regex from './matching/Regex'
 import Date from './matching/Date'
+import { ExtendedMatch, Matcher } from './types'
+import { NormalizedOptions } from './Options'
 
 /*
  * -------------------------------------------------------------------------------
@@ -15,23 +17,27 @@ import Date from './matching/Date'
  */
 
 class Matching {
-  matchers: any[] = [
-    Dictionary,
-    DictionaryReverse,
-    L33t,
-    Spatial,
-    Repeat,
-    Sequence,
-    Regex,
-    Date,
-  ]
+  private matchers: readonly Matcher[]
 
-  options = {}
+  constructor(options: NormalizedOptions) {
+    const dictionary = new Dictionary({
+      rankedDictionaries: options.rankedDictionaries,
+    })
+    this.matchers = [
+      dictionary,
+      new DictionaryReverse(dictionary),
+      new L33t({ dictionary, l33tTable: options.l33tTable }),
+      new Spatial({ adjacencyGraphs: options.adjacencyGraphs }),
+      new Repeat(),
+      new Sequence(),
+      new Regex(),
+      new Date(),
+    ]
+  }
 
-  match(password: string, options: any = {}) {
-    const matches: any[] = []
-    this.matchers.forEach((Entry) => {
-      const matcher = new Entry(options)
+  match(password: string) {
+    const matches: ExtendedMatch[] = []
+    this.matchers.forEach((matcher) => {
       extend(matches, matcher.match(password))
     })
     return sorted(matches)

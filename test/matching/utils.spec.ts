@@ -6,7 +6,6 @@ import {
   mod,
   buildRankedDictionary,
 } from '~/helper'
-import {LooseObject} from '~/types'
 
 describe('utils matching', () => {
   describe('empty', () => {
@@ -101,7 +100,7 @@ describe('utils matching', () => {
         a: 'A',
         b: 'B',
       }
-      const data: [string, LooseObject, string][] = [
+      const data: [string, Record<string, string>, string][] = [
         ['a', charMap, 'A'],
         ['c', charMap, 'c'],
         ['ab', charMap, 'AB'],

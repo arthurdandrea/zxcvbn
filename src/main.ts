@@ -2,7 +2,7 @@ import Matching from './Matching'
 import scoring from './scoring'
 import TimeEstimates from './TimeEstimates'
 import Feedback from './Feedback'
-import Options from './Options'
+import { normalizeOptions } from './Options'
 import { OptionsType } from './types'
 
 const time = () => new Date().getTime()
@@ -12,32 +12,19 @@ export default (
   userInputs: any[] = [],
   options: OptionsType = {},
 ) => {
-  Options.setOptions(options)
-  const feedback = new Feedback()
-  const matching = new Matching()
-  const timeEstimates = new TimeEstimates()
-
+  const normalizedOptions = normalizeOptions({ ...options, userInputs })
+  const feedback = new Feedback(normalizedOptions.translations)
+  const timeEstimates = new TimeEstimates(normalizedOptions.translations)
   const start = time()
-  const sanitizedInputs: string[] = []
-
-  userInputs.forEach((input: string | number | boolean) => {
-    const inputType = typeof input
-    if (
-      inputType === 'string' ||
-      inputType === 'number' ||
-      inputType === 'boolean'
-    ) {
-      sanitizedInputs.push(input.toString().toLowerCase())
-    }
-  })
-
-  const matches = matching.match(password, {
-    userInputs: sanitizedInputs,
-  })
-  const matchSequence = scoring.mostGuessableMatchSequence(password, matches)
+  const matching = new Matching(normalizedOptions)
+  const matches = matching.match(password)
+  const matchSequence = scoring.mostGuessableMatchSequence(
+    password,
+    matches,
+    normalizedOptions,
+  )
   const calcTime = time() - start
   const attackTimes = timeEstimates.estimateAttackTimes(matchSequence.guesses)
-
   return {
     calcTime,
     ...matchSequence,

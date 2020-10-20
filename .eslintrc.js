@@ -80,5 +80,14 @@ module.exports = {
         object: true,
       },
     ],
+    'no-use-before-define': ['error', { functions: false }],
   },
+  overrides: [
+    {
+      files: ['test/**/*.js', '**/*.spec.js', 'test/**/*.ts', '**/*.spec.ts'],
+      rules: {
+        'max-lines-per-function': 'off',
+      },
+    },
+  ],
 }

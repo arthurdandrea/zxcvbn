@@ -1,12 +1,14 @@
 import estimate from '~/scoring/estimate'
 import dateGuesses from '~/scoring/guesses/date'
+import { normalizeOptions } from '~/Options'
 
+const options = normalizeOptions({})
 describe('scoring', () => {
   it('estimate_guesses returns cached guesses when available', () => {
     const match = {
       guesses: 1,
     }
-    expect(estimate(match, '')).toEqual({
+    expect(estimate(match as any, '', options)).toEqual({
       guesses: 1,
     })
   })
@@ -19,7 +21,7 @@ describe('scoring', () => {
       month: 7,
       day: 14,
     }
-    expect(estimate(match, '1977')).toEqual({
+    expect(estimate(match as any, '1977', options)).toEqual({
       pattern: 'date',
       token: '1977',
       year: 1977,

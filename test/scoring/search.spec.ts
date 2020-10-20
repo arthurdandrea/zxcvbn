@@ -1,10 +1,9 @@
 import scoring from '~/scoring'
-import Options from '~/Options'
+import { normalizeOptions } from '~/Options'
 
-Options.setOptions()
-
+const options = normalizeOptions({})
 describe('scoring search', () => {
-  const getMatch = (i, j, guesses) => ({
+  const getMatch = (i: number, j: number, guesses: number) => ({
     i,
     j,
     guesses,
@@ -13,7 +12,7 @@ describe('scoring search', () => {
   const password = '0123456789'
 
   describe('returns one bruteforce match given an empty match sequence:', () => {
-    const result = scoring.mostGuessableMatchSequence(password, [])
+    const result = scoring.mostGuessableMatchSequence(password, [], options)
     const firstSequence = result.sequence[0]
 
     it('result.length == 1', () => {
@@ -38,7 +37,8 @@ describe('scoring search', () => {
     const firstMatch = matches[0]
     const result = scoring.mostGuessableMatchSequence(
       password,
-      matches,
+      matches as any,
+      options,
       excludeAdditive,
     )
     const secondSequence = result.sequence[1]
@@ -65,7 +65,8 @@ describe('scoring search', () => {
     const firstMatch = matches[0]
     const result = scoring.mostGuessableMatchSequence(
       password,
-      matches,
+      matches as any,
+      options,
       excludeAdditive,
     )
     const firstSequence = result.sequence[0]
@@ -91,7 +92,8 @@ describe('scoring search', () => {
     const matches = [getMatch(1, 8, 1)]
     const result = scoring.mostGuessableMatchSequence(
       password,
-      matches,
+      matches as any,
+      options,
       excludeAdditive,
     )
     const firstSequence = result.sequence[0]
@@ -120,7 +122,8 @@ describe('scoring search', () => {
     const secondMatch = matches[1]
     let result = scoring.mostGuessableMatchSequence(
       password,
-      matches,
+      matches as any,
+      options,
       excludeAdditive,
     )
 
@@ -139,7 +142,8 @@ describe('scoring search', () => {
     firstMatch.guesses = 3
     result = scoring.mostGuessableMatchSequence(
       password,
-      matches,
+      matches as any,
+      options,
       excludeAdditive,
     )
 
@@ -157,7 +161,8 @@ describe('scoring search', () => {
     describe('when m0 covers m1 and m2, choose [m0] when m0 < m1 * m2 * fact(2):', () => {
       const result = scoring.mostGuessableMatchSequence(
         password,
-        matches,
+        matches as any,
+        options,
         excludeAdditive,
       )
       it('total guesses == 3', () => {
@@ -173,7 +178,8 @@ describe('scoring search', () => {
       firstMatch.guesses = 5
       const result = scoring.mostGuessableMatchSequence(
         password,
-        matches,
+        matches as any,
+        options,
         excludeAdditive,
       )
       it('total guesses == 4', () => {

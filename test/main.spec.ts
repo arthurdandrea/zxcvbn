@@ -1,15 +1,11 @@
 import zxcvbn from '../src/main'
 import translations from '../src/data/feedback/en'
 import passwordTests from './helper/passwordTests'
-import Options from '~/Options'
-
-Options.setOptions()
 
 describe('main', () => {
   it('should check without userInputs', () => {
-    const result = zxcvbn('test')
-    expect(result.calcTime).toBeDefined()
-    delete result.calcTime
+    const { calcTime, ...result } = zxcvbn('test')
+    expect(calcTime).toBeDefined()
     expect(result).toEqual({
       crackTimesDisplay: {
         offlineFastHashing1e10PerSecond: 'less than a second',
@@ -53,8 +49,8 @@ describe('main', () => {
   })
 
   it('should check with userInputs', () => {
-    const result = zxcvbn('test', ['test', 12, true, []])
-    delete result.calcTime
+    const { calcTime, ...result } = zxcvbn('test', ['test', 12, true, []])
+    expect(calcTime).toBeDefined()
     expect(result).toEqual({
       crackTimesDisplay: {
         offlineFastHashing1e10PerSecond: 'less than a second',
@@ -100,8 +96,8 @@ describe('main', () => {
   describe('password tests', () => {
     passwordTests.forEach((data) => {
       it(`should resolve ${data.password}`, () => {
-        const result = zxcvbn(data.password)
-        delete result.calcTime
+        const { calcTime, ...result } = zxcvbn(data.password)
+        expect(calcTime).toBeDefined()
         expect(JSON.stringify(result)).toEqual(JSON.stringify(data.result))
       })
     })

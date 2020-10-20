@@ -1,4 +1,10 @@
-export default ({ token, ascending }) => {
+export default ({
+  token,
+  ascending,
+}: {
+  token: string
+  ascending?: boolean
+}) => {
   const firstChr = token.charAt(0)
   let baseGuesses = 0
   const startingPoints = ['a', 'A', 'z', 'Z', '0', '1', '9']

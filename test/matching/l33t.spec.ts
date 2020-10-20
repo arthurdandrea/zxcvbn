@@ -1,9 +1,6 @@
 import MatchL33t from '~/matching/L33t'
 import checkMatches from '../helper/checkMatches'
-import Options from '~/Options'
-import {LooseObject} from '~/types'
-
-Options.setOptions()
+import MatchDictionary from '~/matching/Dictionary'
 
 describe('l33t matching', () => {
   let msg
@@ -26,12 +23,11 @@ describe('l33t matching', () => {
     })
   })
 
-  Options.setOptions({
-    dictionary: dicts,
-    l33tTable: testTable,
-  })
   const matchL33t = new MatchL33t({
-    userInputs: [],
+    dictionary: new MatchDictionary({
+      dictionaries: dicts,
+    }),
+    l33tTable: testTable,
   })
 
   describe('main match', () => {
@@ -141,7 +137,7 @@ describe('l33t matching', () => {
 
   describe('helpers', () => {
     it('reduces l33t table to only the substitutions that a password might be employing', () => {
-      const data: [string, LooseObject][] = [
+      const data: [string, Record<string, string[]>][] = [
         ['', {}],
         ['abcdefgo123578!#$&*)]}>', {}],
         ['a', {}],
@@ -169,7 +165,7 @@ describe('l33t matching', () => {
       ]
 
       data.forEach(([pw, expected]) => {
-        expect(matchL33t.relevantL33tSubtable(pw, testTable)).toEqual(expected)
+        expect(MatchL33t.relevantL33tSubtable(pw, testTable)).toEqual(expected)
       })
     })
 
@@ -218,7 +214,7 @@ describe('l33t matching', () => {
       ]
 
       data.forEach(([table, subs]) => {
-        expect(matchL33t.enumerateL33tSubs(table)).toEqual(subs)
+        expect(MatchL33t.enumerateL33tSubs(table)).toEqual(subs)
       })
     })
   })

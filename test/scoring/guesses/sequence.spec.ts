@@ -7,7 +7,7 @@ describe('scoring: guesses sequence', () => {
     ['4567', true, 10 * 4], // base10 * len-4
     ['7654', false, 10 * 4 * 2], // base10 * len 4 * descending
     ['ZYX', false, 4 * 3 * 2], // obvious start * len-3 * descending
-  ]
+  ] as const
 
   data.forEach(([token, ascending, guesses]) => {
     const match = {

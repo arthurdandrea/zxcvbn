@@ -1,12 +1,21 @@
+import { NormalizedOptions } from '~/Options'
 import utils from '~/scoring/utils'
-import Options from '~/Options'
+import { ExtendedMatch } from '~/types'
 
-export default ({ graph, token, shiftedCount, turns }) => {
-  let startingPosition = Options.keypadStartingPositions
-  let averageDegree = Options.keypadAverageDegree
-  if (Options.availableGraphs.includes(graph)) {
-    startingPosition = Options.keyboardStartingPositions
-    averageDegree = Options.keyboardAverageDegree
+export default (
+  {
+    graph,
+    token,
+    turns,
+    shiftedCount,
+  }: Pick<ExtendedMatch, 'graph' | 'token' | 'turns' | 'shiftedCount'>,
+  options: NormalizedOptions,
+) => {
+  let startingPosition = options.keypadStartingPositions ?? 1
+  let averageDegree = options.keypadAverageDegree ?? 1
+  if (graph && Object.keys(options.adjacencyGraphs).includes(graph)) {
+    startingPosition = options.keyboardStartingPositions ?? 1
+    averageDegree = options.keyboardAverageDegree ?? 1
   }
   let guesses = 0
   const tokenLength = token.length

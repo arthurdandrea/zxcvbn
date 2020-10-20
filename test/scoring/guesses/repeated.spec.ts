@@ -1,11 +1,10 @@
 import repeatGuesses from '~/scoring/guesses/repeat'
 import scoring from '~/scoring'
 import MatchOmni from '~/Matching'
-import Options from '~/Options'
+import { normalizeOptions } from '~/Options'
 
-Options.setOptions()
-
-const omniMatch = new MatchOmni()
+const options = normalizeOptions({})
+const omniMatch = new MatchOmni(options)
 describe('scoring guesses repeated', () => {
   const data: [string, string, number][] = [
     ['aa', 'a', 2],
@@ -19,6 +18,7 @@ describe('scoring guesses repeated', () => {
     const baseGuesses = scoring.mostGuessableMatchSequence(
       baseToken,
       omniMatch.match(baseToken),
+      options,
     ).guesses
     const match = {
       token,

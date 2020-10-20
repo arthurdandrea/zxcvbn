@@ -1,5 +1,4 @@
-import Options from './Options'
-import { CrackTimesDisplay, CrackTimesSeconds, LooseObject } from './types'
+import { CrackTimesDisplay, CrackTimesSeconds, TranslationKeys } from './types'
 
 /*
  * -------------------------------------------------------------------------------
@@ -7,6 +6,12 @@ import { CrackTimesDisplay, CrackTimesSeconds, LooseObject } from './types'
  * -------------------------------------------------------------------------------
  */
 class TimeEstimates {
+  translations: TranslationKeys
+
+  constructor(translations: TranslationKeys) {
+    this.translations = translations
+  }
+
   translate(
     displayStr: string,
     value: number | undefined,
@@ -16,7 +21,7 @@ class TimeEstimates {
     if (displayNum != null && displayNum !== 1) {
       key += 's'
     }
-    return Options.translations.timeEstimation[key].replace('{base}', value)
+    return this.translations.timeEstimation[key].replace('{base}', value)
   }
 
   estimateAttackTimes(guesses: number) {
@@ -26,14 +31,14 @@ class TimeEstimates {
       offlineSlowHashing1e4PerSecond: guesses / 1e4,
       offlineFastHashing1e10PerSecond: guesses / 1e10,
     }
-    const crackTimesDisplay: CrackTimesDisplay | LooseObject = {}
+    const crackTimesDisplay: Partial<CrackTimesDisplay> = {}
     Object.keys(crackTimesSeconds).forEach((scenario: string) => {
       const seconds = crackTimesSeconds[scenario as keyof CrackTimesSeconds]
       crackTimesDisplay[scenario] = this.displayTime(seconds)
     })
     return {
       crackTimesSeconds,
-      crackTimesDisplay,
+      crackTimesDisplay: crackTimesDisplay as CrackTimesDisplay,
       score: this.guessesToScore(guesses),
     }
   }

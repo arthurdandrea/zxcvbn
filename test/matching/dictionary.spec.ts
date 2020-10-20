@@ -1,9 +1,6 @@
 import MatchDictionary from '~/matching/Dictionary'
 import checkMatches from '../helper/checkMatches'
 import genpws from '../helper/genpws'
-import Options from '~/Options'
-
-Options.setOptions()
 
 describe('dictionary matching', () => {
   describe('Default dictionary', () => {
@@ -19,15 +16,11 @@ describe('dictionary matching', () => {
     })
   })
   describe('without user input', () => {
-    const testDicts = {
-      d1: ['motherboard', 'mother', 'board', 'abcd', 'cdef'],
-      d2: ['z', '8', '99', '$', 'asdf1234&*'],
-    }
-    Options.setOptions({
-      dictionary: testDicts,
-    })
     const matchDictionary = new MatchDictionary({
-      userInputs: [],
+      dictionaries: {
+        d1: ['motherboard', 'mother', 'board', 'abcd', 'cdef'],
+        d2: ['z', '8', '99', '$', 'asdf1234&*'],
+      },
     })
     const dm = (pw) => matchDictionary.match(pw)
     let matches = dm('motherboard')
@@ -100,8 +93,8 @@ describe('dictionary matching', () => {
       })
     })
 
-    Object.keys(Options.rankedDictionaries).forEach((name) => {
-      const dict = Options.rankedDictionaries[name]
+    Object.keys(matchDictionary.rankedDictionaries).forEach((name) => {
+      const dict = matchDictionary.rankedDictionaries[name]
       Object.keys(dict).forEach((word) => {
         const rank = dict[word]
         if (word !== 'motherboard') {

@@ -1,11 +1,9 @@
 import TimeEstimates from '../src/TimeEstimates'
-import Options from '~/Options'
-
-Options.setOptions()
+import translationsEn from '~/data/feedback/en'
 
 // TODO add tests
 describe('timeEstimates', () => {
-  const timeEstimates = new TimeEstimates()
+  const timeEstimates = new TimeEstimates(translationsEn)
 
   it('should be very weak', () => {
     const attackTimes = timeEstimates.estimateAttackTimes(10)

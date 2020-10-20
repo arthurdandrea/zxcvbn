@@ -10,14 +10,31 @@ import repeatGuesses from './guesses/repeat'
 import sequenceGuesses from './guesses/sequence'
 import spatialGuesses from './guesses/spatial'
 import utils from './utils'
-import { ExtendedMatch, LooseObject, Match } from '../types'
+import { ExtendedMatch, Match } from '../types'
+import { NormalizedOptions } from '~/Options'
+
+const estimationFunctions = {
+  bruteforce: bruteforceGuesses,
+  repeat: repeatGuesses,
+  sequence: sequenceGuesses,
+  regex: regexGuesses,
+  date: dateGuesses,
+}
 
 // ------------------------------------------------------------------------------
 // guess estimation -- one function per match pattern ---------------------------
 // ------------------------------------------------------------------------------
 
-export default (match: ExtendedMatch | Match, password: string) => {
-  const extraData: LooseObject = {}
+export default (
+  match: ExtendedMatch | Match,
+  password: string,
+  options: NormalizedOptions,
+) => {
+  const extraData: {
+    baseGuesses?: number
+    uppercaseVariations?: number
+    l33tVariations?: number
+  } = {}
   // a match's guess estimate doesn't change. cache it.
   if ('guesses' in match && match.guesses != null) {
     return match
@@ -30,31 +47,18 @@ export default (match: ExtendedMatch | Match, password: string) => {
       minGuesses = MIN_SUBMATCH_GUESSES_MULTI_CHAR
     }
   }
-  const estimationFunctions = {
-    bruteforce: bruteforceGuesses,
-    dictionary: dictionaryGuesses,
-    spatial: spatialGuesses,
-    repeat: repeatGuesses,
-    sequence: sequenceGuesses,
-    regex: regexGuesses,
-    date: dateGuesses,
-  }
-  // @ts-ignore
-  const estimationResult = estimationFunctions[match.pattern](match)
-  let guesses = 0
+  let guesses: number
   if (match.pattern === 'dictionary') {
-    // @ts-ignore
-    guesses = estimationResult.calculation
-    // @ts-ignore
-    extraData.baseGuesses = estimationResult.baseGuesses
-    // @ts-ignore
-    extraData.uppercaseVariations = estimationResult.uppercaseVariations
-    // @ts-ignore
-    extraData.l33tVariations = estimationResult.l33tVariations
+    const result = dictionaryGuesses(match as any)
+    guesses = result.calculation
+    extraData.baseGuesses = result.baseGuesses
+    extraData.uppercaseVariations = result.uppercaseVariations
+    extraData.l33tVariations = result.l33tVariations
+  } else if (match.pattern === 'spatial') {
+    guesses = spatialGuesses(match as any, options)
   } else {
-    guesses = estimationResult as number
+    guesses = estimationFunctions[match.pattern](match as any)
   }
-
   const matchGuesses = Math.max(guesses, minGuesses)
   return {
     ...match,

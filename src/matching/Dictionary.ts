@@ -1,20 +1,39 @@
-import { sorted, buildRankedDictionary } from '~/helper'
-import Options from '~/Options'
-import { ExtendedMatch, DictionaryNames } from '../types'
+import { buildRankedDictionary, sorted } from '~/helper'
+import { ExtendedMatch, DictionaryNames, RankedDictionaries } from '../types'
 import frequencyLists from '~/data/frequency_lists'
 
-const params = {
-  userInputs: [] as string[],
-}
-
 class MatchDictionary {
-  rankedDictionaries: typeof frequencyLists
+  readonly rankedDictionaries: Readonly<
+    Record<string, Readonly<Record<string, number>>>
+  >
 
-  constructor({ userInputs = [] } = params) {
-    this.rankedDictionaries = Options.rankedDictionaries
-    this.rankedDictionaries.userInputs = buildRankedDictionary(
-      userInputs.slice(),
-    ) as []
+  constructor(options?: MatchDictionary.Options) {
+    let mutable = false
+    let rankedDictionaries: RankedDictionaries
+    if (options && 'rankedDictionaries' in options) {
+      ;({ rankedDictionaries } = options)
+    } else {
+      mutable = true
+      rankedDictionaries = {}
+      const dictionary =
+        (options && 'dictionaries' in options && options?.dictionaries) ||
+        frequencyLists
+      Object.keys(dictionary).forEach((name) => {
+        rankedDictionaries[name] = buildRankedDictionary(dictionary[name])
+      })
+    }
+    if (options?.userInputs) {
+      const rankedUserInputs = buildRankedDictionary(options.userInputs)
+      if (mutable) {
+        rankedDictionaries.userInputs = rankedUserInputs
+      } else {
+        rankedDictionaries = {
+          ...rankedDictionaries,
+          userInputs: rankedUserInputs,
+        }
+      }
+    }
+    this.rankedDictionaries = rankedDictionaries
   }
 
   match(password: string) {
@@ -50,6 +69,24 @@ class MatchDictionary {
       },
     )
     return sorted(matches)
+  }
+}
+
+namespace MatchDictionary {
+  export interface RankedDictionariesOptions {
+    rankedDictionaries: Readonly<
+      Record<string, Readonly<Record<string, number>>>
+    >
+  }
+  export interface DictionariesOptions {
+    dictionaries: Record<string, string[]>
+  }
+  export type Options = (
+    | DictionariesOptions
+    | RankedDictionariesOptions
+    | {}
+  ) & {
+    userInputs?: string[]
   }
 }
 

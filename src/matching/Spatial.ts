@@ -1,7 +1,9 @@
 import { sorted, extend } from '~/helper'
-import Options from '~/Options'
 import { DefaultAdjacencyGraphsKeys, ExtendedMatch } from '../types'
-import defaultAdjacencyGraphs from '~/data/adjacency_graphs'
+
+type ReadonlyAdjencyGraphs = Readonly<
+  Record<string, Readonly<Record<string, ReadonlyArray<string | null>>>>
+>
 
 /*
  * ------------------------------------------------------------------------------
@@ -11,10 +13,16 @@ import defaultAdjacencyGraphs from '~/data/adjacency_graphs'
 class MatchSpatial {
   SHIFTED_RX = /[~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?]/
 
+  readonly graphs: ReadonlyAdjencyGraphs
+
+  constructor(options: MatchSpatial.Options) {
+    this.graphs = options.adjacencyGraphs
+  }
+
   match(password: string) {
     const matches: ExtendedMatch[] = []
-    Object.keys(Options.graphs).forEach((graphName) => {
-      const graph = Options.graphs[graphName]
+    Object.keys(this.graphs).forEach((graphName) => {
+      const graph = this.graphs[graphName]
       extend(
         matches,
         this.helper(password, graph, graphName as DefaultAdjacencyGraphsKeys),
@@ -25,7 +33,7 @@ class MatchSpatial {
 
   helper(
     password: string,
-    graph: typeof defaultAdjacencyGraphs,
+    graph: ReadonlyAdjencyGraphs[string],
     graphName: DefaultAdjacencyGraphsKeys,
   ) {
     let shiftedCount
@@ -108,6 +116,12 @@ class MatchSpatial {
       }
     }
     return matches
+  }
+}
+
+namespace MatchSpatial {
+  export interface Options {
+    adjacencyGraphs: ReadonlyAdjencyGraphs
   }
 }
 

@@ -7,6 +7,7 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "strict": true,
+    "noEmit": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": false,
@@ -15,14 +16,9 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["../src/*"]
     },
-    "rootDir": "./src",
-    "outDir": "./dist"
+    "rootDir": "."
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "test"
-  ]
+  "references": [{ "path": ".." }]
 }

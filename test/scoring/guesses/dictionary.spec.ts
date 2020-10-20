@@ -9,7 +9,7 @@ describe('scoring: guesses dictionary', () => {
       rank: 32,
     }
     const result = 32
-    expect(dictionaryGuesses(match)).toEqual({
+    expect(dictionaryGuesses(match as any)).toEqual({
       baseGuesses: 32,
       calculation: result,
       l33tVariations: 1,
@@ -23,7 +23,7 @@ describe('scoring: guesses dictionary', () => {
       rank: 32,
     }
     const result = 32 * uppercaseVariant(match.token)
-    expect(dictionaryGuesses(match)).toEqual({
+    expect(dictionaryGuesses(match as any)).toEqual({
       baseGuesses: 32,
       calculation: result,
       l33tVariations: 1,
@@ -38,7 +38,7 @@ describe('scoring: guesses dictionary', () => {
       reversed: true,
     }
     const result = 32 * 2
-    expect(dictionaryGuesses(match)).toEqual({
+    expect(dictionaryGuesses(match as any)).toEqual({
       baseGuesses: 32,
       calculation: result,
       l33tVariations: 1,
@@ -56,7 +56,7 @@ describe('scoring: guesses dictionary', () => {
       },
     }
     const result = 32 * l33tVariant(match)
-    expect(dictionaryGuesses(match)).toEqual({
+    expect(dictionaryGuesses(match as any)).toEqual({
       baseGuesses: 32,
       calculation: result,
       l33tVariations: 41,
@@ -74,7 +74,7 @@ describe('scoring: guesses dictionary', () => {
       },
     }
     const result = 32 * l33tVariant(match) * uppercaseVariant(match.token)
-    expect(dictionaryGuesses(match)).toEqual({
+    expect(dictionaryGuesses(match as any)).toEqual({
       baseGuesses: 32,
       calculation: result,
       l33tVariations: 41,

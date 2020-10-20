@@ -1,17 +1,11 @@
 import defaultAdjacencyGraphs from '~/data/adjacency_graphs'
 import frequencyLists from '~/data/frequency_lists'
 import translationKeys from '~/data/feedback/keys'
-import l33tTableDefault from '~/data/l33tTable'
 
 export type DefaultAdjacencyGraphsKeys = keyof typeof defaultAdjacencyGraphs
 export type DefaultAdjacencyGraphs = typeof defaultAdjacencyGraphs
 export type TranslationKeys = typeof translationKeys
-export type L33tTableDefault = typeof l33tTableDefault
 export type FrequencyLists = typeof frequencyLists
-
-export interface LooseObject {
-  [key: string]: any
-}
 
 export type Pattern =
   | 'dictionary'
@@ -55,7 +49,7 @@ export interface ExtendedMatch {
   guessesLog10: number
   turns: number
   baseToken: string[] | string
-  sub?: LooseObject
+  sub?: Record<string, string>
   subDisplay?: string
   sequenceName?: 'lower' | 'digits'
   sequenceSpace?: number
@@ -119,33 +113,23 @@ export type MatchingMatcherNames =
   | 'regex'
   | 'date'
 
-export type Keyboards =
+export type DefaultKeyboards =
   | 'qwerty'
   | 'qwertz'
   | 'qwertz_altgr'
   | 'qwertz_altgr_shift'
   | 'dvorak'
-  | string
+export type Keyboards = DefaultKeyboards | string
 
-export type Keypads = 'keypad' | 'mac_keypad' | string
+export type DefaultKeypads = 'keypad' | 'mac_keypad'
+export type Keypads = DefaultKeypads | string
 
-export type OptionsL33tTable =
-  | L33tTableDefault
-  | {
-      [key: string]: string[]
-    }
-export type OptionsDictionary =
-  | FrequencyLists
-  | {
-      [key: string]: string[] | number[]
-    }
-export type OptionsGraph =
-  | DefaultAdjacencyGraphs
-  | {
-      [key: string]: {
-        [key: string]: string[]
-      }
-    }
+export type OptionsL33tTable = Record<string, string[]>
+export type OptionsDictionary = Record<string, string[]>
+export type RankedDictionary = Record<string, number>
+export type RankedDictionaries = Record<string, RankedDictionary>
+export type OptionsGraph = Record<string, Record<string, (string | null)[]>>
+
 export interface OptionsType {
   translations?: TranslationKeys
   graphs?: OptionsGraph
@@ -153,4 +137,9 @@ export interface OptionsType {
   usedKeypad?: Keypads
   l33tTable?: OptionsL33tTable
   dictionary?: OptionsDictionary
+  userInputs?: string[]
+}
+
+export interface Matcher {
+  match(password: string): ExtendedMatch[]
 }

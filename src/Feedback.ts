@@ -1,6 +1,5 @@
 import { START_UPPER, ALL_UPPER_INVERTED } from './data/const'
-import Options from './Options'
-import { ExtendedMatch, FeedbackType } from './types'
+import { ExtendedMatch, FeedbackType, TranslationKeys } from './types'
 
 /*
  * -------------------------------------------------------------------------------
@@ -13,14 +12,13 @@ class Feedback {
     suggestions: [],
   }
 
-  constructor() {
-    this.setDefaultSuggestions()
-  }
+  translations: TranslationKeys
 
-  setDefaultSuggestions() {
+  constructor(translations: TranslationKeys) {
+    this.translations = translations
     this.defaultFeedback.suggestions.push(
-      Options.translations.suggestions.useWords,
-      Options.translations.suggestions.noNeed,
+      translations.suggestions.useWords,
+      translations.suggestions.noNeed,
     )
   }
 
@@ -34,15 +32,14 @@ class Feedback {
         suggestions: [],
       }
     }
-    let longestMatch = sequence[0]
-    const slicedSequence = sequence.slice(1)
-    slicedSequence.forEach((match: ExtendedMatch) => {
-      if (match.token.length > longestMatch.token.length) {
-        longestMatch = match
+    const longestMatch = sequence.reduce((longerMatch, match) => {
+      if (match.token.length > longerMatch.token.length) {
+        return match
       }
+      return longerMatch
     })
     let feedback = this.getMatchFeedback(longestMatch, sequence.length === 1)
-    const extraFeedback = Options.translations.suggestions.anotherWord
+    const extraFeedback = this.translations.suggestions.anotherWord
     if (feedback !== null && feedback !== undefined) {
       feedback.suggestions.unshift(extraFeedback)
       if (feedback.warning == null) {
@@ -57,51 +54,51 @@ class Feedback {
     return feedback
   }
 
-  getMatchFeedback(match: ExtendedMatch, isSoleMatch: Boolean) {
-    let warning
+  getMatchFeedback(match: ExtendedMatch, isSoleMatch: boolean) {
+    let warning: string
 
     switch (match.pattern) {
       case 'dictionary':
         return this.getDictionaryMatchFeedback(match, isSoleMatch)
       case 'spatial':
-        warning = Options.translations.warnings.keyPattern
+        warning = this.translations.warnings.keyPattern
         if (match.turns === 1) {
-          warning = Options.translations.warnings.straightRow
+          warning = this.translations.warnings.straightRow
         }
         return {
           warning,
-          suggestions: [Options.translations.suggestions.longerKeyboardPattern],
+          suggestions: [this.translations.suggestions.longerKeyboardPattern],
         }
       case 'repeat':
-        warning = Options.translations.warnings.extendedRepeat
+        warning = this.translations.warnings.extendedRepeat
         if (match.baseToken.length === 1) {
-          warning = Options.translations.warnings.simpleRepeat
+          warning = this.translations.warnings.simpleRepeat
         }
 
         return {
           warning,
-          suggestions: [Options.translations.suggestions.repeated],
+          suggestions: [this.translations.suggestions.repeated],
         }
       case 'sequence':
         return {
-          warning: Options.translations.warnings.sequences,
-          suggestions: [Options.translations.suggestions.sequences],
+          warning: this.translations.warnings.sequences,
+          suggestions: [this.translations.suggestions.sequences],
         }
       case 'regex':
         if (match.regexName === 'recentYear') {
           return {
-            warning: Options.translations.warnings.recentYears,
+            warning: this.translations.warnings.recentYears,
             suggestions: [
-              Options.translations.suggestions.recentYears,
-              Options.translations.suggestions.associatedYears,
+              this.translations.suggestions.recentYears,
+              this.translations.suggestions.associatedYears,
             ],
           }
         }
         break
       case 'date':
         return {
-          warning: Options.translations.warnings.dates,
-          suggestions: [Options.translations.suggestions.dates],
+          warning: this.translations.warnings.dates,
+          suggestions: [this.translations.suggestions.dates],
         }
       default:
         return {
@@ -115,7 +112,7 @@ class Feedback {
     }
   }
 
-  getDictionaryMatchFeedback(match: ExtendedMatch, isSoleMatch: Boolean) {
+  getDictionaryMatchFeedback(match: ExtendedMatch, isSoleMatch: boolean) {
     let warning = ''
     const suggestions: string[] = []
     const word = match.token
@@ -123,18 +120,18 @@ class Feedback {
     if (dictName === 'passwords') {
       if (isSoleMatch && !match.l33t && !match.reversed) {
         if (match.rank <= 10) {
-          warning = Options.translations.warnings.topTen
+          warning = this.translations.warnings.topTen
         } else if (match.rank <= 100) {
-          warning = Options.translations.warnings.topHundred
+          warning = this.translations.warnings.topHundred
         } else {
-          warning = Options.translations.warnings.common
+          warning = this.translations.warnings.common
         }
       } else if (match.guessesLog10 <= 4) {
-        warning = Options.translations.warnings.similarToCommon
+        warning = this.translations.warnings.similarToCommon
       }
     } else if (dictName.includes('wikipedia')) {
       if (isSoleMatch) {
-        warning = Options.translations.warnings.wordByItself
+        warning = this.translations.warnings.wordByItself
       }
     } else if (
       dictName === 'surnames' ||
@@ -142,22 +139,22 @@ class Feedback {
       dictName === 'femaleNames'
     ) {
       if (isSoleMatch) {
-        warning = Options.translations.warnings.namesByThemselves
+        warning = this.translations.warnings.namesByThemselves
       } else {
-        warning = Options.translations.warnings.commonNames
+        warning = this.translations.warnings.commonNames
       }
     }
 
     if (word.match(START_UPPER)) {
-      suggestions.push(Options.translations.suggestions.capitalization)
+      suggestions.push(this.translations.suggestions.capitalization)
     } else if (word.match(ALL_UPPER_INVERTED) && word.toLowerCase() !== word) {
-      suggestions.push(Options.translations.suggestions.allUppercase)
+      suggestions.push(this.translations.suggestions.allUppercase)
     }
     if (match.reversed && match.token.length >= 4) {
-      suggestions.push(Options.translations.suggestions.reverseWords)
+      suggestions.push(this.translations.suggestions.reverseWords)
     }
     if (match.l33t) {
-      suggestions.push(Options.translations.suggestions.l33t)
+      suggestions.push(this.translations.suggestions.l33t)
     }
     return {
       warning,

@@ -8,7 +8,8 @@ import pkg from '../package.json'
 
 let generateCounter = 0
 const generateConfig = (type) => {
-  let typescriptOptions = {
+  const typescriptOptions = {
+    composite: false,
     declaration: false,
   }
   let babelrc = true
@@ -21,10 +22,8 @@ const generateConfig = (type) => {
     exports: 'auto',
   }
   if (type === 'esm') {
-    typescriptOptions = {
-      declarationDir: `dist/`,
-      declaration: true,
-    }
+    typescriptOptions.declarationDir = `dist/`
+    typescriptOptions.declaration = true
     output.entryFileNames = '[name].esm.js'
     output.assetFileNames = '[name].esm.js'
     babelrc = false

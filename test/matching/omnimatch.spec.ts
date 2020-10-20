@@ -1,10 +1,8 @@
 import MatchOmni from '~/Matching'
-import Options from '~/Options'
-
-Options.setOptions()
+import { normalizeOptions } from '~/Options'
 
 describe('omnimatch matching', () => {
-  const omniMatch = new MatchOmni()
+  const omniMatch = new MatchOmni(normalizeOptions({}))
 
   it("doesn't match ''", () => {
     expect(omniMatch.match('')).toEqual([])

@@ -1,7 +1,7 @@
 import { sorted, empty, translate } from '~/helper'
 import MatchDictionary from './Dictionary'
-import Options from '~/Options'
-import { ExtendedMatch, LooseObject } from '../types'
+import { ExtendedMatch, OptionsL33tTable } from '../types'
+import defaultL33tTable from '~/data/l33tTable'
 
 /*
  * -------------------------------------------------------------------------------
@@ -9,18 +9,19 @@ import { ExtendedMatch, LooseObject } from '../types'
  * -------------------------------------------------------------------------------
  */
 class MatchL33t {
-  MatchDictionary: any
+  readonly dictionary: MatchDictionary
 
-  constructor({ userInputs = [] } = {}) {
-    this.MatchDictionary = new MatchDictionary({
-      userInputs,
-    })
+  readonly l33tTable: Readonly<Record<string, readonly string[]>>
+
+  constructor(options?: MatchL33t.Options) {
+    this.dictionary = options?.dictionary ?? new MatchDictionary()
+    this.l33tTable = options?.l33tTable ?? defaultL33tTable
   }
 
   match(password: string) {
     const matches: ExtendedMatch[] = []
-    const enumeratedSubs = this.enumerateL33tSubs(
-      this.relevantL33tSubtable(password, Options.l33tTable),
+    const enumeratedSubs = MatchL33t.enumerateL33tSubs(
+      MatchL33t.relevantL33tSubtable(password, this.l33tTable),
     )
     for (let i = 0; i < enumeratedSubs.length; i += 1) {
       const sub = enumeratedSubs[i]
@@ -29,15 +30,14 @@ class MatchL33t {
         break
       }
       const subbedPassword = translate(password, sub)
-      const matchedDictionary = this.MatchDictionary.match(subbedPassword)
+      const matchedDictionary = this.dictionary.match(subbedPassword)
       matchedDictionary.forEach((match: ExtendedMatch) => {
         const token = password.slice(match.i, +match.j + 1 || 9e9)
         // only return the matches that contain an actual substitution
         if (token.toLowerCase() !== match.matchedWord) {
           // subset of mappings in sub that are in use for this match
-          const matchSub: LooseObject = {}
+          const matchSub: Record<string, string> = {}
           Object.keys(sub).forEach((subbedChr) => {
-            // @ts-ignore
             const chr = sub[subbedChr]
             if (token.indexOf(subbedChr) !== -1) {
               matchSub[subbedChr] = chr
@@ -59,20 +59,22 @@ class MatchL33t {
     // filter single-character l33t matches to reduce noise.
     // otherwise '1' matches 'i', '4' matches 'a', both very common English words
     // with low dictionary rank.
-
     return sorted(matches.filter((match) => match.token.length > 1))
   }
 
   // makes a pruned copy of l33t_table that only includes password's possible substitutions
-  relevantL33tSubtable(password: string, table: any) {
-    const passwordChars: LooseObject = {}
-    const subTable: LooseObject = {}
+  static relevantL33tSubtable(
+    password: string,
+    l33tTable: Readonly<Record<string, readonly string[]>>,
+  ) {
+    const passwordChars: Record<string, true> = {}
+    const subTable: Record<string, string[]> = {}
     password.split('').forEach((char: string) => {
       passwordChars[char] = true
     })
 
-    Object.keys(table).forEach((letter) => {
-      const subs = table[letter]
+    Object.keys(l33tTable).forEach((letter) => {
+      const subs = l33tTable[letter]
       const relevantSubs = subs.filter((sub: string) => sub in passwordChars)
       if (relevantSubs.length > 0) {
         subTable[letter] = relevantSubs
@@ -82,13 +84,12 @@ class MatchL33t {
   }
 
   // returns the list of possible 1337 replacement dictionaries for a given password
-  // TODO set correct table type
-  enumerateL33tSubs(table: any) {
+  static enumerateL33tSubs(table: Readonly<Record<string, readonly string[]>>) {
     const tableKeys = Object.keys(table)
-    const subs = this.getSubs(tableKeys, [[]], table)
+    const subs = MatchL33t.getSubs(tableKeys, [[]], table)
     // convert from assoc lists to dicts
     return subs.map((sub) => {
-      const subDict = {}
+      const subDict: Record<string, string> = {}
       sub.forEach(([l33tChr, chr]) => {
         subDict[l33tChr] = chr
       })
@@ -96,7 +97,11 @@ class MatchL33t {
     })
   }
 
-  getSubs(keys: string[], subs: string[][], table: any) {
+  static getSubs(
+    keys: string[],
+    subs: string[][],
+    table: Readonly<Record<string, readonly string[]>>,
+  ): string[][] {
     if (!keys.length) {
       return subs
     }
@@ -126,14 +131,14 @@ class MatchL33t {
         }
       })
     })
-    const newSubs = this.dedup(nextSubs)
+    const newSubs = MatchL33t.dedup(nextSubs)
     if (restKeys.length) {
-      return this.getSubs(restKeys, newSubs, table)
+      return MatchL33t.getSubs(restKeys, newSubs, table)
     }
     return newSubs
   }
 
-  dedup(subs: string[][]) {
+  static dedup(subs: string[][]) {
     const deduped: string[][] = []
     const members = {}
     subs.forEach((sub) => {
@@ -148,6 +153,13 @@ class MatchL33t {
       }
     })
     return deduped
+  }
+}
+
+namespace MatchL33t {
+  export interface Options {
+    dictionary?: MatchDictionary
+    l33tTable?: OptionsL33tTable
   }
 }
 

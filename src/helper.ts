@@ -1,12 +1,12 @@
-import { ExtendedMatch, LooseObject } from './types'
+import { ExtendedMatch, RankedDictionary } from './types'
 
-export const empty = (obj: LooseObject) => Object.keys(obj).length === 0
+export const empty = (obj: Record<string, unknown> | unknown[]) =>
+  Object.keys(obj).length === 0
 
-export const extend = (listToExtend: any[], list: any[]) =>
-  // eslint-disable-next-line prefer-spread
-  listToExtend.push.apply(listToExtend, list)
+export const extend = <T>(listToExtend: T[], list: T[]) =>
+  listToExtend.push.apply(listToExtend, list) // eslint-disable-line prefer-spread
 
-export const translate = (string: string, chrMap: LooseObject) => {
+export const translate = (string: string, chrMap: Record<string, string>) => {
   const tempArray = string.split('')
   return tempArray.map((char) => chrMap[char] || char).join('')
 }
@@ -18,8 +18,8 @@ export const mod = (n: number, m: number) => ((n % m) + m) % m
 export const sorted = (matches: ExtendedMatch[]) =>
   matches.sort((m1, m2) => m1.i - m2.i || m1.j - m2.j)
 
-export const buildRankedDictionary = (orderedList: any[]) => {
-  const result: LooseObject = {}
+export const buildRankedDictionary = (orderedList: readonly string[]) => {
+  const result: RankedDictionary = {}
   let counter = 1 // rank starts at 1, not 0
   orderedList.forEach((word) => {
     result[word] = counter
