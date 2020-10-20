@@ -39,7 +39,7 @@ class TimeEstimates {
     return {
       crackTimesSeconds,
       crackTimesDisplay: crackTimesDisplay as CrackTimesDisplay,
-      score: this.guessesToScore(guesses),
+      score: this.guessesToScore(guesses) as 1 | 2 | 3 | 4,
     }
   }
 
