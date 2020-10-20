@@ -4,14 +4,20 @@
   "description": "realistic password strength estimation",
   "author": "Dan Wheeler",
   "license": "MIT",
-  "main": "lib/main.js",
+  "main": "dist/main.js",
+  "module": "dist/main.mjs",
+  "types": "dist/main.d.ts",
   "repository": "dropbox/zxcvbn",
-  "files": [],
+  "files": [
+    "src",
+    "dist"
+  ],
   "prettier": "./prettier.js",
   "scripts": {
     "build": "rollup -c ./scripts/rollup.config.js",
     "demo": "npm run build && npx copyfiles -f dist/main.browser.js demo && npx move-cli demo/main.browser.js demo/zxcvbn.js && http-server demo",
-    "lint": "eslint --ext .js --fix --cache .",
+    "lint": "eslint --cache .",
+    "lint:fix": "eslint --cache . --fix",
     "test": "jest",
     "release": "npm run standard-version",
     "release:dry": "standard-version --dry-run"

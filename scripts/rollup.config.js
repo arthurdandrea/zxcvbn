@@ -6,13 +6,18 @@ import del from 'rollup-plugin-delete'
 import typescript from '@rollup/plugin-typescript'
 import pkg from '../package.json'
 
-let generateCounter = 0
 const generateConfig = (type) => {
   const typescriptOptions = {
     composite: false,
     declaration: false,
   }
   let babelrc = true
+  let delTargets = [
+    'dist/**/*.js',
+    'dist/**/*.js.map',
+    '!dist/browser.js',
+    '!dist/browser.js.map',
+  ]
   const output = {
     dir: 'dist/',
     format: type,
@@ -24,32 +29,24 @@ const generateConfig = (type) => {
   if (type === 'esm') {
     typescriptOptions.declarationDir = `dist/`
     typescriptOptions.declaration = true
-    output.entryFileNames = '[name].esm.js'
-    output.assetFileNames = '[name].esm.js'
+    output.entryFileNames = '[name].mjs'
+    output.assetFileNames = '[name].mjs'
+    delTargets = ['dist/**/*.mjs', 'dist/**/*.mjs.map', 'dist/**/*.d.ts']
     babelrc = false
   }
   if (type === 'iife') {
     output.name = pkg.name
     output.entryFileNames = '[name].browser.js'
     output.assetFileNames = '[name].browser.js'
+    delTargets = ['dist/browser.js', 'dist/browser.js.map']
   }
-
-  const pluginsOnlyOnce = []
-  if (generateCounter === 0) {
-    pluginsOnlyOnce.push(
-      del({
-        targets: 'dist/*',
-      }),
-    )
-
-    generateCounter += 1
-  }
-
   return {
     input: './src/main.ts',
     output,
     plugins: [
-      ...pluginsOnlyOnce,
+      del({
+        targets: delTargets,
+      }),
       alias({
         entries: [
           {
