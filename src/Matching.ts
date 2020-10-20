@@ -1,13 +1,13 @@
 import { extend, sorted } from './helper'
-import Dictionary from './matching/Dictionary'
-import L33t from './matching/L33t'
-import DictionaryReverse from './matching/DictionaryReverse'
-import Spatial from './matching/Spatial'
-import Repeat from './matching/Repeat'
-import Sequence from './matching/Sequence'
-import Regex from './matching/Regex'
-import Date from './matching/Date'
-import { ExtendedMatch, Matcher } from './types'
+import DictionaryMatcher from './matching/Dictionary'
+import L33tMatcher from './matching/L33t'
+import ReverseDictionaryMatcher from './matching/DictionaryReverse'
+import SpatialMatcher from './matching/Spatial'
+import RepeatMatcher from './matching/Repeat'
+import SequenceMatcher from './matching/Sequence'
+import RegexMatcher from './matching/Regex'
+import DateMatcher from './matching/Date'
+import { AnyMatch, Matcher } from './types'
 import { NormalizedOptions } from './Options'
 
 /*
@@ -20,23 +20,23 @@ class Matching {
   private matchers: readonly Matcher[]
 
   constructor(options: NormalizedOptions) {
-    const dictionary = new Dictionary({
+    const dictionary = new DictionaryMatcher({
       rankedDictionaries: options.rankedDictionaries,
     })
     this.matchers = [
       dictionary,
-      new DictionaryReverse(dictionary),
-      new L33t({ dictionary, l33tTable: options.l33tTable }),
-      new Spatial({ adjacencyGraphs: options.adjacencyGraphs }),
-      new Repeat(),
-      new Sequence(),
-      new Regex(),
-      new Date(),
+      new ReverseDictionaryMatcher(dictionary),
+      new L33tMatcher({ dictionary, l33tTable: options.l33tTable }),
+      new SpatialMatcher({ adjacencyGraphs: options.adjacencyGraphs }),
+      new RepeatMatcher(),
+      new SequenceMatcher(),
+      new RegexMatcher(),
+      new DateMatcher(),
     ]
   }
 
   match(password: string) {
-    const matches: ExtendedMatch[] = []
+    const matches: AnyMatch[] = []
     this.matchers.forEach((matcher) => {
       extend(matches, matcher.match(password))
     })

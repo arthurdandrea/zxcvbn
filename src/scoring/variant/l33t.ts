@@ -1,11 +1,16 @@
+import { DictionaryMatch } from '~/matching/Dictionary'
+import { ReverseDictionaryMatch } from '~/matching/DictionaryReverse'
+import { L33tMatch } from '~/matching/L33t'
 import utils from '~/scoring/utils'
 
-export default ({ l33t, sub, token }) => {
-  if (!l33t) {
+export default (
+  match: DictionaryMatch | L33tMatch | ReverseDictionaryMatch,
+) => {
+  if (!match.l33t) {
     return 1
   }
+  const { sub: subs, token } = match
   let variations = 1
-  const subs = sub
   Object.keys(subs).forEach((subbed) => {
     const unsubbed = subs[subbed]
     // lower-case match.token before calculating: capitalization shouldn't affect l33t calc.

@@ -1,6 +1,19 @@
 import { buildRankedDictionary, sorted } from '~/helper'
-import { ExtendedMatch, DictionaryNames, RankedDictionaries } from '../types'
+import { RankedDictionaries } from '../types'
 import frequencyLists from '~/data/frequency_lists'
+
+export interface DictionaryMatch {
+  pattern: 'dictionary'
+  i: number
+  j: number
+  token: string
+  matchedWord: string
+  rank: number
+  dictionaryName: string
+  reversed: false
+  l33t: false
+  sub?: never
+}
 
 class MatchDictionary {
   readonly rankedDictionaries: Readonly<
@@ -38,36 +51,32 @@ class MatchDictionary {
 
   match(password: string) {
     // rankedDictionaries variable is for unit testing purposes
-    const matches: ExtendedMatch[] = []
+    const matches: DictionaryMatch[] = []
     const passwordLength = password.length
     const passwordLower = password.toLowerCase()
 
-    Object.keys(this.rankedDictionaries).forEach(
-      // @ts-ignore
-      (dictionaryName: DictionaryNames) => {
-        const rankedDict = this.rankedDictionaries[dictionaryName]
-        for (let i = 0; i < passwordLength; i += 1) {
-          for (let j = i; j < passwordLength; j += 1) {
-            if (passwordLower.slice(i, +j + 1 || 9e9) in rankedDict) {
-              const word = passwordLower.slice(i, +j + 1 || 9e9)
-              const rank = rankedDict[word]
-              // @ts-ignore
-              matches.push({
-                pattern: 'dictionary',
-                i,
-                j,
-                token: password.slice(i, +j + 1 || 9e9),
-                matchedWord: word,
-                rank,
-                dictionaryName,
-                reversed: false,
-                l33t: false,
-              })
-            }
+    Object.keys(this.rankedDictionaries).forEach((dictionaryName) => {
+      const rankedDict = this.rankedDictionaries[dictionaryName]
+      for (let i = 0; i < passwordLength; i += 1) {
+        for (let j = i; j < passwordLength; j += 1) {
+          if (passwordLower.slice(i, +j + 1 || 9e9) in rankedDict) {
+            const word = passwordLower.slice(i, +j + 1 || 9e9)
+            const rank = rankedDict[word]
+            matches.push({
+              pattern: 'dictionary',
+              i,
+              j,
+              token: password.slice(i, +j + 1 || 9e9),
+              matchedWord: word,
+              rank,
+              dictionaryName,
+              reversed: false,
+              l33t: false,
+            })
           }
         }
-      },
-    )
+      }
+    })
     return sorted(matches)
   }
 }

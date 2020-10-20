@@ -1,7 +1,13 @@
 import { sorted, empty, translate } from '~/helper'
-import MatchDictionary from './Dictionary'
-import { ExtendedMatch, OptionsL33tTable } from '../types'
+import MatchDictionary, { DictionaryMatch } from './Dictionary'
+import { OptionsL33tTable } from '../types'
 import defaultL33tTable from '~/data/l33tTable'
+
+export interface L33tMatch extends Omit<DictionaryMatch, 'l33t' | 'sub'> {
+  l33t: true
+  sub: Record<string, string>
+  subDisplay: string
+}
 
 /*
  * -------------------------------------------------------------------------------
@@ -19,7 +25,7 @@ class MatchL33t {
   }
 
   match(password: string) {
-    const matches: ExtendedMatch[] = []
+    const matches: L33tMatch[] = []
     const enumeratedSubs = MatchL33t.enumerateL33tSubs(
       MatchL33t.relevantL33tSubtable(password, this.l33tTable),
     )
@@ -31,7 +37,7 @@ class MatchL33t {
       }
       const subbedPassword = translate(password, sub)
       const matchedDictionary = this.dictionary.match(subbedPassword)
-      matchedDictionary.forEach((match: ExtendedMatch) => {
+      matchedDictionary.forEach((match: DictionaryMatch) => {
         const token = password.slice(match.i, +match.j + 1 || 9e9)
         // only return the matches that contain an actual substitution
         if (token.toLowerCase() !== match.matchedWord) {
@@ -140,15 +146,13 @@ class MatchL33t {
 
   static dedup(subs: string[][]) {
     const deduped: string[][] = []
-    const members = {}
+    const members = new Set<string>()
     subs.forEach((sub) => {
       const assoc = sub.map((k, index) => [k, index])
       assoc.sort()
-      const label = assoc.map(([k, v]) => `${k},${v}`)
-      // @ts-ignore
-      if (!(label in members)) {
-        // @ts-ignore
-        members[label] = true
+      const label = assoc.map(([k, v]) => `${k},${v}`).join('-')
+      if (!members.has(label)) {
+        members.add(label)
         deduped.push(sub)
       }
     })

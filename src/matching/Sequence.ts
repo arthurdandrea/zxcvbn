@@ -5,8 +5,21 @@ type UpdateParams = {
   j: number
   delta: number
   password: string
-  result: any[]
+  result: SequenceMatch[]
 }
+
+export type SequenceName = 'unicode' | 'lower' | 'upper' | 'digits'
+
+export interface SequenceMatch {
+  pattern: 'sequence'
+  i: number
+  j: number
+  token: string
+  sequenceName: SequenceName
+  sequenceSpace: number
+  ascending: boolean
+}
+
 /*
  *-------------------------------------------------------------------------------
  * sequences (abcdef) ------------------------------
@@ -30,7 +43,7 @@ class MatchSequence {
      * expected result:
      * [(i, j, delta), ...] = [(0, 3, 1), (5, 7, -2), (8, 9, 1)]
      */
-    const result: any[] = []
+    const result: SequenceMatch[] = []
     if (password.length === 1) {
       return []
     }
@@ -72,7 +85,7 @@ class MatchSequence {
         const token = password.slice(i, +j + 1 || 9e9)
         // TODO conservatively stick with roman alphabet size.
         //  (this could be improved)
-        let sequenceName = 'unicode'
+        let sequenceName: SequenceName = 'unicode'
         let sequenceSpace = 26
 
         if (ALL_LOWER.test(token)) {

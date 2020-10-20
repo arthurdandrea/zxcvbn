@@ -5,7 +5,17 @@ import {
   REFERENCE_YEAR,
 } from '~/data/const'
 import { sorted } from '~/helper'
-import { ExtendedMatch } from '../types'
+
+export interface DateMatch {
+  pattern: 'date'
+  token: string
+  i: number
+  j: number
+  separator: string
+  year: number
+  month: number
+  day: number
+}
 
 /*
  * -------------------------------------------------------------------------------
@@ -34,9 +44,9 @@ class MatchDate {
      * this uses a ^...$ regex against every substring of the password -- less performant but leads
      * to every possible date match.
      */
-    const metric = (candidate: ExtendedMatch) =>
+    const metric = (candidate: DateMatch) =>
       Math.abs(candidate.year - REFERENCE_YEAR)
-    const matches: ExtendedMatch[] = []
+    const matches: DateMatch[] = []
     const maybeDateNoSeparator = /^\d{4,8}$/
     const maybeDateWithSeparator = /^(\d{1,4})([\s/\\_.-])(\d{1,2})\2(\d{1,4})$/
 
@@ -50,9 +60,8 @@ class MatchDate {
         if (maybeDateNoSeparator.exec(token)) {
           const candidates: any[] = []
           const index = token.length
-          const splittedDates = DATE_SPLITS[index]
-          // @ts-ignore
-          splittedDates.forEach(([k, l]) => {
+          const splittedDates = DATE_SPLITS[index as keyof typeof DATE_SPLITS]
+          splittedDates.forEach(([k, l]: readonly [number, number]) => {
             const dmy = this.mapIntegersToDayMonthYear([
               parseInt(token.slice(0, k), 10),
               parseInt(token.slice(k, l), 10),
@@ -81,7 +90,6 @@ class MatchDate {
                 minDistance = distance
               }
             })
-            // @ts-ignore
             matches.push({
               pattern: 'date',
               token,
@@ -118,7 +126,6 @@ class MatchDate {
               i,
               j,
               separator: regexMatch[2],
-              // @ts-ignore
               year: dmy.year,
               month: dmy.month,
               day: dmy.day,
@@ -192,13 +199,12 @@ class MatchDate {
     const possibleYearSplits = [
       [integers[2], integers.slice(0, 2)], // year last
       [integers[0], integers.slice(1, 3)], // year first
-    ]
+    ] as const
 
     const possibleYearSplitsLength = possibleYearSplits.length
     for (let j = 0; j < possibleYearSplitsLength; j += 1) {
       const [y, rest] = possibleYearSplits[j]
       if (DATE_MIN_YEAR <= y && y <= DATE_MAX_YEAR) {
-        // @ts-ignore
         const dm = this.mapIntegersToDayMonth(rest)
         if (dm != null) {
           return {
@@ -219,11 +225,9 @@ class MatchDate {
     // try to parse a day-month out of integers[0..1] or integers[1..0]
     for (let k = 0; k < possibleYearSplitsLength; k += 1) {
       const [y, rest] = possibleYearSplits[k]
-      // @ts-ignore
       const dm = this.mapIntegersToDayMonth(rest)
       if (dm != null) {
         return {
-          // @ts-ignore
           year: this.twoToFourDigitYear(y),
           month: dm.month,
           day: dm.day,

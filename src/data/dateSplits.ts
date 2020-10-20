@@ -61,4 +61,4 @@ export default {
       6,
     ],
   ],
-}
+} as const

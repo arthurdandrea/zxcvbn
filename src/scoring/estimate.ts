@@ -10,60 +10,96 @@ import repeatGuesses from './guesses/repeat'
 import sequenceGuesses from './guesses/sequence'
 import spatialGuesses from './guesses/spatial'
 import utils from './utils'
-import { ExtendedMatch, Match } from '../types'
+import { AnyDictionaryMatch, AnyMatch } from '../types'
 import { NormalizedOptions } from '~/Options'
-
-const estimationFunctions = {
-  bruteforce: bruteforceGuesses,
-  repeat: repeatGuesses,
-  sequence: sequenceGuesses,
-  regex: regexGuesses,
-  date: dateGuesses,
-}
 
 // ------------------------------------------------------------------------------
 // guess estimation -- one function per match pattern ---------------------------
 // ------------------------------------------------------------------------------
 
-export default (
-  match: ExtendedMatch | Match,
+export type AnyDictionaryEstimatedMatch = AnyDictionaryMatch & {
+  guesses: number
+  guessesLog10: number
+  baseGuesses: number
+  uppercaseVariations: number
+  l33tVariations: number
+}
+
+export type AnyEstimatedMatch =
+  | (Exclude<AnyMatch, AnyDictionaryMatch> & {
+      guesses: number
+      guessesLog10: number
+    })
+  | AnyDictionaryEstimatedMatch
+
+export default function estimateGuesses(
+  match: AnyMatch,
   password: string,
   options: NormalizedOptions,
-) => {
-  const extraData: {
-    baseGuesses?: number
-    uppercaseVariations?: number
-    l33tVariations?: number
-  } = {}
+): AnyEstimatedMatch {
   // a match's guess estimate doesn't change. cache it.
-  if ('guesses' in match && match.guesses != null) {
+  if ('guesses' in match && (match as any).guesses != null) {
     return match
   }
-  let minGuesses = 1
-  if (match.token.length < password.length) {
-    if (match.token.length === 1) {
-      minGuesses = MIN_SUBMATCH_GUESSES_SINGLE_CHAR
-    } else {
-      minGuesses = MIN_SUBMATCH_GUESSES_MULTI_CHAR
+  if (match.pattern === 'dictionary') {
+    const result = dictionaryGuesses(match)
+    return {
+      ...match,
+      baseGuesses: result.baseGuesses,
+      uppercaseVariations: result.uppercaseVariations,
+      l33tVariations: result.l33tVariations,
+      ...helper(result.calculation),
     }
   }
-  let guesses: number
-  if (match.pattern === 'dictionary') {
-    const result = dictionaryGuesses(match as any)
-    guesses = result.calculation
-    extraData.baseGuesses = result.baseGuesses
-    extraData.uppercaseVariations = result.uppercaseVariations
-    extraData.l33tVariations = result.l33tVariations
-  } else if (match.pattern === 'spatial') {
-    guesses = spatialGuesses(match as any, options)
-  } else {
-    guesses = estimationFunctions[match.pattern](match as any)
+  if (match.pattern === 'spatial') {
+    return {
+      ...match,
+      ...helper(spatialGuesses(match, options)),
+    }
   }
-  const matchGuesses = Math.max(guesses, minGuesses)
+  if (match.pattern === 'repeat') {
+    return {
+      ...match,
+      // FIXME
+      ...helper(repeatGuesses(match as any)),
+    }
+  }
+  if (match.pattern === 'bruteforce') {
+    return {
+      ...match,
+      ...helper(bruteforceGuesses(match)),
+    }
+  }
+  if (match.pattern === 'date') {
+    return {
+      ...match,
+      ...helper(dateGuesses(match)),
+    }
+  }
+  if (match.pattern === 'sequence') {
+    return {
+      ...match,
+      ...helper(sequenceGuesses(match)),
+    }
+  }
   return {
     ...match,
-    ...extraData,
-    guesses: matchGuesses,
-    guessesLog10: utils.log10(matchGuesses),
+    ...helper(regexGuesses(match)),
+  }
+
+  function helper(guesses: number) {
+    let minGuesses = 1
+    if (match.token.length < password.length) {
+      if (match.token.length === 1) {
+        minGuesses = MIN_SUBMATCH_GUESSES_SINGLE_CHAR
+      } else {
+        minGuesses = MIN_SUBMATCH_GUESSES_MULTI_CHAR
+      }
+    }
+    const matchGuesses = Math.max(guesses, minGuesses)
+    return {
+      guesses: matchGuesses,
+      guessesLog10: utils.log10(matchGuesses),
+    }
   }
 }

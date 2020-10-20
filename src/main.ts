@@ -7,11 +7,11 @@ import { OptionsType } from './types'
 
 const time = () => new Date().getTime()
 
-export default (
+export default function zxcvbn(
   password: string,
   userInputs: any[] = [],
   options: OptionsType = {},
-) => {
+) {
   const normalizedOptions = normalizeOptions({ ...options, userInputs })
   const feedback = new Feedback(normalizedOptions.translations)
   const timeEstimates = new TimeEstimates(normalizedOptions.translations)
@@ -29,7 +29,6 @@ export default (
     calcTime,
     ...matchSequence,
     ...attackTimes,
-    // @ts-ignore
     feedback: feedback.getFeedback(attackTimes.score, matchSequence.sequence),
   }
 }

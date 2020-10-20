@@ -1,4 +1,11 @@
-import { ExtendedMatch } from '../types'
+export interface RepeatMatch {
+  pattern: 'repeat'
+  i: number
+  j: number
+  token: string
+  baseToken: string
+  repeatCount: number
+}
 
 /*
  *-------------------------------------------------------------------------------
@@ -8,7 +15,7 @@ import { ExtendedMatch } from '../types'
 
 class MatchRepeat {
   match(password: string) {
-    const matches: ExtendedMatch[] = []
+    const matches: RepeatMatch[] = []
     const greedy = /(.+)\1+/g
     const lazy = /(.+?)\1+/g
     const lazyAnchored = /^(.+?)\1+$/
@@ -47,7 +54,6 @@ class MatchRepeat {
       }
       if (match) {
         const j = match.index + match[0].length - 1
-        // @ts-ignore
         matches.push({
           pattern: 'repeat',
           i: match.index,

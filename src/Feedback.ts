@@ -1,5 +1,9 @@
 import { START_UPPER, ALL_UPPER_INVERTED } from './data/const'
-import { ExtendedMatch, FeedbackType, TranslationKeys } from './types'
+import {
+  AnyDictionaryEstimatedMatch,
+  AnyEstimatedMatch,
+} from './scoring/estimate'
+import { FeedbackType, TranslationKeys } from './types'
 
 /*
  * -------------------------------------------------------------------------------
@@ -22,7 +26,7 @@ class Feedback {
     )
   }
 
-  getFeedback(score: number, sequence: ExtendedMatch[]) {
+  getFeedback(score: number, sequence: AnyEstimatedMatch[]) {
     if (sequence.length === 0) {
       return this.defaultFeedback
     }
@@ -54,7 +58,7 @@ class Feedback {
     return feedback
   }
 
-  getMatchFeedback(match: ExtendedMatch, isSoleMatch: boolean) {
+  getMatchFeedback(match: AnyEstimatedMatch, isSoleMatch: boolean) {
     let warning: string
 
     switch (match.pattern) {
@@ -112,7 +116,10 @@ class Feedback {
     }
   }
 
-  getDictionaryMatchFeedback(match: ExtendedMatch, isSoleMatch: boolean) {
+  getDictionaryMatchFeedback(
+    match: AnyDictionaryEstimatedMatch,
+    isSoleMatch: boolean,
+  ) {
     let warning = ''
     const suggestions: string[] = []
     const word = match.token

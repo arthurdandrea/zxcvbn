@@ -1,9 +1,19 @@
 import { sorted, extend } from '~/helper'
-import { DefaultAdjacencyGraphsKeys, ExtendedMatch } from '../types'
 
-type ReadonlyAdjencyGraphs = Readonly<
-  Record<string, Readonly<Record<string, ReadonlyArray<string | null>>>>
+type ReadonlyAdjencyGraph = Readonly<
+  Record<string, ReadonlyArray<string | null>>
 >
+type ReadonlyAdjencyGraphs = Readonly<Record<string, ReadonlyAdjencyGraph>>
+
+export interface SpatialMatch {
+  pattern: 'spatial'
+  i: number
+  j: number
+  token: string
+  graph: string
+  turns: number
+  shiftedCount: number
+}
 
 /*
  * ------------------------------------------------------------------------------
@@ -20,24 +30,16 @@ class MatchSpatial {
   }
 
   match(password: string) {
-    const matches: ExtendedMatch[] = []
+    const matches: SpatialMatch[] = []
     Object.keys(this.graphs).forEach((graphName) => {
-      const graph = this.graphs[graphName]
-      extend(
-        matches,
-        this.helper(password, graph, graphName as DefaultAdjacencyGraphsKeys),
-      )
+      extend(matches, this.helper(password, this.graphs[graphName], graphName))
     })
     return sorted(matches)
   }
 
-  helper(
-    password: string,
-    graph: ReadonlyAdjencyGraphs[string],
-    graphName: DefaultAdjacencyGraphsKeys,
-  ) {
+  helper(password: string, graph: ReadonlyAdjencyGraph, graphName: string) {
     let shiftedCount
-    const matches: ExtendedMatch[] = []
+    const matches: SpatialMatch[] = []
     let i = 0
     const passwordLength = password.length
     while (i < passwordLength - 1) {
@@ -98,7 +100,6 @@ class MatchSpatial {
         } else {
           // don't consider length 1 or 2 chains.
           if (j - i > 2) {
-            // @ts-ignore
             matches.push({
               pattern: 'spatial',
               i,

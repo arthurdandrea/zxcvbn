@@ -1,13 +1,17 @@
 import { sorted } from '~/helper'
-import MatchDictionary from './Dictionary'
-import { ExtendedMatch, Matcher } from '../types'
+import MatchDictionary, { DictionaryMatch } from './Dictionary'
+
+export interface ReverseDictionaryMatch
+  extends Omit<DictionaryMatch, 'reversed'> {
+  reversed: true
+}
 
 /*
  * -------------------------------------------------------------------------------
  *  Dictionary reverse ----------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-class MatchDictionaryReverse implements Matcher {
+class MatchDictionaryReverse {
   dictionary: MatchDictionary
 
   constructor(options: MatchDictionary | MatchDictionary.Options) {
@@ -17,18 +21,16 @@ class MatchDictionaryReverse implements Matcher {
         : new MatchDictionary(options)
   }
 
-  match(password: string) {
+  match(password: string): ReverseDictionaryMatch[] {
     const passwordReversed = password.split('').reverse().join('')
-    const matches = this.dictionary
-      .match(passwordReversed)
-      .map((match: ExtendedMatch) => ({
-        ...match,
-        token: match.token.split('').reverse().join(''), // reverse back
-        reversed: true,
-        // map coordinates back to original string
-        i: password.length - 1 - match.j,
-        j: password.length - 1 - match.i,
-      }))
+    const matches = this.dictionary.match(passwordReversed).map((match) => ({
+      ...match,
+      token: match.token.split('').reverse().join(''), // reverse back
+      reversed: true as const,
+      // map coordinates back to original string
+      i: password.length - 1 - match.j,
+      j: password.length - 1 - match.i,
+    }))
     return sorted(matches)
   }
 }

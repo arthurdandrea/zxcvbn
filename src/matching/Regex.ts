@@ -1,22 +1,29 @@
 import { REGEXEN } from '~/data/const'
 import { sorted } from '~/helper'
-import { ExtendedMatch } from '../types'
+
+export interface RegexMatch {
+  pattern: 'regex'
+  token: string
+  i: number
+  j: number
+  regexName: string
+  regexMatch: RegExpExecArray
+}
+
 /*
  * -------------------------------------------------------------------------------
  *  regex matching ---------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
 class MatchRegex {
-  match(password: string, regexes = REGEXEN) {
-    const matches: ExtendedMatch[] = []
-    // @ts-ignore
-    Object.keys(regexes).forEach((name: keyof typeof REGEXEN) => {
+  match(password: string, regexes: Record<string, RegExp> = REGEXEN) {
+    const matches: RegexMatch[] = []
+    Object.keys(regexes).forEach((name) => {
       const regex = regexes[name]
       regex.lastIndex = 0 // keeps regexMatch stateless
       const regexMatch = regex.exec(password)
       if (regexMatch) {
         const token = regexMatch[0]
-        // @ts-ignore
         matches.push({
           pattern: 'regex',
           token,

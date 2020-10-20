@@ -1,4 +1,4 @@
-import { ExtendedMatch, RankedDictionary } from './types'
+import { RankedDictionary } from './types'
 
 export const empty = (obj: Record<string, unknown> | unknown[]) =>
   Object.keys(obj).length === 0
@@ -15,7 +15,7 @@ export const translate = (string: string, chrMap: Record<string, string>) => {
 export const mod = (n: number, m: number) => ((n % m) + m) % m
 
 // sort on i primary, j secondary
-export const sorted = (matches: ExtendedMatch[]) =>
+export const sorted = <T extends { i: number; j: number }>(matches: T[]) =>
   matches.sort((m1, m2) => m1.i - m2.i || m1.j - m2.j)
 
 export const buildRankedDictionary = (orderedList: readonly string[]) => {

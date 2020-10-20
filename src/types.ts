@@ -1,6 +1,15 @@
 import defaultAdjacencyGraphs from '~/data/adjacency_graphs'
 import frequencyLists from '~/data/frequency_lists'
 import translationKeys from '~/data/feedback/keys'
+import { DictionaryMatch } from './matching/Dictionary'
+import { ReverseDictionaryMatch } from './matching/DictionaryReverse'
+import { L33tMatch } from './matching/L33t'
+import { SpatialMatch } from './matching/Spatial'
+import { RepeatMatch } from './matching/Repeat'
+import { RegexMatch } from './matching/Regex'
+import { DateMatch } from './matching/Date'
+import { BruteforceMatch } from './scoring'
+import { SequenceMatch } from './matching/Sequence'
 
 export type DefaultAdjacencyGraphsKeys = keyof typeof defaultAdjacencyGraphs
 export type DefaultAdjacencyGraphs = typeof defaultAdjacencyGraphs
@@ -32,45 +41,54 @@ export interface Match {
   token: string
 }
 
-export interface ExtendedMatch {
+export interface OldExtendedMatch {
   pattern: Pattern
   i: number
   j: number
   token: string
-  matchedWord: string
-  rank: number
-  dictionaryName: DictionaryNames
-  reversed: boolean
-  l33t: boolean
-  baseGuesses: number
-  uppercaseVariations: number
-  l33tVariations: number
-  guesses: number
-  guessesLog10: number
-  turns: number
-  baseToken: string[] | string
+  matchedWord?: string
+  rank?: number
+  dictionaryName?: string
+  reversed?: boolean
+  l33t?: boolean
+  baseGuesses?: number
+  uppercaseVariations?: number
+  l33tVariations?: number
+  guesses?: number
+  guessesLog10?: number
+  turns?: number
+  baseToken?: string[] | string
   sub?: Record<string, string>
   subDisplay?: string
   sequenceName?: 'lower' | 'digits'
   sequenceSpace?: number
   ascending?: boolean
-  regexName?:
-    | 'recentYear'
-    | 'alphaLower'
-    | 'alphaUpper'
-    | 'alpha'
-    | 'alphanumeric'
-    | 'digits'
-    | 'symbols'
+  regexName?: string
   shiftedCount?: number
-  graph?: DefaultAdjacencyGraphsKeys
+  graph?: string
   repeatCount?: number
   regexMatch?: string[]
-  year: number
-  month: number
-  day: number
+  year?: number
+  month?: number
+  day?: number
   separator?: string
 }
+
+export type AnyDictionaryMatch =
+  | DictionaryMatch
+  | ReverseDictionaryMatch
+  | L33tMatch
+
+export type AnyMatch =
+  | BruteforceMatch
+  | DictionaryMatch
+  | ReverseDictionaryMatch
+  | L33tMatch
+  | SpatialMatch
+  | RepeatMatch
+  | RegexMatch
+  | DateMatch
+  | SequenceMatch
 
 export interface Optimal {
   m: Match
@@ -141,5 +159,5 @@ export interface OptionsType {
 }
 
 export interface Matcher {
-  match(password: string): ExtendedMatch[]
+  match(password: string): AnyMatch[]
 }

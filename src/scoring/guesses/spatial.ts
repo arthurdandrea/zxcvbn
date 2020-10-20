@@ -1,6 +1,6 @@
+import { SpatialMatch } from '~/matching/Spatial'
 import { NormalizedOptions } from '~/Options'
 import utils from '~/scoring/utils'
-import { ExtendedMatch } from '~/types'
 
 export default (
   {
@@ -8,7 +8,7 @@ export default (
     token,
     turns,
     shiftedCount,
-  }: Pick<ExtendedMatch, 'graph' | 'token' | 'turns' | 'shiftedCount'>,
+  }: Pick<SpatialMatch, 'graph' | 'token' | 'turns' | 'shiftedCount'>,
   options: NormalizedOptions,
 ) => {
   let startingPosition = options.keypadStartingPositions ?? 1
