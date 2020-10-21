@@ -1,4 +1,5 @@
 import RepeatMatcher from '~/matching/Repeat'
+
 import checkMatches from '../helper/checkMatches'
 import genpws from '../helper/genpws'
 

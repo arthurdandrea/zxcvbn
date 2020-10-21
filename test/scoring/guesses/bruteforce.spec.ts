@@ -1,9 +1,9 @@
-import bruteforce from '~/scoring/guesses/bruteforce'
 import {
   BRUTEFORCE_CARDINALITY,
-  MIN_SUBMATCH_GUESSES_SINGLE_CHAR,
   MIN_SUBMATCH_GUESSES_MULTI_CHAR,
+  MIN_SUBMATCH_GUESSES_SINGLE_CHAR,
 } from '~/data/const'
+import bruteforce from '~/scoring/guesses/bruteforce'
 
 describe('scoring: guesses bruteforce', () => {
   it(`should be Exponentiation of ${BRUTEFORCE_CARDINALITY} and the token length`, () => {

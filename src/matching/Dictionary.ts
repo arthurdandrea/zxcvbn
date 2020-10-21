@@ -1,6 +1,7 @@
 import { sorted } from '~/helper'
-import { Matcher, RankedDictionaries } from '../types'
 import { buildRankedDictionaries } from '~/Options'
+
+import type { Matcher, RankedDictionaries } from '../types'
 
 export interface DictionaryMatch {
   pattern: 'dictionary'

@@ -1,16 +1,16 @@
-import Matching from './Matching'
-import { mostGuessableMatchSequence } from './scoring'
-import * as estimates from './TimeEstimates'
 import getFeedback from './Feedback'
+import Matching from './Matching'
 import { normalizeOptions } from './Options'
-import {
+import { mostGuessableMatchSequence } from './scoring'
+import type { AnyEstimatedMatch } from './scoring/estimate'
+import utils from './scoring/utils'
+import * as estimates from './TimeEstimates'
+import type {
   CrackTimesDisplay,
   CrackTimesSeconds,
   FeedbackType,
   OptionsType,
 } from './types'
-import { AnyEstimatedMatch } from './scoring/estimate'
-import utils from './scoring/utils'
 
 export { OptionsType as Options } from './types'
 

@@ -1,4 +1,4 @@
-import { ZxcvbnResponse } from '~/main'
+import type { ZxcvbnResponse } from '~/main'
 
 // eslint-disable-next-line jest/no-export
 export default [

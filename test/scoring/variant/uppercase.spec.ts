@@ -1,5 +1,5 @@
-import uppercase from '~/scoring/variant/uppercase'
 import utils from '~/scoring/utils'
+import uppercase from '~/scoring/variant/uppercase'
 
 const { nCk } = utils
 

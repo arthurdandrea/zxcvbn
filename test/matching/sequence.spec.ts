@@ -1,4 +1,5 @@
 import SequenceMatcher from '~/matching/Sequence'
+
 import checkMatches from '../helper/checkMatches'
 import genpws from '../helper/genpws'
 

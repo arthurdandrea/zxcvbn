@@ -1,5 +1,5 @@
-import { mostGuessableMatchSequence } from '~/scoring'
 import { normalizeOptions } from '~/Options'
+import { mostGuessableMatchSequence } from '~/scoring'
 
 const options = normalizeOptions({})
 describe('scoring search', () => {

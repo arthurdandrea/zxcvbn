@@ -1,4 +1,6 @@
-import DateMatcher, { DateMatch } from '~/matching/Date'
+import type { DateMatch } from '~/matching/Date'
+import DateMatcher from '~/matching/Date'
+
 import checkMatches from '../helper/checkMatches'
 import genpws from '../helper/genpws'
 

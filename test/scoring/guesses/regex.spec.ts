@@ -1,5 +1,5 @@
-import regexGuesses from '~/scoring/guesses/regex'
 import { MIN_YEAR_SPACE, REFERENCE_YEAR } from '~/data/const'
+import regexGuesses from '~/scoring/guesses/regex'
 
 describe('scoring: guesses regex', () => {
   it('guesses of 26^7 for 7-char lowercase regex', () => {

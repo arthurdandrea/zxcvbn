@@ -55,6 +55,10 @@ module.exports = {
         sourceType: 'module',
         ecmaVersion: 2020,
       },
+      plugins: ['simple-import-sort'],
+      rules: {
+        'simple-import-sort/sort': 'error',
+      },
     },
     {
       files: ['src/**/*.ts', 'test/**/*.ts'],
@@ -73,6 +77,7 @@ module.exports = {
         ],
         '@typescript-eslint/no-useless-constructor': 'error',
         '@typescript-eslint/no-empty-function': 'error',
+        '@typescript-eslint/consistent-type-imports': 'error',
       },
     },
     {

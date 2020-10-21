@@ -1,7 +1,8 @@
-import SpatialMatcher from '~/matching/Spatial'
-import checkMatches from '../helper/checkMatches'
 import adjacencyGraphs from '~/data/adjacency_graphs'
+import SpatialMatcher from '~/matching/Spatial'
 import { normalizeOptions } from '~/Options'
+
+import checkMatches from '../helper/checkMatches'
 
 describe('spatial matching', () => {
   it("doesn't match 1- and 2-character spatial patterns", () => {

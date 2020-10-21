@@ -1,16 +1,16 @@
+import defaultGraphs from '~/data/adjacency_graphs'
+import translationsEn from '~/data/feedback/en'
 import translationKeys from '~/data/feedback/keys'
+import frequencyLists from '~/data/frequency_lists'
+import defaultL33tTable from '~/data/l33tTable'
 import { buildRankedDictionary } from '~/helper'
-import {
-  TranslationKeys,
-  OptionsType,
+import type {
   OptionsGraph,
+  OptionsType,
   RankedDictionaries,
   RankedDictionary,
+  TranslationKeys,
 } from '~/types'
-import defaultL33tTable from '~/data/l33tTable'
-import frequencyLists from '~/data/frequency_lists'
-import translationsEn from '~/data/feedback/en'
-import defaultGraphs from '~/data/adjacency_graphs'
 
 function calcAverageDegree(graph: OptionsGraph[string]) {
   let average = 0

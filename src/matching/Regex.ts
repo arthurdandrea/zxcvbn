@@ -1,6 +1,6 @@
 import { REGEXEN } from '~/data/const'
 import { sorted } from '~/helper'
-import { Matcher } from '~/types'
+import type { Matcher } from '~/types'
 
 export interface RegexMatch {
   pattern: 'regex'

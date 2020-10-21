@@ -1,4 +1,5 @@
 import DictionaryMatcher from '~/matching/Dictionary'
+
 import checkMatches from '../helper/checkMatches'
 import genpws from '../helper/genpws'
 

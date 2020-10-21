@@ -1,14 +1,14 @@
 import { extend, sorted } from './helper'
+import DateMatcher from './matching/Date'
 import DictionaryMatcher from './matching/Dictionary'
-import L33tMatcher from './matching/L33t'
 import ReverseDictionaryMatcher from './matching/DictionaryReverse'
-import SpatialMatcher from './matching/Spatial'
+import L33tMatcher from './matching/L33t'
+import RegexMatcher from './matching/Regex'
 import RepeatMatcher from './matching/Repeat'
 import SequenceMatcher from './matching/Sequence'
-import RegexMatcher from './matching/Regex'
-import DateMatcher from './matching/Date'
-import { AnyMatch, Matcher } from './types'
-import { NormalizedOptions } from './Options'
+import SpatialMatcher from './matching/Spatial'
+import type { NormalizedOptions } from './Options'
+import type { AnyMatch, Matcher } from './types'
 
 /*
  * -------------------------------------------------------------------------------

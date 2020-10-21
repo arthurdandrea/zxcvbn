@@ -1,9 +1,9 @@
-import { START_UPPER, ALL_UPPER_INVERTED } from './data/const'
-import {
+import { ALL_UPPER_INVERTED, START_UPPER } from './data/const'
+import type {
   AnyDictionaryEstimatedMatch,
   AnyEstimatedMatch,
 } from './scoring/estimate'
-import { FeedbackType, TranslationKeys } from './types'
+import type { FeedbackType, TranslationKeys } from './types'
 
 /*
  * -------------------------------------------------------------------------------

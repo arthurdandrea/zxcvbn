@@ -1,8 +1,9 @@
-import path from 'path'
 import alias from '@rollup/plugin-alias'
 import babel from '@rollup/plugin-babel'
-import del from 'rollup-plugin-delete'
 import typescript from '@rollup/plugin-typescript'
+import path from 'path'
+import del from 'rollup-plugin-delete'
+
 import pkg from '../package.json'
 
 const generateConfig = (type) => {

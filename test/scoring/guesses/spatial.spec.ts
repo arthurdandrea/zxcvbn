@@ -1,6 +1,6 @@
+import { normalizeOptions } from '~/Options'
 import spatialGuesses from '~/scoring/guesses/spatial'
 import utils from '~/scoring/utils'
-import { normalizeOptions } from '~/Options'
 
 const options = normalizeOptions({})
 

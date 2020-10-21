@@ -1,5 +1,5 @@
-import date from '~/scoring/guesses/date'
 import { MIN_YEAR_SPACE, REFERENCE_YEAR } from '~/data/const'
+import date from '~/scoring/guesses/date'
 
 describe('scoring: guesses date', () => {
   it('guesses for 1123 is 365 * distance_from_ref_year', () => {

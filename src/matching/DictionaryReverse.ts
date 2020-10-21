@@ -1,6 +1,8 @@
 import { sorted } from '~/helper'
-import { Matcher } from '~/types'
-import DictionaryMatcher, { DictionaryMatch } from './Dictionary'
+import type { Matcher } from '~/types'
+
+import type { DictionaryMatch } from './Dictionary'
+import DictionaryMatcher from './Dictionary'
 
 export interface ReverseDictionaryMatch
   extends Omit<DictionaryMatch, 'reversed'> {

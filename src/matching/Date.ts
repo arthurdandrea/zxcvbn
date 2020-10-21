@@ -5,7 +5,7 @@ import {
   REFERENCE_YEAR,
 } from '~/data/const'
 import { sorted } from '~/helper'
-import { Matcher } from '~/types'
+import type { Matcher } from '~/types'
 
 export interface DateMatch {
   pattern: 'date'

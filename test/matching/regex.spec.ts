@@ -1,4 +1,5 @@
 import RegexMatcher from '~/matching/Regex'
+
 import checkMatches from '../helper/checkMatches'
 
 describe('regex matching', () => {

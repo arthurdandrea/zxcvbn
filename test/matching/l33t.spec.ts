@@ -1,6 +1,7 @@
-import L33tMatcher from '~/matching/L33t'
-import checkMatches from '../helper/checkMatches'
 import DictionaryMatcher from '~/matching/Dictionary'
+import L33tMatcher from '~/matching/L33t'
+
+import checkMatches from '../helper/checkMatches'
 
 describe('l33t matching', () => {
   let msg

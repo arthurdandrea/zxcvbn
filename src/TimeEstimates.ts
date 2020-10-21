@@ -1,4 +1,8 @@
-import { CrackTimesDisplay, CrackTimesSeconds, TranslationKeys } from './types'
+import type {
+  CrackTimesDisplay,
+  CrackTimesSeconds,
+  TranslationKeys,
+} from './types'
 
 function translate(
   displayStr: string,

@@ -1,8 +1,9 @@
-import uppercaseVariant from '../variant/uppercase'
+import type { DictionaryMatch } from '~/matching/Dictionary'
+import type { ReverseDictionaryMatch } from '~/matching/DictionaryReverse'
+import type { L33tMatch } from '~/matching/L33t'
+
 import l33tVariant from '../variant/l33t'
-import { DictionaryMatch } from '~/matching/Dictionary'
-import { ReverseDictionaryMatch } from '~/matching/DictionaryReverse'
-import { L33tMatch } from '~/matching/L33t'
+import uppercaseVariant from '../variant/uppercase'
 
 export default (
   match: DictionaryMatch | L33tMatch | ReverseDictionaryMatch,

@@ -1,5 +1,5 @@
-import getFeedback from '../src/Feedback'
 import translations from '../src/data/feedback/en'
+import getFeedback from '../src/Feedback'
 
 describe('feedback', () => {
   describe('with default translations', () => {

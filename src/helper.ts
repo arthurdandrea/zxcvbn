@@ -1,4 +1,4 @@
-import { RankedDictionary } from './types'
+import type { RankedDictionary } from './types'
 
 export const empty = (obj: Record<string, unknown> | unknown[]) =>
   Object.keys(obj).length === 0

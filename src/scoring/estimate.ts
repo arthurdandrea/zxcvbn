@@ -1,7 +1,10 @@
 import {
-  MIN_SUBMATCH_GUESSES_SINGLE_CHAR,
   MIN_SUBMATCH_GUESSES_MULTI_CHAR,
+  MIN_SUBMATCH_GUESSES_SINGLE_CHAR,
 } from '~/data/const'
+import type { NormalizedOptions } from '~/Options'
+
+import type { AnyDictionaryMatch, AnyMatch } from '../types'
 import bruteforceGuesses from './guesses/bruteforce'
 import dateGuesses from './guesses/date'
 import dictionaryGuesses from './guesses/dictionary'
@@ -10,8 +13,6 @@ import repeatGuesses from './guesses/repeat'
 import sequenceGuesses from './guesses/sequence'
 import spatialGuesses from './guesses/spatial'
 import utils from './utils'
-import { AnyDictionaryMatch, AnyMatch } from '../types'
-import { NormalizedOptions } from '~/Options'
 
 // ------------------------------------------------------------------------------
 // guess estimation -- one function per match pattern ---------------------------

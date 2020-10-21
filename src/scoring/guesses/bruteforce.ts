@@ -1,7 +1,7 @@
 import {
   BRUTEFORCE_CARDINALITY,
-  MIN_SUBMATCH_GUESSES_SINGLE_CHAR,
   MIN_SUBMATCH_GUESSES_MULTI_CHAR,
+  MIN_SUBMATCH_GUESSES_SINGLE_CHAR,
 } from '~/data/const'
 
 export default ({ token }: { token: string }) => {

@@ -1,4 +1,5 @@
 import ReverseDictionaryMatcher from '~/matching/DictionaryReverse'
+
 import checkMatches from '../helper/checkMatches'
 
 describe('dictionary reverse matching', () => {

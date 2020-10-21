@@ -1,13 +1,13 @@
-import utils from '~/scoring/utils'
 import {
-  START_UPPER,
-  END_UPPER,
-  ALL_UPPER_INVERTED,
   ALL_LOWER_INVERTED,
+  ALL_UPPER_INVERTED,
+  ALPHA_INVERTED,
+  END_UPPER,
   ONE_LOWER,
   ONE_UPPER,
-  ALPHA_INVERTED,
+  START_UPPER,
 } from '~/data/const'
+import utils from '~/scoring/utils'
 
 export default (word: string) => {
   // clean words of non alpha characters to remove the reward effekt to capitalize the first letter https://github.com/dropbox/zxcvbn/issues/232

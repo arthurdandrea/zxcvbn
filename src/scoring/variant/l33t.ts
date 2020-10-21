@@ -1,5 +1,5 @@
 import utils from '~/scoring/utils'
-import { AnyDictionaryMatch } from '~/types'
+import type { AnyDictionaryMatch } from '~/types'
 
 export default (match: Pick<AnyDictionaryMatch, 'l33t' | 'sub' | 'token'>) => {
   if (!match.l33t || !match.sub) {

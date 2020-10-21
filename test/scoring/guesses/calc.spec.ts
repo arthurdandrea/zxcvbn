@@ -1,6 +1,6 @@
+import { normalizeOptions } from '~/Options'
 import estimate from '~/scoring/estimate'
 import dateGuesses from '~/scoring/guesses/date'
-import { normalizeOptions } from '~/Options'
 
 const options = normalizeOptions({})
 describe('scoring', () => {

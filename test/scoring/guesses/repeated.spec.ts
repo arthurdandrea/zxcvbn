@@ -1,7 +1,7 @@
-import repeatGuesses from '~/scoring/guesses/repeat'
-import { mostGuessableMatchSequence } from '~/scoring'
 import MatchOmni from '~/Matching'
 import { normalizeOptions } from '~/Options'
+import { mostGuessableMatchSequence } from '~/scoring'
+import repeatGuesses from '~/scoring/guesses/repeat'
 
 const options = normalizeOptions({})
 const omniMatch = new MatchOmni(options)

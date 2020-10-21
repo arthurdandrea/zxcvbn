@@ -1,5 +1,5 @@
-import { normalizeOptions } from '~/Options'
 import translationsKeys from '~/data/feedback/keys'
+import { normalizeOptions } from '~/Options'
 
 describe('Options', () => {
   describe('translations', () => {

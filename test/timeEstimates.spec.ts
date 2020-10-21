@@ -1,9 +1,10 @@
+import translationsEn from '~/data/feedback/en'
+
 import {
   estimateAttackTimes,
-  translateAttackTimes,
   guessesToScore,
+  translateAttackTimes,
 } from '../src/TimeEstimates'
-import translationsEn from '~/data/feedback/en'
 
 // TODO add tests
 describe('timeEstimates', () => {

@@ -1,10 +1,10 @@
 import {
-  empty,
-  sorted,
-  extend,
-  translate,
-  mod,
   buildRankedDictionary,
+  empty,
+  extend,
+  mod,
+  sorted,
+  translate,
 } from '~/helper'
 
 describe('utils matching', () => {

@@ -1,5 +1,5 @@
-import { sorted, extend } from '~/helper'
-import { Matcher } from '~/types'
+import { extend, sorted } from '~/helper'
+import type { Matcher } from '~/types'
 
 type ReadonlyAdjencyGraph = Readonly<
   Record<string, ReadonlyArray<string | null>>

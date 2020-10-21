@@ -1,5 +1,5 @@
 import { MIN_YEAR_SPACE, REFERENCE_YEAR } from '~/data/const'
-import { RegexMatch } from '~/matching/Regex'
+import type { RegexMatch } from '~/matching/Regex'
 
 export default ({
   regexName,

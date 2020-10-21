@@ -1,5 +1,5 @@
-import zxcvbn from '../src/main'
 import translations from '../src/data/feedback/en'
+import zxcvbn from '../src/main'
 import passwordTests from './helper/passwordTests'
 
 describe('main', () => {

@@ -1,7 +1,9 @@
-import { sorted, empty, translate } from '~/helper'
-import DictionaryMatcher, { DictionaryMatch } from './Dictionary'
-import { Matcher, OptionsL33tTable } from '../types'
 import defaultL33tTable from '~/data/l33tTable'
+import { empty, sorted, translate } from '~/helper'
+
+import type { Matcher, OptionsL33tTable } from '../types'
+import type { DictionaryMatch } from './Dictionary'
+import DictionaryMatcher from './Dictionary'
 
 export interface L33tMatch extends Omit<DictionaryMatch, 'l33t' | 'sub'> {
   l33t: true

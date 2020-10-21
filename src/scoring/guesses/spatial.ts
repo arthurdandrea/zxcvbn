@@ -1,5 +1,5 @@
-import { SpatialMatch } from '~/matching/Spatial'
-import { NormalizedOptions } from '~/Options'
+import type { SpatialMatch } from '~/matching/Spatial'
+import type { NormalizedOptions } from '~/Options'
 import utils from '~/scoring/utils'
 
 export default (

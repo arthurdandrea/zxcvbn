@@ -1,5 +1,5 @@
-import { ALL_UPPER, ALL_LOWER, ALL_DIGIT } from '~/data/const'
-import { Matcher } from '~/types'
+import { ALL_DIGIT, ALL_LOWER, ALL_UPPER } from '~/data/const'
+import type { Matcher } from '~/types'
 
 export type SequenceName = 'unicode' | 'lower' | 'upper' | 'digits'
 
