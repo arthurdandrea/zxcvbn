@@ -1,5 +1,9 @@
-module.exports = (pattern, prefixes, suffixes) => {
-  const result = []
+export default function genpws(
+  pattern: string,
+  prefixes: string[],
+  suffixes: string[],
+) {
+  const result: [string, number, number][] = []
   const slicedPrefixes = prefixes.slice()
   const slicedSuffixes = suffixes.slice()
   ;[slicedPrefixes, slicedSuffixes].forEach((lst) => {

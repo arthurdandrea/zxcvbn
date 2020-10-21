@@ -82,7 +82,7 @@ describe('l33t matching', () => {
           '0': 'o',
         },
       ],
-    ]
+    ] as const
 
     data.forEach(([password, pattern, word, dictionaryName, rank, ij, sub]) => {
       msg = 'matches against common l33t substitutions'

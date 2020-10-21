@@ -8,8 +8,7 @@ describe('dictionary matching', () => {
     const matches = matchDictionary.match('wow')
     const patterns = ['wow']
     const msg = 'default dictionaries'
-    const ijs = [[0, 2]]
-    checkMatches(msg, matches, 'dictionary', patterns, ijs, {
+    checkMatches(msg, matches, 'dictionary', patterns, [[0, 2]], {
       matchedWord: patterns,
       rank: [322],
       dictionaryName: ['us_tv_and_film'],

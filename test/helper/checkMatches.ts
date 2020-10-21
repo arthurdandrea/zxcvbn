@@ -1,19 +1,25 @@
 // eslint-disable-next-line jest/no-export
-module.exports = (prefix, matches, patternNames, patterns, ijs, props) => {
-  let usedPatternNames = patternNames
-  if (typeof patternNames === 'string') {
-    usedPatternNames = patterns.map(() => patternNames)
-  }
-  let isEqualLenArgs =
-    usedPatternNames.length === patterns.length &&
-    patterns.length === ijs.length
-
-  Object.keys(props).forEach((prop) => {
-    const lst = props[prop]
-    isEqualLenArgs = isEqualLenArgs && lst.length === patterns.length
-  })
-  if (!isEqualLenArgs) {
-    throw Error('unequal argument lists to check_matches')
+export default function checkMatches(
+  prefix: string,
+  matches: any[],
+  patternNames: string | string[],
+  patterns: any[],
+  ijs: readonly (readonly [number, number])[],
+  props: Record<string, any[]>,
+) {
+  const usedPatternNames =
+    typeof patternNames === 'string'
+      ? patterns.map(() => patternNames)
+      : patternNames
+  if (
+    usedPatternNames.length !== patterns.length ||
+    patterns.length !== ijs.length ||
+    Object.keys(props).some((prop) => {
+      const lst = props[prop]
+      return lst.length !== patterns.length
+    })
+  ) {
+    throw Error('unequal argument lists to checkMatches')
   }
   it(`${prefix}: matches.length == ${patterns.length}`, () => {
     expect(matches.length).toEqual(patterns.length)

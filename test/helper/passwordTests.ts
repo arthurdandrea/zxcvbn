@@ -1,5 +1,7 @@
+import { ZxcvbnResponse } from '~/main'
+
 // eslint-disable-next-line jest/no-export
-module.exports = [
+export default [
   {
     password: '1q2w3e4r5t',
     result: {
@@ -826,4 +828,4 @@ module.exports = [
       feedback: { warning: '', suggestions: [] },
     },
   },
-]
+] as { password: string; result: ZxcvbnResponse }[]

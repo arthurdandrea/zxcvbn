@@ -2,18 +2,11 @@ const prettierConfig = require('./prettier.js')
 
 module.exports = {
   root: true,
-  parser: '@typescript-eslint/parser',
-  extends: [
-    'airbnb-base',
-    'plugin:compat/recommended',
-    'prettier',
-    'prettier/@typescript-eslint',
-    'prettier/babel',
-    'prettier/vue',
-    'plugin:jest/recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-  ],
-  plugins: ['import', 'prettier', 'jest', '@typescript-eslint'],
+  parserOptions: {
+    ecmaVersion: 2020,
+  },
+  extends: ['plugin:compat/recommended', 'prettier'],
+  plugins: ['import', 'prettier', '@typescript-eslint'],
   settings: {
     'import/resolver': {
       webpack: {
@@ -22,23 +15,11 @@ module.exports = {
     },
   },
   env: {
-    browser: true,
+    node: true,
   },
   rules: {
     'prettier/prettier': ['warn', prettierConfig],
     'import/no-extraneous-dependencies': 'off',
-    'no-restricted-imports': [
-      'error',
-      {
-        paths: [
-          {
-            name: 'date-fns',
-            message:
-              'Please import functions from files for smaller bundle size.',
-          },
-        ],
-      },
-    ],
     'semi': ['error', 'never'],
     'no-console': ['error', { allow: ['info', 'warn', 'error'] }],
     'complexity': ['error', 20],
@@ -58,21 +39,6 @@ module.exports = {
         ts: 'never',
       },
     ],
-
-    // Disabling eslint rule and enabling typescript specific to support TS features
-    'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': [
-      'error',
-      {
-        argsIgnorePattern: '^_',
-      },
-    ],
-    'no-useless-constructor': 'off',
-    '@typescript-eslint/no-useless-constructor': 'error',
-    'no-empty-function': 'off',
-    '@typescript-eslint/no-empty-function': 'error',
-    'class-methods-use-this': 0,
-
     'prefer-destructuring': [
       'error',
       {
@@ -84,7 +50,42 @@ module.exports = {
   },
   overrides: [
     {
+      files: ['src/**/*.ts', 'test/**/*.ts', 'scripts/rollup.config.js'],
+      parserOptions: {
+        sourceType: 'module',
+        ecmaVersion: 2020,
+      },
+    },
+    {
+      files: ['src/**/*.ts', 'test/**/*.ts'],
+      parser: '@typescript-eslint/parser',
+      extends: [
+        'prettier/@typescript-eslint',
+        'plugin:@typescript-eslint/eslint-recommended',
+      ],
+      rules: {
+        'import/no-commonjs': 'error',
+        '@typescript-eslint/no-unused-vars': [
+          'error',
+          {
+            argsIgnorePattern: '^_',
+          },
+        ],
+        '@typescript-eslint/no-useless-constructor': 'error',
+        '@typescript-eslint/no-empty-function': 'error',
+      },
+    },
+    {
+      files: ['src/**/*.ts'],
+      env: {
+        'shared-node-browser': true,
+        'node': false,
+        'browser': false,
+      },
+    },
+    {
       files: ['test/**/*.js', '**/*.spec.js', 'test/**/*.ts', '**/*.spec.ts'],
+      extends: ['plugin:jest/recommended'],
       rules: {
         'max-lines-per-function': 'off',
       },

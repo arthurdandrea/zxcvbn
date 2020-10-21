@@ -1,12 +1,12 @@
-import MatchDate from '~/matching/Date'
+import MatchDate, { DateMatch } from '~/matching/Date'
 import checkMatches from '../helper/checkMatches'
 import genpws from '../helper/genpws'
 
 describe('date matching', () => {
   const matchDate = new MatchDate()
-  let password
-  let matches
-  let msg
+  let password: string
+  let matches: DateMatch[]
+  let msg: string
   let data = ['', ' ', '-', '/', '\\', '_', '.']
   data.forEach((sep) => {
     password = `13${sep}2${sep}1921`
@@ -83,9 +83,8 @@ describe('date matching', () => {
   const prefixes = ['a', 'ab']
   const suffixes = ['!']
   const pattern = '1/1/91'
-  data = genpws(pattern, prefixes, suffixes)
 
-  data.forEach(([dataPassword, i, j]) => {
+  genpws(pattern, prefixes, suffixes).forEach(([dataPassword, i, j]) => {
     matches = matchDate.match(dataPassword)
     msg = 'matches embedded dates'
     checkMatches(msg, matches, 'date', [pattern], [[i, j]], {
