@@ -1,0 +1,966 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`main password tests should resolve 1Q2w3e4r5t 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "less than a second",
+    "onlineThrottling100PerHour": "6 hours",
+    "onlineThrottling10PerSecond": "58 seconds",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 5.81e-8,
+    "offlineSlowHashing1e4PerSecond": 0.0581,
+    "onlineThrottling100PerHour": 20916,
+    "onlineThrottling10PerSecond": 58.1,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+    ],
+    "warning": "This is a commonly used password.",
+  },
+  "guesses": 581,
+  "guessesLog10": 2.76417613239033,
+  "password": "1Q2w3e4r5t",
+  "score": 0,
+  "sequence": Array [
+    Object {
+      "baseGuesses": 290,
+      "dictionaryName": "passwords",
+      "guesses": 580,
+      "guessesLog10": 2.763427993562937,
+      "i": 0,
+      "j": 9,
+      "l33t": false,
+      "l33tVariations": 1,
+      "matchedWord": "1q2w3e4r5t",
+      "pattern": "dictionary",
+      "rank": 290,
+      "reversed": false,
+      "token": "1Q2w3e4r5t",
+      "uppercaseVariations": 2,
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve 1q2w3e4r5T 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "less than a second",
+    "onlineThrottling100PerHour": "6 hours",
+    "onlineThrottling10PerSecond": "58 seconds",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 5.81e-8,
+    "offlineSlowHashing1e4PerSecond": 0.0581,
+    "onlineThrottling100PerHour": 20916,
+    "onlineThrottling10PerSecond": 58.1,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+    ],
+    "warning": "This is a commonly used password.",
+  },
+  "guesses": 581,
+  "guessesLog10": 2.76417613239033,
+  "password": "1q2w3e4r5T",
+  "score": 0,
+  "sequence": Array [
+    Object {
+      "baseGuesses": 290,
+      "dictionaryName": "passwords",
+      "guesses": 580,
+      "guessesLog10": 2.763427993562937,
+      "i": 0,
+      "j": 9,
+      "l33t": false,
+      "l33tVariations": 1,
+      "matchedWord": "1q2w3e4r5t",
+      "pattern": "dictionary",
+      "rank": 290,
+      "reversed": false,
+      "token": "1q2w3e4r5T",
+      "uppercaseVariations": 2,
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve 1q2w3e4r5t 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "less than a second",
+    "onlineThrottling100PerHour": "3 hours",
+    "onlineThrottling10PerSecond": "29 seconds",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 2.91e-8,
+    "offlineSlowHashing1e4PerSecond": 0.0291,
+    "onlineThrottling100PerHour": 10476,
+    "onlineThrottling10PerSecond": 29.1,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+    ],
+    "warning": "This is a commonly used password.",
+  },
+  "guesses": 291,
+  "guessesLog10": 2.4638929889859074,
+  "password": "1q2w3e4r5t",
+  "score": 0,
+  "sequence": Array [
+    Object {
+      "baseGuesses": 290,
+      "dictionaryName": "passwords",
+      "guesses": 290,
+      "guessesLog10": 2.4623979978989556,
+      "i": 0,
+      "j": 9,
+      "l33t": false,
+      "l33tVariations": 1,
+      "matchedWord": "1q2w3e4r5t",
+      "pattern": "dictionary",
+      "rank": 290,
+      "reversed": false,
+      "token": "1q2w3e4r5t",
+      "uppercaseVariations": 1,
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve 1234qwe 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "less than a second",
+    "onlineThrottling100PerHour": "20 hours",
+    "onlineThrottling10PerSecond": "3 minutes",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 2.017e-7,
+    "offlineSlowHashing1e4PerSecond": 0.2017,
+    "onlineThrottling100PerHour": 72612,
+    "onlineThrottling10PerSecond": 201.7,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+    ],
+    "warning": "This is a commonly used password.",
+  },
+  "guesses": 2017,
+  "guessesLog10": 3.304705898212765,
+  "password": "1234qwe",
+  "score": 1,
+  "sequence": Array [
+    Object {
+      "baseGuesses": 2016,
+      "dictionaryName": "passwords",
+      "guesses": 2016,
+      "guessesLog10": 3.3044905277734875,
+      "i": 0,
+      "j": 6,
+      "l33t": false,
+      "l33tVariations": 1,
+      "matchedWord": "1234qwe",
+      "pattern": "dictionary",
+      "rank": 2016,
+      "reversed": false,
+      "token": "1234qwe",
+      "uppercaseVariations": 1,
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve 1234qwer 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "less than a second",
+    "onlineThrottling100PerHour": "52 minutes",
+    "onlineThrottling10PerSecond": "9 seconds",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 8.7e-9,
+    "offlineSlowHashing1e4PerSecond": 0.0087,
+    "onlineThrottling100PerHour": 3132,
+    "onlineThrottling10PerSecond": 8.7,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+    ],
+    "warning": "This is a frequently used password.",
+  },
+  "guesses": 87,
+  "guessesLog10": 1.9395192526186182,
+  "password": "1234qwer",
+  "score": 0,
+  "sequence": Array [
+    Object {
+      "baseGuesses": 86,
+      "dictionaryName": "passwords",
+      "guesses": 86,
+      "guessesLog10": 1.9344984512435675,
+      "i": 0,
+      "j": 7,
+      "l33t": false,
+      "l33tVariations": 1,
+      "matchedWord": "1234qwer",
+      "pattern": "dictionary",
+      "rank": 86,
+      "reversed": false,
+      "token": "1234qwer",
+      "uppercaseVariations": 1,
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve 1234qwert 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "1 second",
+    "onlineThrottling100PerHour": "5 days",
+    "onlineThrottling10PerSecond": "20 minutes",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 0.0000011892,
+    "offlineSlowHashing1e4PerSecond": 1.1892,
+    "onlineThrottling100PerHour": 428112,
+    "onlineThrottling10PerSecond": 1189.2,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+    ],
+    "warning": "This is similar to a commonly used password.",
+  },
+  "guesses": 11892,
+  "guessesLog10": 4.0752549005329,
+  "password": "1234qwert",
+  "score": 1,
+  "sequence": Array [
+    Object {
+      "baseGuesses": 86,
+      "dictionaryName": "passwords",
+      "guesses": 86,
+      "guessesLog10": 1.9344984512435675,
+      "i": 0,
+      "j": 7,
+      "l33t": false,
+      "l33tVariations": 1,
+      "matchedWord": "1234qwer",
+      "pattern": "dictionary",
+      "rank": 86,
+      "reversed": false,
+      "token": "1234qwer",
+      "uppercaseVariations": 1,
+    },
+    Object {
+      "guesses": 11,
+      "guessesLog10": 1.041392685158225,
+      "i": 8,
+      "j": 8,
+      "pattern": "bruteforce",
+      "token": "t",
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve 2010abc 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "2 seconds",
+    "onlineThrottling100PerHour": "6 days",
+    "onlineThrottling10PerSecond": "25 minutes",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 0.0000015,
+    "offlineSlowHashing1e4PerSecond": 1.5,
+    "onlineThrottling100PerHour": 540000,
+    "onlineThrottling10PerSecond": 1500,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+      "Avoid recent years.",
+      "Avoid years that are associated with you.",
+    ],
+    "warning": "Recent years are easy to guess.",
+  },
+  "guesses": 15000,
+  "guessesLog10": 4.176091259055681,
+  "password": "2010abc",
+  "score": 1,
+  "sequence": Array [
+    Object {
+      "guesses": 50,
+      "guessesLog10": 1.6989700043360185,
+      "i": 0,
+      "j": 3,
+      "pattern": "regex",
+      "regexMatch": Array [
+        "2010",
+      ],
+      "regexName": "recentYear",
+      "token": "2010",
+    },
+    Object {
+      "ascending": true,
+      "guesses": 50,
+      "guessesLog10": 1.6989700043360185,
+      "i": 4,
+      "j": 6,
+      "pattern": "sequence",
+      "sequenceName": "lower",
+      "sequenceSpace": 26,
+      "token": "abc",
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve Daniel 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "less than a second",
+    "onlineThrottling100PerHour": "15 minutes",
+    "onlineThrottling10PerSecond": "3 seconds",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 2.5e-9,
+    "offlineSlowHashing1e4PerSecond": 0.0025,
+    "onlineThrottling100PerHour": 900,
+    "onlineThrottling10PerSecond": 2.5,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+      "Capitalize more than the first letter.",
+    ],
+    "warning": "Single names or surnames are easy to guess.",
+  },
+  "guesses": 25,
+  "guessesLog10": 1.3979400086720375,
+  "password": "Daniel",
+  "score": 0,
+  "sequence": Array [
+    Object {
+      "baseGuesses": 12,
+      "dictionaryName": "maleNames",
+      "guesses": 24,
+      "guessesLog10": 1.380211241711606,
+      "i": 0,
+      "j": 5,
+      "l33t": false,
+      "l33tVariations": 1,
+      "matchedWord": "daniel",
+      "pattern": "dictionary",
+      "rank": 12,
+      "reversed": false,
+      "token": "Daniel",
+      "uppercaseVariations": 2,
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve P4$$w0rd 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "less than a second",
+    "onlineThrottling100PerHour": "20 minutes",
+    "onlineThrottling10PerSecond": "3 seconds",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 3.3e-9,
+    "offlineSlowHashing1e4PerSecond": 0.0033,
+    "onlineThrottling100PerHour": 1188,
+    "onlineThrottling10PerSecond": 3.3,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+      "Capitalize more than the first letter.",
+      "Avoid predictable letter substitutions like '@' for 'a'.",
+    ],
+    "warning": "This is similar to a commonly used password.",
+  },
+  "guesses": 33,
+  "guessesLog10": 1.5185139398778873,
+  "password": "P4$$w0rd",
+  "score": 0,
+  "sequence": Array [
+    Object {
+      "baseGuesses": 2,
+      "dictionaryName": "passwords",
+      "guesses": 32,
+      "guessesLog10": 1.5051499783199058,
+      "i": 0,
+      "j": 7,
+      "l33t": true,
+      "l33tVariations": 8,
+      "matchedWord": "password",
+      "pattern": "dictionary",
+      "rank": 2,
+      "reversed": false,
+      "sub": Object {
+        "$": "s",
+        "0": "o",
+        "4": "a",
+      },
+      "subDisplay": "0 -> o, 4 -> a, $ -> s",
+      "token": "P4$$w0rd",
+      "uppercaseVariations": 2,
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve TESTERINO 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "3 minutes",
+    "onlineThrottling100PerHour": "2 years",
+    "onlineThrottling10PerSecond": "2 days",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 0.000191,
+    "offlineSlowHashing1e4PerSecond": 191,
+    "onlineThrottling100PerHour": 68760000,
+    "onlineThrottling10PerSecond": 191000,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+      "Capitalize some, but not all letters.",
+    ],
+    "warning": "This is similar to a commonly used password.",
+  },
+  "guesses": 1910000,
+  "guessesLog10": 6.281033367247726,
+  "password": "TESTERINO",
+  "score": 2,
+  "sequence": Array [
+    Object {
+      "baseGuesses": 475,
+      "dictionaryName": "passwords",
+      "guesses": 950,
+      "guessesLog10": 2.9777236052888476,
+      "i": 0,
+      "j": 5,
+      "l33t": false,
+      "l33tVariations": 1,
+      "matchedWord": "tester",
+      "pattern": "dictionary",
+      "rank": 475,
+      "reversed": false,
+      "token": "TESTER",
+      "uppercaseVariations": 2,
+    },
+    Object {
+      "guesses": 1000,
+      "guessesLog10": 2.9999999999999996,
+      "i": 6,
+      "j": 8,
+      "pattern": "bruteforce",
+      "token": "INO",
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve aA!1 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "1 second",
+    "onlineThrottling100PerHour": "4 days",
+    "onlineThrottling10PerSecond": "17 minutes",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 0.0000010001,
+    "offlineSlowHashing1e4PerSecond": 1.0001,
+    "onlineThrottling100PerHour": 360036,
+    "onlineThrottling10PerSecond": 1000.1,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+    ],
+    "warning": "",
+  },
+  "guesses": 10001,
+  "guessesLog10": 4.000043427276863,
+  "password": "aA!1",
+  "score": 1,
+  "sequence": Array [
+    Object {
+      "guesses": 10000,
+      "guessesLog10": 4,
+      "i": 0,
+      "j": 3,
+      "pattern": "bruteforce",
+      "token": "aA!1",
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve aaaaaaa 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "29 seconds",
+    "onlineThrottling100PerHour": "4 months",
+    "onlineThrottling10PerSecond": "8 hours",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 0.0000290874,
+    "offlineSlowHashing1e4PerSecond": 29.0874,
+    "onlineThrottling100PerHour": 10471464,
+    "onlineThrottling10PerSecond": 29087.4,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+    ],
+    "warning": "",
+  },
+  "guesses": 290874,
+  "guessesLog10": 5.46370490322997,
+  "password": "aaaaaaa",
+  "score": 1,
+  "sequence": Array [
+    Object {
+      "guesses": 11,
+      "guessesLog10": 1.041392685158225,
+      "i": 0,
+      "j": 0,
+      "pattern": "bruteforce",
+      "token": "a",
+    },
+    Object {
+      "baseGuesses": 12767,
+      "dictionaryName": "us_tv_and_film",
+      "guesses": 12767,
+      "guessesLog10": 4.106088858382442,
+      "i": 1,
+      "j": 6,
+      "l33t": false,
+      "l33tVariations": 1,
+      "matchedWord": "aaaaaa",
+      "pattern": "dictionary",
+      "rank": 12767,
+      "reversed": false,
+      "token": "aaaaaa",
+      "uppercaseVariations": 1,
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve abcabcabcabc 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "2 seconds",
+    "offlineSlowHashing1e4PerSecond": "17 days",
+    "onlineThrottling100PerHour": "centuries",
+    "onlineThrottling10PerSecond": "47 years",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 1.51,
+    "offlineSlowHashing1e4PerSecond": 1510000,
+    "onlineThrottling100PerHour": 543600000000,
+    "onlineThrottling10PerSecond": 1510000000,
+  },
+  "feedback": Object {
+    "suggestions": Array [],
+    "warning": "",
+  },
+  "guesses": 15100000000,
+  "guessesLog10": 10.178976947293169,
+  "password": "abcabcabcabc",
+  "score": 4,
+  "sequence": Array [
+    Object {
+      "guesses": 1000000,
+      "guessesLog10": 5.999999999999999,
+      "i": 0,
+      "j": 5,
+      "pattern": "bruteforce",
+      "token": "abcabc",
+    },
+    Object {
+      "ascending": true,
+      "guesses": 50,
+      "guessesLog10": 1.6989700043360185,
+      "i": 6,
+      "j": 8,
+      "pattern": "sequence",
+      "sequenceName": "lower",
+      "sequenceSpace": 26,
+      "token": "abc",
+    },
+    Object {
+      "ascending": true,
+      "guesses": 50,
+      "guessesLog10": 1.6989700043360185,
+      "i": 9,
+      "j": 11,
+      "pattern": "sequence",
+      "sequenceName": "lower",
+      "sequenceSpace": 26,
+      "token": "abc",
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve abcdefg123 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "2 seconds",
+    "onlineThrottling100PerHour": "6 days",
+    "onlineThrottling10PerSecond": "25 minutes",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 0.0000015,
+    "offlineSlowHashing1e4PerSecond": 1.5,
+    "onlineThrottling100PerHour": 540000,
+    "onlineThrottling10PerSecond": 1500,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+      "Avoid common character sequences.",
+    ],
+    "warning": "Common character sequences like \\"abc\\" are easy to guess.",
+  },
+  "guesses": 15000,
+  "guessesLog10": 4.176091259055681,
+  "password": "abcdefg123",
+  "score": 1,
+  "sequence": Array [
+    Object {
+      "ascending": true,
+      "guesses": 50,
+      "guessesLog10": 1.6989700043360185,
+      "i": 0,
+      "j": 6,
+      "pattern": "sequence",
+      "sequenceName": "lower",
+      "sequenceSpace": 26,
+      "token": "abcdefg",
+    },
+    Object {
+      "ascending": true,
+      "guesses": 50,
+      "guessesLog10": 1.6989700043360185,
+      "i": 7,
+      "j": 9,
+      "pattern": "sequence",
+      "sequenceName": "digits",
+      "sequenceSpace": 10,
+      "token": "123",
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve dgo9dsghasdoghi8/!&IT/§(ihsdhf8o7o 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "centuries",
+    "offlineSlowHashing1e4PerSecond": "centuries",
+    "onlineThrottling100PerHour": "centuries",
+    "onlineThrottling10PerSecond": "centuries",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 2.34e+23,
+    "offlineSlowHashing1e4PerSecond": 2.34e+29,
+    "onlineThrottling100PerHour": 8.424e+34,
+    "onlineThrottling10PerSecond": 2.34e+32,
+  },
+  "feedback": Object {
+    "suggestions": Array [],
+    "warning": "",
+  },
+  "guesses": 2.34e+33,
+  "guessesLog10": 33.36921585741014,
+  "password": "dgo9dsghasdoghi8/!&IT/§(ihsdhf8o7o",
+  "score": 4,
+  "sequence": Array [
+    Object {
+      "guesses": 10000000,
+      "guessesLog10": 7,
+      "i": 0,
+      "j": 6,
+      "pattern": "bruteforce",
+      "token": "dgo9dsg",
+    },
+    Object {
+      "baseGuesses": 24,
+      "dictionaryName": "english_wikipedia",
+      "guesses": 50,
+      "guessesLog10": 1.6989700043360185,
+      "i": 7,
+      "j": 9,
+      "l33t": false,
+      "l33tVariations": 1,
+      "matchedWord": "has",
+      "pattern": "dictionary",
+      "rank": 24,
+      "reversed": false,
+      "token": "has",
+      "uppercaseVariations": 1,
+    },
+    Object {
+      "baseGuesses": 17,
+      "dictionaryName": "us_tv_and_film",
+      "guesses": 50,
+      "guessesLog10": 1.6989700043360185,
+      "i": 10,
+      "j": 11,
+      "l33t": false,
+      "l33tVariations": 1,
+      "matchedWord": "do",
+      "pattern": "dictionary",
+      "rank": 17,
+      "reversed": false,
+      "token": "do",
+      "uppercaseVariations": 1,
+    },
+    Object {
+      "ascending": true,
+      "guesses": 78,
+      "guessesLog10": 1.8920946026904801,
+      "i": 12,
+      "j": 14,
+      "pattern": "sequence",
+      "sequenceName": "lower",
+      "sequenceSpace": 26,
+      "token": "ghi",
+    },
+    Object {
+      "guesses": 10000000000000000000,
+      "guessesLog10": 19,
+      "i": 15,
+      "j": 33,
+      "pattern": "bruteforce",
+      "token": "8/!&IT/§(ihsdhf8o7o",
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve password 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "less than a second",
+    "onlineThrottling100PerHour": "2 minutes",
+    "onlineThrottling10PerSecond": "less than a second",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 3e-10,
+    "offlineSlowHashing1e4PerSecond": 0.0003,
+    "onlineThrottling100PerHour": 108,
+    "onlineThrottling10PerSecond": 0.3,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+    ],
+    "warning": "This is a heavily used password.",
+  },
+  "guesses": 3,
+  "guessesLog10": 0.4771212547196623,
+  "password": "password",
+  "score": 0,
+  "sequence": Array [
+    Object {
+      "baseGuesses": 2,
+      "dictionaryName": "passwords",
+      "guesses": 2,
+      "guessesLog10": 0.30102999566398114,
+      "i": 0,
+      "j": 7,
+      "l33t": false,
+      "l33tVariations": 1,
+      "matchedWord": "password",
+      "pattern": "dictionary",
+      "rank": 2,
+      "reversed": false,
+      "token": "password",
+      "uppercaseVariations": 1,
+    },
+  ],
+}
+`;
+
+exports[`main password tests should resolve qwer 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "less than a second",
+    "onlineThrottling100PerHour": "17 hours",
+    "onlineThrottling10PerSecond": "3 minutes",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 1.693e-7,
+    "offlineSlowHashing1e4PerSecond": 0.1693,
+    "onlineThrottling100PerHour": 60948,
+    "onlineThrottling10PerSecond": 169.3,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+      "Use longer keyboard patterns and change typing direction multiple times.",
+    ],
+    "warning": "Straight rows of keys are easy to guess.",
+  },
+  "guesses": 1693,
+  "guessesLog10": 3.228656958108935,
+  "password": "qwer",
+  "score": 1,
+  "sequence": Array [
+    Object {
+      "graph": "qwerty",
+      "guesses": 1692,
+      "guessesLog10": 3.2284003587030043,
+      "i": 0,
+      "j": 3,
+      "pattern": "spatial",
+      "shiftedCount": 0,
+      "token": "qwer",
+      "turns": 1,
+    },
+  ],
+}
+`;
+
+exports[`main should check with userInputs 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "less than a second",
+    "onlineThrottling100PerHour": "1 minute",
+    "onlineThrottling10PerSecond": "less than a second",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 2e-10,
+    "offlineSlowHashing1e4PerSecond": 0.0002,
+    "onlineThrottling100PerHour": 72,
+    "onlineThrottling10PerSecond": 0.2,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+    ],
+    "warning": "",
+  },
+  "guesses": 2,
+  "guessesLog10": 0.30102999566398114,
+  "password": "test",
+  "score": 0,
+  "sequence": Array [
+    Object {
+      "baseGuesses": 1,
+      "dictionaryName": "userInputs",
+      "guesses": 1,
+      "guessesLog10": 0,
+      "i": 0,
+      "j": 3,
+      "l33t": false,
+      "l33tVariations": 1,
+      "matchedWord": "test",
+      "pattern": "dictionary",
+      "rank": 1,
+      "reversed": false,
+      "token": "test",
+      "uppercaseVariations": 1,
+    },
+  ],
+}
+`;
+
+exports[`main should check without userInputs 1`] = `
+Object {
+  "calcTime": Any<Number>,
+  "crackTimesDisplay": Object {
+    "offlineFastHashing1e10PerSecond": "less than a second",
+    "offlineSlowHashing1e4PerSecond": "less than a second",
+    "onlineThrottling100PerHour": "56 minutes",
+    "onlineThrottling10PerSecond": "9 seconds",
+  },
+  "crackTimesSeconds": Object {
+    "offlineFastHashing1e10PerSecond": 9.4e-9,
+    "offlineSlowHashing1e4PerSecond": 0.0094,
+    "onlineThrottling100PerHour": 3384,
+    "onlineThrottling10PerSecond": 9.4,
+  },
+  "feedback": Object {
+    "suggestions": Array [
+      "Add more words that are less common.",
+    ],
+    "warning": "This is a frequently used password.",
+  },
+  "guesses": 94,
+  "guessesLog10": 1.9731278535996983,
+  "password": "test",
+  "score": 0,
+  "sequence": Array [
+    Object {
+      "baseGuesses": 93,
+      "dictionaryName": "passwords",
+      "guesses": 93,
+      "guessesLog10": 1.968482948553935,
+      "i": 0,
+      "j": 3,
+      "l33t": false,
+      "l33tVariations": 1,
+      "matchedWord": "test",
+      "pattern": "dictionary",
+      "rank": 93,
+      "reversed": false,
+      "token": "test",
+      "uppercaseVariations": 1,
+    },
+  ],
+}
+`;
