@@ -1,12 +1,10 @@
-import TimeEstimates from '../src/TimeEstimates'
+import estimateAttackTimes from '../src/TimeEstimates'
 import translationsEn from '~/data/feedback/en'
 
 // TODO add tests
 describe('timeEstimates', () => {
-  const timeEstimates = new TimeEstimates(translationsEn)
-
   it('should be very weak', () => {
-    const attackTimes = timeEstimates.estimateAttackTimes(10)
+    const attackTimes = estimateAttackTimes(10, translationsEn)
     expect(attackTimes).toEqual({
       crackTimesDisplay: {
         offlineFastHashing1e10PerSecond: 'less than a second',
@@ -25,7 +23,7 @@ describe('timeEstimates', () => {
   })
 
   it('should be weak', () => {
-    const attackTimes = timeEstimates.estimateAttackTimes(100000)
+    const attackTimes = estimateAttackTimes(100000, translationsEn)
     expect(attackTimes).toEqual({
       crackTimesDisplay: {
         offlineFastHashing1e10PerSecond: 'less than a second',
@@ -44,7 +42,7 @@ describe('timeEstimates', () => {
   })
 
   it('should be good', () => {
-    const attackTimes = timeEstimates.estimateAttackTimes(10000000)
+    const attackTimes = estimateAttackTimes(10000000, translationsEn)
     expect(attackTimes).toEqual({
       crackTimesDisplay: {
         offlineFastHashing1e10PerSecond: 'less than a second',
@@ -62,7 +60,7 @@ describe('timeEstimates', () => {
     })
   })
   it('should be very good', () => {
-    const attackTimes = timeEstimates.estimateAttackTimes(1000000000)
+    const attackTimes = estimateAttackTimes(1000000000, translationsEn)
     expect(attackTimes).toEqual({
       crackTimesDisplay: {
         offlineFastHashing1e10PerSecond: 'less than a second',
@@ -81,7 +79,7 @@ describe('timeEstimates', () => {
   })
 
   it('should be excellent', () => {
-    const attackTimes = timeEstimates.estimateAttackTimes(100000000000)
+    const attackTimes = estimateAttackTimes(100000000000, translationsEn)
     expect(attackTimes).toEqual({
       crackTimesDisplay: {
         offlineFastHashing1e10PerSecond: '10 seconds',

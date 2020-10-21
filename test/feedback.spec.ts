@@ -1,12 +1,10 @@
-import Feedback from '../src/Feedback'
+import getFeedback from '../src/Feedback'
 import translations from '../src/data/feedback/en'
 
 describe('feedback', () => {
   describe('with default translations', () => {
-    const feedbackClass = new Feedback(translations)
-
     it('should return no feedback for a good password', () => {
-      const data = feedbackClass.getFeedback(3, [{} as any])
+      const data = getFeedback(3, [{} as any], translations)
       expect(data).toEqual({
         warning: '',
         suggestions: [],
@@ -14,7 +12,7 @@ describe('feedback', () => {
     })
 
     it('should return default feedback for no sequence', () => {
-      const data = feedbackClass.getFeedback(3, [])
+      const data = getFeedback(3, [], translations)
       expect(data).toEqual({
         warning: '',
         suggestions: [
@@ -25,7 +23,7 @@ describe('feedback', () => {
     })
 
     it('should return some basic feedback if no feedback could be generated', () => {
-      const data = feedbackClass.getFeedback(1, [{} as any])
+      const data = getFeedback(1, [{} as any], translations)
       expect(data).toEqual({
         warning: '',
         suggestions: [translations.suggestions.anotherWord],
@@ -42,44 +40,60 @@ describe('feedback', () => {
         rank: 10,
         guessesLog10: 4,
       }
-      let data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-        } as any,
-      ])
+      let data = getFeedback(
+        1,
+        [
+          {
+            ...options,
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.topTen,
         suggestions: [translations.suggestions.anotherWord],
       })
 
-      data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-          rank: 100,
-        } as any,
-      ])
+      data = getFeedback(
+        1,
+        [
+          {
+            ...options,
+            rank: 100,
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.topHundred,
         suggestions: [translations.suggestions.anotherWord],
       })
 
-      data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-          rank: 1000,
-        } as any,
-      ])
+      data = getFeedback(
+        1,
+        [
+          {
+            ...options,
+            rank: 1000,
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.common,
         suggestions: [translations.suggestions.anotherWord],
       })
 
-      data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-          l33t: true,
-        } as any,
-      ])
+      data = getFeedback(
+        1,
+        [
+          {
+            ...options,
+            l33t: true,
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.similarToCommon,
         suggestions: [
@@ -88,12 +102,16 @@ describe('feedback', () => {
         ],
       })
 
-      data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-          reversed: true,
-        } as any,
-      ])
+      data = getFeedback(
+        1,
+        [
+          {
+            ...options,
+            reversed: true,
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.similarToCommon,
         suggestions: [
@@ -102,14 +120,18 @@ describe('feedback', () => {
         ],
       })
 
-      data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-          reversed: true,
-          guessesLog10: 5,
-          token: 'Tests',
-        } as any,
-      ])
+      data = getFeedback(
+        1,
+        [
+          {
+            ...options,
+            reversed: true,
+            guessesLog10: 5,
+            token: 'Tests',
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: '',
         suggestions: [
@@ -119,14 +141,18 @@ describe('feedback', () => {
         ],
       })
 
-      data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-          reversed: true,
-          guessesLog10: 5,
-          token: 'TESTS',
-        } as any,
-      ])
+      data = getFeedback(
+        1,
+        [
+          {
+            ...options,
+            reversed: true,
+            guessesLog10: 5,
+            token: 'TESTS',
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: '',
         suggestions: [
@@ -136,85 +162,113 @@ describe('feedback', () => {
         ],
       })
 
-      data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-          dictionaryName: 'english_wikipedia',
-        } as any,
-      ])
+      data = getFeedback(
+        1,
+        [
+          {
+            ...options,
+            dictionaryName: 'english_wikipedia',
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.wordByItself,
         suggestions: [translations.suggestions.anotherWord],
       })
 
-      data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-          dictionaryName: 'english_wikipedia',
-        } as any,
-        {
-          ...options,
-          dictionaryName: 'english_wikipedia',
-        } as any,
-      ])
+      data = getFeedback(
+        1,
+        [
+          {
+            ...options,
+            dictionaryName: 'english_wikipedia',
+          } as any,
+          {
+            ...options,
+            dictionaryName: 'english_wikipedia',
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: '',
         suggestions: [translations.suggestions.anotherWord],
       })
 
-      data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-          dictionaryName: 'test_name',
-        } as any,
-      ])
+      data = getFeedback(
+        1,
+        [
+          {
+            ...options,
+            dictionaryName: 'test_name',
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: '',
         suggestions: [translations.suggestions.anotherWord],
       })
 
-      data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-          dictionaryName: 'surnames',
-        } as any,
-      ])
+      data = getFeedback(
+        1,
+        [
+          {
+            ...options,
+            dictionaryName: 'surnames',
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.namesByThemselves,
         suggestions: [translations.suggestions.anotherWord],
       })
-      data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-          dictionaryName: 'maleNames',
-        } as any,
-      ])
+      data = getFeedback(
+        1,
+        [
+          {
+            ...options,
+            dictionaryName: 'maleNames',
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.namesByThemselves,
         suggestions: [translations.suggestions.anotherWord],
       })
 
-      data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-          dictionaryName: 'femaleNames',
-        } as any,
-      ])
+      data = getFeedback(
+        1,
+        [
+          {
+            ...options,
+            dictionaryName: 'femaleNames',
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.namesByThemselves,
         suggestions: [translations.suggestions.anotherWord],
       })
 
-      data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-          dictionaryName: 'femaleNames',
-        } as any,
-        {
-          ...options,
-          dictionaryName: 'femaleNames',
-        } as any,
-      ])
+      data = getFeedback(
+        1,
+        [
+          {
+            ...options,
+            dictionaryName: 'femaleNames',
+          } as any,
+          {
+            ...options,
+            dictionaryName: 'femaleNames',
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.commonNames,
         suggestions: [translations.suggestions.anotherWord],
@@ -228,11 +282,15 @@ describe('feedback', () => {
         graph: 'qwerty',
         turns: 1,
       }
-      let data = feedbackClass.getFeedback(2, [
-        {
-          ...options,
-        } as any,
-      ])
+      let data = getFeedback(
+        2,
+        [
+          {
+            ...options,
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.straightRow,
         suggestions: [
@@ -240,12 +298,16 @@ describe('feedback', () => {
           translations.suggestions.longerKeyboardPattern,
         ],
       })
-      data = feedbackClass.getFeedback(2, [
-        {
-          ...options,
-          turns: 2,
-        } as any,
-      ])
+      data = getFeedback(
+        2,
+        [
+          {
+            ...options,
+            turns: 2,
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.keyPattern,
         suggestions: [
@@ -261,11 +323,15 @@ describe('feedback', () => {
         token: 'tests',
         baseToken: 'a',
       }
-      let data = feedbackClass.getFeedback(2, [
-        {
-          ...options,
-        } as any,
-      ])
+      let data = getFeedback(
+        2,
+        [
+          {
+            ...options,
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.simpleRepeat,
         suggestions: [
@@ -273,12 +339,16 @@ describe('feedback', () => {
           translations.suggestions.repeated,
         ],
       })
-      data = feedbackClass.getFeedback(2, [
-        {
-          ...options,
-          baseToken: 'aa',
-        } as any,
-      ])
+      data = getFeedback(
+        2,
+        [
+          {
+            ...options,
+            baseToken: 'aa',
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.extendedRepeat,
         suggestions: [
@@ -293,11 +363,15 @@ describe('feedback', () => {
         pattern: 'sequence',
         token: 'tests',
       }
-      const data = feedbackClass.getFeedback(2, [
-        {
-          ...options,
-        } as any,
-      ])
+      const data = getFeedback(
+        2,
+        [
+          {
+            ...options,
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.sequences,
         suggestions: [
@@ -313,11 +387,15 @@ describe('feedback', () => {
         token: 'tests',
         regexName: 'recentYear',
       }
-      const data = feedbackClass.getFeedback(2, [
-        {
-          ...options,
-        } as any,
-      ])
+      const data = getFeedback(
+        2,
+        [
+          {
+            ...options,
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.recentYears,
         suggestions: [
@@ -333,11 +411,15 @@ describe('feedback', () => {
         pattern: 'date',
         token: 'tests',
       }
-      const data = feedbackClass.getFeedback(2, [
-        {
-          ...options,
-        } as any,
-      ])
+      const data = getFeedback(
+        2,
+        [
+          {
+            ...options,
+          } as any,
+        ],
+        translations,
+      )
       expect(data).toEqual({
         warning: translations.warnings.dates,
         suggestions: [

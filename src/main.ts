@@ -1,7 +1,7 @@
 import Matching from './Matching'
-import scoring from './scoring'
-import TimeEstimates from './TimeEstimates'
-import Feedback from './Feedback'
+import { mostGuessableMatchSequence } from './scoring'
+import estimateAttackTimes from './TimeEstimates'
+import getFeedback from './Feedback'
 import { normalizeOptions } from './Options'
 import {
   CrackTimesDisplay,
@@ -31,22 +31,27 @@ export default function zxcvbn(
   options: OptionsType = {},
 ): ZxcvbnResponse {
   const normalizedOptions = normalizeOptions({ ...options, userInputs })
-  const feedback = new Feedback(normalizedOptions.translations)
-  const timeEstimates = new TimeEstimates(normalizedOptions.translations)
   const start = time()
   const matching = new Matching(normalizedOptions)
   const matches = matching.match(password)
-  const matchSequence = scoring.mostGuessableMatchSequence(
+  const matchSequence = mostGuessableMatchSequence(
     password,
     matches,
     normalizedOptions,
   )
   const calcTime = time() - start
-  const attackTimes = timeEstimates.estimateAttackTimes(matchSequence.guesses)
+  const attackTimes = estimateAttackTimes(
+    matchSequence.guesses,
+    normalizedOptions.translations,
+  )
   return {
     calcTime,
     ...matchSequence,
     ...attackTimes,
-    feedback: feedback.getFeedback(attackTimes.score, matchSequence.sequence),
+    feedback: getFeedback(
+      attackTimes.score,
+      matchSequence.sequence,
+      normalizedOptions.translations,
+    ),
   }
 }
