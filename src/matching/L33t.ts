@@ -1,7 +1,7 @@
 import defaultL33tTable from '~/data/l33tTable'
 import { empty, sorted, translate } from '~/helper'
 
-import type { Matcher, OptionsL33tTable } from '../types'
+import type { L33tTable, Matcher } from '../types'
 import type { DictionaryMatch } from './Dictionary'
 import DictionaryMatcher from './Dictionary'
 
@@ -165,7 +165,7 @@ class L33tMatcher implements Matcher {
 namespace L33tMatcher {
   export interface Options {
     dictionary?: DictionaryMatcher
-    l33tTable?: OptionsL33tTable
+    l33tTable?: L33tTable
   }
 }
 

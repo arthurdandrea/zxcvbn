@@ -3,7 +3,12 @@ import type {
   AnyDictionaryEstimatedMatch,
   AnyEstimatedMatch,
 } from './scoring/estimate'
-import type { FeedbackType, TranslationKeys } from './types'
+import type { Translations } from './types'
+
+export interface FeedbackType {
+  warning: string
+  suggestions: string[]
+}
 
 /*
  * -------------------------------------------------------------------------------
@@ -13,7 +18,7 @@ import type { FeedbackType, TranslationKeys } from './types'
 export default function getFeedback(
   score: number,
   sequence: AnyEstimatedMatch[],
-  translations: TranslationKeys,
+  translations: Translations,
 ): FeedbackType {
   if (sequence.length === 0) {
     return {
@@ -59,7 +64,7 @@ export default function getFeedback(
 function getMatchFeedback(
   match: AnyEstimatedMatch,
   isSoleMatch: boolean,
-  translations: TranslationKeys,
+  translations: Translations,
 ) {
   let warning: string
 
@@ -121,7 +126,7 @@ function getMatchFeedback(
 function getDictionaryMatchFeedback(
   match: AnyDictionaryEstimatedMatch,
   isSoleMatch: boolean,
-  translations: TranslationKeys,
+  translations: Translations,
 ) {
   let warning = ''
   const suggestions: string[] = []

@@ -5,14 +5,14 @@ import frequencyLists from '~/data/frequency_lists'
 import defaultL33tTable from '~/data/l33tTable'
 import { buildRankedDictionary } from '~/helper'
 import type {
-  OptionsGraph,
-  OptionsType,
+  Graphs,
+  Options,
   RankedDictionaries,
   RankedDictionary,
-  TranslationKeys,
+  Translations,
 } from '~/types'
 
-function calcAverageDegree(graph: OptionsGraph[string]) {
+function calcAverageDegree(graph: Graphs[string]) {
   let average = 0
   if (graph) {
     Object.keys(graph).forEach((key) => {
@@ -24,7 +24,7 @@ function calcAverageDegree(graph: OptionsGraph[string]) {
   return average
 }
 
-function checkCustomTranslations(translations: TranslationKeys) {
+function checkCustomTranslations(translations: Translations) {
   let valid = true
   Object.keys(translationKeys).forEach((type) => {
     if (type in translations) {
@@ -52,10 +52,10 @@ export interface NormalizedOptions {
   readonly keypadAverageDegree: number
   readonly keypadStartingPositions: number
   readonly rankedDictionaries: RankedDictionaries
-  readonly translations: TranslationKeys
+  readonly translations: Translations
 }
 
-export function normalizeOptions(options: OptionsType): NormalizedOptions {
+export function normalizeOptions(options: Options): NormalizedOptions {
   const adjacencyGraphs = options.graphs ?? defaultGraphs
   const usedKeyboard = options?.usedKeyboard ?? 'qwerty'
   const usedKeypad = options?.usedKeypad ?? 'keypad'
@@ -71,7 +71,7 @@ export function normalizeOptions(options: OptionsType): NormalizedOptions {
     options.dictionary,
     options.userInputs,
   )
-  let translations: TranslationKeys
+  let translations: Translations
   if (options.translations) {
     if (!checkCustomTranslations(options.translations)) {
       throw new Error('Invalid translations object fallback to keys')

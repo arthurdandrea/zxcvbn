@@ -1,14 +1,24 @@
-import type {
-  CrackTimesDisplay,
-  CrackTimesSeconds,
-  TranslationKeys,
-} from './types'
+import type { Translations } from './types'
+
+export interface CrackTimesSeconds {
+  onlineThrottling100PerHour: number
+  onlineThrottling10PerSecond: number
+  offlineSlowHashing1e4PerSecond: number
+  offlineFastHashing1e10PerSecond: number
+}
+
+export interface CrackTimesDisplay {
+  onlineThrottling100PerHour: string
+  onlineThrottling10PerSecond: string
+  offlineSlowHashing1e4PerSecond: string
+  offlineFastHashing1e10PerSecond: string
+}
 
 function translate(
   displayStr: string,
   value: number | undefined,
   displayNum: number | null,
-  translations: TranslationKeys,
+  translations: Translations,
 ) {
   let key = displayStr
   if (displayNum != null && displayNum !== 1) {
@@ -33,7 +43,7 @@ export function estimateAttackTimes(guesses: number): CrackTimesSeconds {
 
 export function translateAttackTimes(
   crackTimesSeconds: CrackTimesSeconds,
-  translations: TranslationKeys,
+  translations: Translations,
 ): CrackTimesDisplay {
   const crackTimesDisplay: Partial<CrackTimesDisplay> = {}
   Object.keys(crackTimesSeconds).forEach((scenario: string) => {
@@ -66,7 +76,7 @@ export function guessesToScore(guesses: number): 0 | 1 | 2 | 3 | 4 {
   return 4
 }
 
-function displayTime(seconds: number, translations: TranslationKeys) {
+function displayTime(seconds: number, translations: Translations) {
   const minute = 60
   const hour = minute * 60
   const day = hour * 24
