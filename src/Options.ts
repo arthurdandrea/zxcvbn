@@ -3,9 +3,9 @@ import { buildRankedDictionary } from '~/helper'
 import {
   TranslationKeys,
   OptionsType,
-  OptionsDictionary,
   OptionsGraph,
   RankedDictionaries,
+  RankedDictionary,
 } from '~/types'
 import defaultL33tTable from '~/data/l33tTable'
 import frequencyLists from '~/data/frequency_lists'
@@ -51,8 +51,7 @@ export interface NormalizedOptions {
   readonly keyboardStartingPositions: number
   readonly keypadAverageDegree: number
   readonly keypadStartingPositions: number
-  readonly dictionary: Readonly<OptionsDictionary>
-  readonly rankedDictionaries: Readonly<Record<string, Record<string, number>>>
+  readonly rankedDictionaries: RankedDictionaries
   readonly translations: TranslationKeys
 }
 
@@ -68,23 +67,10 @@ export function normalizeOptions(options: OptionsType): NormalizedOptions {
   const keypadStartingPositions = adjacencyGraphs[usedKeypad]
     ? Object.keys(adjacencyGraphs[usedKeypad]).length
     : 0
-  const rankedDictionaries: RankedDictionaries = {}
-  const dictionary = options.dictionary ?? frequencyLists
-  Object.keys(dictionary).forEach((name) => {
-    rankedDictionaries[name] = buildRankedDictionary(dictionary[name])
-  })
-  const sanitizedInputs: string[] = []
-  ;(options.userInputs ?? []).forEach((input: string | number | boolean) => {
-    const inputType = typeof input
-    if (
-      inputType === 'string' ||
-      inputType === 'number' ||
-      inputType === 'boolean'
-    ) {
-      sanitizedInputs.push(input.toString().toLowerCase())
-    }
-  })
-  rankedDictionaries.userInputs = buildRankedDictionary(sanitizedInputs)
+  const rankedDictionaries = buildRankedDictionaries(
+    options.dictionary,
+    options.userInputs,
+  )
   let translations: TranslationKeys
   if (options.translations) {
     if (!checkCustomTranslations(options.translations)) {
@@ -99,7 +85,6 @@ export function normalizeOptions(options: OptionsType): NormalizedOptions {
     usedKeypad: options.usedKeypad ?? 'keypad',
     l33tTable: options.l33tTable ?? defaultL33tTable,
     adjacencyGraphs,
-    dictionary,
     keyboardAverageDegree: keyboardAverageDegree ?? 0,
     keyboardStartingPositions: keyboardStartingPositions ?? 0,
     keypadAverageDegree: keypadAverageDegree ?? 0,
@@ -107,4 +92,60 @@ export function normalizeOptions(options: OptionsType): NormalizedOptions {
     rankedDictionaries,
     translations,
   }
+}
+
+let defaultRankedDictionaries: RankedDictionaries | undefined
+export function buildRankedDictionaries(
+  dictionary: Record<string, string[]> = frequencyLists,
+  userInputs?: string[],
+): RankedDictionaries {
+  if (
+    dictionary === frequencyLists &&
+    defaultRankedDictionaries &&
+    (!userInputs || userInputs.length === 0)
+  ) {
+    return defaultRankedDictionaries
+  }
+
+  let ranked =
+    (dictionary === frequencyLists && defaultRankedDictionaries) ||
+    (() => {
+      const map = new Map<string, RankedDictionary>()
+      Object.keys(dictionary).forEach((name) => {
+        map.set(name, buildRankedDictionary(dictionary![name]))
+      })
+      return map
+    })()
+  if (dictionary === frequencyLists) {
+    defaultRankedDictionaries = ranked
+  }
+  if (userInputs && userInputs.length > 0) {
+    // don't modify cached
+    if (ranked === defaultRankedDictionaries) {
+      ranked = new Map(ranked)
+    }
+    ;(ranked as Map<string, RankedDictionary>).set(
+      'userInputs',
+      buildRankedDictionary(sanitizeUserInputs(userInputs)),
+    )
+  }
+  return ranked
+}
+
+function sanitizeUserInputs(userInputs: string[]) {
+  if (!userInputs || userInputs.length === 0) {
+    return []
+  }
+  const sanitizedInputs: string[] = []
+  userInputs.forEach((input: string | number | boolean) => {
+    const inputType = typeof input
+    if (
+      inputType === 'string' ||
+      inputType === 'number' ||
+      inputType === 'boolean'
+    ) {
+      sanitizedInputs.push(input.toString().toLowerCase())
+    }
+  })
+  return sanitizedInputs
 }

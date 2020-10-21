@@ -92,10 +92,8 @@ describe('dictionary matching', () => {
       })
     })
 
-    Object.keys(matchDictionary.rankedDictionaries).forEach((name) => {
-      const dict = matchDictionary.rankedDictionaries[name]
-      Object.keys(dict).forEach((word) => {
-        const rank = dict[word]
+    for (const [name, dict] of matchDictionary.rankedDictionaries) {
+      for (const [word, rank] of dict) {
         if (word !== 'motherboard') {
           matches = dm(word)
           msg = 'matches against all words in provided dictionaries'
@@ -112,8 +110,8 @@ describe('dictionary matching', () => {
             },
           )
         }
-      })
-    })
+      }
+    }
   })
 
   describe('with user input', () => {

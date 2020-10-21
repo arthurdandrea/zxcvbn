@@ -135,11 +135,13 @@ describe('utils matching', () => {
   })
   describe('buildRankedDictionary', () => {
     it('should build correctly', () => {
-      expect(buildRankedDictionary(['foo', 'bar', 'rofl'])).toEqual({
-        foo: 1,
-        bar: 2,
-        rofl: 3,
-      })
+      expect(buildRankedDictionary(['foo', 'bar', 'rofl'])).toEqual(
+        new Map([
+          ['foo', 1],
+          ['bar', 2],
+          ['rofl', 3],
+        ]),
+      )
     })
   })
 })

@@ -144,8 +144,8 @@ export type Keypads = DefaultKeypads | string
 
 export type OptionsL33tTable = Record<string, string[]>
 export type OptionsDictionary = Record<string, string[]>
-export type RankedDictionary = Record<string, number>
-export type RankedDictionaries = Record<string, RankedDictionary>
+export type RankedDictionary = ReadonlyMap<string, number>
+export type RankedDictionaries = ReadonlyMap<string, RankedDictionary>
 export type OptionsGraph = Record<string, Record<string, (string | null)[]>>
 
 export interface OptionsType {

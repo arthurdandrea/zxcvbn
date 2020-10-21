@@ -18,12 +18,13 @@ export const mod = (n: number, m: number) => ((n % m) + m) % m
 export const sorted = <T extends { i: number; j: number }>(matches: T[]) =>
   matches.sort((m1, m2) => m1.i - m2.i || m1.j - m2.j)
 
-export const buildRankedDictionary = (orderedList: readonly string[]) => {
-  const result: RankedDictionary = {}
-  let counter = 1 // rank starts at 1, not 0
-  orderedList.forEach((word) => {
-    result[word] = counter
-    counter += 1
-  })
+export const buildRankedDictionary = (
+  orderedList: readonly string[],
+): RankedDictionary => {
+  const result = new Map<string, number>(
+    orderedList.map(
+      (word, index) => [word, index + 1] /* rank starts at 1, not 0 */,
+    ),
+  )
   return result
 }
