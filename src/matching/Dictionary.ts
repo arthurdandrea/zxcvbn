@@ -1,5 +1,5 @@
 import { sorted } from '~/helper'
-import { RankedDictionaries } from '../types'
+import { Matcher, RankedDictionaries } from '../types'
 import { buildRankedDictionaries } from '~/Options'
 
 export interface DictionaryMatch {
@@ -15,7 +15,7 @@ export interface DictionaryMatch {
   sub?: never
 }
 
-class DictionaryMatcher {
+class DictionaryMatcher implements Matcher {
   readonly rankedDictionaries: RankedDictionaries
 
   constructor(options?: DictionaryMatcher.Options) {

@@ -5,6 +5,7 @@ import {
   REFERENCE_YEAR,
 } from '~/data/const'
 import { sorted } from '~/helper'
+import { Matcher } from '~/types'
 
 export interface DateMatch {
   pattern: 'date'
@@ -22,7 +23,7 @@ export interface DateMatch {
  *  date matching ----------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-class DateMatcher {
+class DateMatcher implements Matcher {
   match(password: string) {
     /*
      * a "date" is recognized as:

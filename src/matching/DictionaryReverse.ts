@@ -1,4 +1,5 @@
 import { sorted } from '~/helper'
+import { Matcher } from '~/types'
 import DictionaryMatcher, { DictionaryMatch } from './Dictionary'
 
 export interface ReverseDictionaryMatch
@@ -11,7 +12,7 @@ export interface ReverseDictionaryMatch
  * Dictionary reverse ------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-class ReverseDictionaryMatcher {
+class ReverseDictionaryMatcher implements Matcher {
   dictionary: DictionaryMatcher
 
   constructor(options: DictionaryMatcher | DictionaryMatcher.Options) {

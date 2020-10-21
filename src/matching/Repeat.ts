@@ -1,3 +1,5 @@
+import { Matcher } from '~/types'
+
 export interface RepeatMatch {
   pattern: 'repeat'
   i: number
@@ -13,7 +15,7 @@ export interface RepeatMatch {
  *-------------------------------------------------------------------------------
  */
 
-class RepeatMatcher {
+class RepeatMatcher implements Matcher {
   match(password: string) {
     const matches: RepeatMatch[] = []
     const greedy = /(.+)\1+/g

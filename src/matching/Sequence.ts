@@ -1,4 +1,5 @@
 import { ALL_UPPER, ALL_LOWER, ALL_DIGIT } from '~/data/const'
+import { Matcher } from '~/types'
 
 type UpdateParams = {
   i: number
@@ -25,7 +26,7 @@ export interface SequenceMatch {
  * sequences (abcdef) ------------------------------
  *-------------------------------------------------------------------------------
  */
-class SequenceMatcher {
+class SequenceMatcher implements Matcher {
   MAX_DELTA = 5
 
   match(password: string) {

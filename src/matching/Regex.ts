@@ -1,5 +1,6 @@
 import { REGEXEN } from '~/data/const'
 import { sorted } from '~/helper'
+import { Matcher } from '~/types'
 
 export interface RegexMatch {
   pattern: 'regex'
@@ -15,7 +16,7 @@ export interface RegexMatch {
  *  regex matching ---------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-class RegexMatcher {
+class RegexMatcher implements Matcher {
   match(password: string, regexes: Record<string, RegExp> = REGEXEN) {
     const matches: RegexMatch[] = []
     Object.keys(regexes).forEach((name) => {

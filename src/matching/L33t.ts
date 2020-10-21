@@ -1,6 +1,6 @@
 import { sorted, empty, translate } from '~/helper'
 import DictionaryMatcher, { DictionaryMatch } from './Dictionary'
-import { OptionsL33tTable } from '../types'
+import { Matcher, OptionsL33tTable } from '../types'
 import defaultL33tTable from '~/data/l33tTable'
 
 export interface L33tMatch extends Omit<DictionaryMatch, 'l33t' | 'sub'> {
@@ -14,7 +14,7 @@ export interface L33tMatch extends Omit<DictionaryMatch, 'l33t' | 'sub'> {
  *  date matching ----------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-class L33tMatcher {
+class L33tMatcher implements Matcher {
   readonly dictionary: DictionaryMatcher
 
   readonly l33tTable: Readonly<Record<string, readonly string[]>>
