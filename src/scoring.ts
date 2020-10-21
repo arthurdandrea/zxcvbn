@@ -12,15 +12,14 @@ export interface BruteforceMatch {
   j: number
 }
 
+function fillArray<K, V>(size: number, valueType: 'map'): Map<K, V>[]
 function fillArray<T = {}>(size: number, valueType: 'object'): T[]
 function fillArray<T = any>(size: number, valueType: 'array'): T[][]
-function fillArray(size: number, valueType: 'object' | 'array') {
+function fillArray(size: number, valueType: 'map' | 'object' | 'array') {
   const result: typeof valueType extends 'array' ? string[] : {}[] = []
   for (let i = 0; i < size; i += 1) {
-    let value: [] | {} = []
-    if (valueType === 'object') {
-      value = {}
-    }
+    const value =
+      valueType === 'map' ? new Map() : valueType === 'object' ? {} : []
     result.push(value)
   }
   return result
@@ -38,12 +37,12 @@ class ScoringHelper {
     // if there is no length-sequenceLength sequence that scores better (fewer guesses) than
     // a shorter match sequence spanning the same prefix,
     // optimal.m[k][sequenceLength] is undefined.
-    readonly m: Record<number, AnyEstimatedMatch>[]
+    readonly m: Map<number, AnyEstimatedMatch>[]
     // same structure as optimal.m -- holds the product term Prod(m.guesses for m in sequence).
     // optimal.pi allows for fast (non-looping) updates to the minimization function.
-    readonly pi: Record<number, number>[]
+    readonly pi: Map<number, number>[]
     // same structure as optimal.m -- holds the overall metric.
-    readonly g: Record<number, number>[]
+    readonly g: Map<number, number>[]
   }
 
   readonly options: NormalizedOptions
@@ -57,9 +56,9 @@ class ScoringHelper {
     this.excludeAdditive = excludeAdditive
     const passwordLength = password.length
     this.optimal = {
-      m: fillArray(passwordLength, 'object'),
-      pi: fillArray(passwordLength, 'object'),
-      g: fillArray(passwordLength, 'object'),
+      m: fillArray<number, AnyEstimatedMatch>(passwordLength, 'map'),
+      pi: fillArray<number, number>(passwordLength, 'map'),
+      g: fillArray<number, number>(passwordLength, 'map'),
     }
     this.options = options
   }
@@ -86,7 +85,7 @@ class ScoringHelper {
       // obtain the product term in the minimization function by multiplying m's guesses
       // by the product of the length-(sequenceLength-1)
       // sequence ending just before m, at m.i - 1.
-      pi *= this.optimal.pi[estimatedMatch.i - 1][sequenceLength - 1]
+      pi *= this.optimal.pi[estimatedMatch.i - 1].get(sequenceLength - 1)!
     }
     // calculate the minimization func
     let g = factorial(sequenceLength) * pi
@@ -98,19 +97,21 @@ class ScoringHelper {
     // with sequenceLength or fewer matches,
     // fare better than this sequence. if so, skip it and return.
     let shouldSkip = false
-    Object.keys(this.optimal.g[k]).forEach((competingPatternLength) => {
-      const competingMetricMatch = this.optimal.g[k][competingPatternLength]
-      if (parseInt(competingPatternLength, 10) <= sequenceLength) {
+    for (const [competingPatternLength, competingMetricMatch] of this.optimal.g[
+      k
+    ]) {
+      if (competingPatternLength <= sequenceLength) {
         if (competingMetricMatch <= g) {
           shouldSkip = true
+          break
         }
       }
-    })
+    }
     if (!shouldSkip) {
       // this sequence might be part of the final optimal sequence.
-      this.optimal.g[k][sequenceLength] = g
-      this.optimal.m[k][sequenceLength] = estimatedMatch
-      this.optimal.pi[k][sequenceLength] = pi
+      this.optimal.g[k].set(sequenceLength, g)
+      this.optimal.m[k].set(sequenceLength, estimatedMatch)
+      this.optimal.pi[k].set(sequenceLength, pi)
     }
   }
 
@@ -124,19 +125,16 @@ class ScoringHelper {
       // see if adding these new matches to any of the sequences in optimal[i-1]
       // leads to new bests.
       match = this.makeBruteforceMatch(i, passwordCharIndex)
-      const tmp = this.optimal.m[i - 1]
-      // eslint-disable-next-line no-loop-func
-      Object.keys(tmp).forEach((sequenceLength) => {
-        const lastMatch = tmp[sequenceLength]
+      for (const [sequenceLength, lastMatch] of this.optimal.m[i - 1]) {
         // corner: an optimal sequence will never have two adjacent bruteforce matches.
         // it is strictly better to have a single bruteforce match spanning the same region:
         // same contribution to the guess product with a lower length.
         // --> safe to skip those cases.
         if (lastMatch.pattern !== 'bruteforce') {
           // try adding m to this length-sequenceLength sequence.
-          this.update(match, parseInt(sequenceLength, 10) + 1)
+          this.update(match, sequenceLength + 1)
         }
-      })
+      }
     }
   }
 
@@ -148,16 +146,16 @@ class ScoringHelper {
     // find the final best sequence length and score
     let sequenceLength = 0
     let g = 2e308
-    const temp = this.optimal.g[k]
-    Object.keys(this.optimal.g[k]).forEach((candidateSequenceLength) => {
-      const candidateMetricMatch = temp[candidateSequenceLength]
+
+    for (const [candidateSequenceLength, candidateMetricMatch] of this.optimal
+      .g[k]) {
       if (candidateMetricMatch < g) {
-        sequenceLength = parseInt(candidateSequenceLength, 10)
+        sequenceLength = candidateSequenceLength
         g = candidateMetricMatch
       }
-    })
+    }
     while (k >= 0) {
-      const match = this.optimal.m[k][sequenceLength]
+      const match = this.optimal.m[k].get(sequenceLength)!
       optimalMatchSequence.unshift(match)
       k = match.i - 1
       sequenceLength -= 1
@@ -223,11 +221,11 @@ export function mostGuessableMatchSequence(
   for (let k = 0; k < passwordLength; k += 1) {
     matchesByCoordinateJ[k].forEach((match: AnyMatch) => {
       if (match.i > 0) {
-        Object.keys(scoringHelper.optimal.m[match.i - 1]).forEach(
-          (sequenceLength) => {
-            scoringHelper.update(match, parseInt(sequenceLength, 10) + 1)
-          },
-        )
+        for (const sequenceLength of scoringHelper.optimal.m[
+          match.i - 1
+        ].keys()) {
+          scoringHelper.update(match, sequenceLength + 1)
+        }
       } else {
         scoringHelper.update(match, 1)
       }
@@ -238,7 +236,9 @@ export function mostGuessableMatchSequence(
   const guesses =
     password.length === 0
       ? 1
-      : scoringHelper.optimal.g[passwordLength - 1][optimalMatchSequence.length]
+      : scoringHelper.optimal.g[passwordLength - 1].get(
+          optimalMatchSequence.length,
+        )!
   return {
     guesses,
     sequence: optimalMatchSequence,
