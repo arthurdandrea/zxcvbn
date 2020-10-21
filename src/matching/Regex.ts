@@ -15,7 +15,7 @@ export interface RegexMatch {
  *  regex matching ---------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-class MatchRegex {
+class RegexMatcher {
   match(password: string, regexes: Record<string, RegExp> = REGEXEN) {
     const matches: RegexMatch[] = []
     Object.keys(regexes).forEach((name) => {
@@ -38,4 +38,4 @@ class MatchRegex {
   }
 }
 
-export default MatchRegex
+export default RegexMatcher

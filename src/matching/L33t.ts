@@ -1,5 +1,5 @@
 import { sorted, empty, translate } from '~/helper'
-import MatchDictionary, { DictionaryMatch } from './Dictionary'
+import DictionaryMatcher, { DictionaryMatch } from './Dictionary'
 import { OptionsL33tTable } from '../types'
 import defaultL33tTable from '~/data/l33tTable'
 
@@ -14,20 +14,20 @@ export interface L33tMatch extends Omit<DictionaryMatch, 'l33t' | 'sub'> {
  *  date matching ----------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-class MatchL33t {
-  readonly dictionary: MatchDictionary
+class L33tMatcher {
+  readonly dictionary: DictionaryMatcher
 
   readonly l33tTable: Readonly<Record<string, readonly string[]>>
 
   constructor(options?: MatchL33t.Options) {
-    this.dictionary = options?.dictionary ?? new MatchDictionary()
+    this.dictionary = options?.dictionary ?? new DictionaryMatcher()
     this.l33tTable = options?.l33tTable ?? defaultL33tTable
   }
 
   match(password: string) {
     const matches: L33tMatch[] = []
-    const enumeratedSubs = MatchL33t.enumerateL33tSubs(
-      MatchL33t.relevantL33tSubtable(password, this.l33tTable),
+    const enumeratedSubs = L33tMatcher.enumerateL33tSubs(
+      L33tMatcher.relevantL33tSubtable(password, this.l33tTable),
     )
     for (let i = 0; i < enumeratedSubs.length; i += 1) {
       const sub = enumeratedSubs[i]
@@ -92,7 +92,7 @@ class MatchL33t {
   // returns the list of possible 1337 replacement dictionaries for a given password
   static enumerateL33tSubs(table: Readonly<Record<string, readonly string[]>>) {
     const tableKeys = Object.keys(table)
-    const subs = MatchL33t.getSubs(tableKeys, [[]], table)
+    const subs = L33tMatcher.getSubs(tableKeys, [[]], table)
     // convert from assoc lists to dicts
     return subs.map((sub) => {
       const subDict: Record<string, string> = {}
@@ -137,9 +137,9 @@ class MatchL33t {
         }
       })
     })
-    const newSubs = MatchL33t.dedup(nextSubs)
+    const newSubs = L33tMatcher.dedup(nextSubs)
     if (restKeys.length) {
-      return MatchL33t.getSubs(restKeys, newSubs, table)
+      return L33tMatcher.getSubs(restKeys, newSubs, table)
     }
     return newSubs
   }
@@ -162,9 +162,9 @@ class MatchL33t {
 
 namespace MatchL33t {
   export interface Options {
-    dictionary?: MatchDictionary
+    dictionary?: DictionaryMatcher
     l33tTable?: OptionsL33tTable
   }
 }
 
-export default MatchL33t
+export default L33tMatcher

@@ -1,5 +1,5 @@
 import { sorted } from '~/helper'
-import MatchDictionary, { DictionaryMatch } from './Dictionary'
+import DictionaryMatcher, { DictionaryMatch } from './Dictionary'
 
 export interface ReverseDictionaryMatch
   extends Omit<DictionaryMatch, 'reversed'> {
@@ -8,17 +8,17 @@ export interface ReverseDictionaryMatch
 
 /*
  * -------------------------------------------------------------------------------
- *  Dictionary reverse ----------------------------------------------------------------
+ * Dictionary reverse ------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-class MatchDictionaryReverse {
-  dictionary: MatchDictionary
+class ReverseDictionaryMatcher {
+  dictionary: DictionaryMatcher
 
-  constructor(options: MatchDictionary | MatchDictionary.Options) {
+  constructor(options: DictionaryMatcher | DictionaryMatcher.Options) {
     this.dictionary =
-      options instanceof MatchDictionary
+      options instanceof DictionaryMatcher
         ? options
-        : new MatchDictionary(options)
+        : new DictionaryMatcher(options)
   }
 
   match(password: string): ReverseDictionaryMatch[] {
@@ -35,4 +35,4 @@ class MatchDictionaryReverse {
   }
 }
 
-export default MatchDictionaryReverse
+export default ReverseDictionaryMatcher

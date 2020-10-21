@@ -15,10 +15,10 @@ export interface DictionaryMatch {
   sub?: never
 }
 
-class MatchDictionary {
+class DictionaryMatcher {
   readonly rankedDictionaries: RankedDictionaries
 
-  constructor(options?: MatchDictionary.Options) {
+  constructor(options?: DictionaryMatcher.Options) {
     if (options && 'rankedDictionaries' in options) {
       this.rankedDictionaries = options.rankedDictionaries
     } else {
@@ -61,7 +61,7 @@ class MatchDictionary {
   }
 }
 
-namespace MatchDictionary {
+namespace DictionaryMatcher {
   export interface RankedDictionariesOptions {
     rankedDictionaries: RankedDictionaries
   }
@@ -72,4 +72,4 @@ namespace MatchDictionary {
   export type Options = DictionariesOptions | RankedDictionariesOptions
 }
 
-export default MatchDictionary
+export default DictionaryMatcher

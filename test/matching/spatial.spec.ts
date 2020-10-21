@@ -1,4 +1,4 @@
-import MatchSpatial from '~/matching/Spatial'
+import SpatialMatcher from '~/matching/Spatial'
 import checkMatches from '../helper/checkMatches'
 import adjacencyGraphs from '~/data/adjacency_graphs'
 import { normalizeOptions } from '~/Options'
@@ -6,17 +6,17 @@ import { normalizeOptions } from '~/Options'
 describe('spatial matching', () => {
   it("doesn't match 1- and 2-character spatial patterns", () => {
     const options = normalizeOptions({})
-    const matchSpatial = new MatchSpatial(options)
+    const spatialMatcher = new SpatialMatcher(options)
     const data = ['', '/', 'qw', '*/']
     data.forEach((password) => {
-      expect(matchSpatial.match(password)).toEqual([])
+      expect(spatialMatcher.match(password)).toEqual([])
     })
   })
   const graphs = {
     qwerty: adjacencyGraphs.qwerty,
   }
   const options = normalizeOptions({ graphs })
-  const matchSpatial = new MatchSpatial(options)
+  const matchSpatial = new SpatialMatcher(options)
   const pattern = '6tfGHJ'
   const matches = matchSpatial.match(`rz!${pattern}%z`)
   const msg =
@@ -56,8 +56,8 @@ describe('spatial matching specific patterns vs keyboards', () => {
     const graphs = {}
     graphs[keyboard] = adjacencyGraphs[keyboard]
     const options = normalizeOptions({ graphs })
-    const matchSpatial = new MatchSpatial(options)
-    const matches = matchSpatial.match(pattern)
+    const spatialMatcher = new SpatialMatcher(options)
+    const matches = spatialMatcher.match(pattern)
     const msg = `matches '${pattern}' as a ${keyboard} pattern`
     checkMatches(
       msg,

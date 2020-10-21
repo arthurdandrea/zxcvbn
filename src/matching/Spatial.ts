@@ -20,7 +20,7 @@ export interface SpatialMatch {
  * spatial match (qwerty/dvorak/keypad and so on) -----------------------------------------
  * ------------------------------------------------------------------------------
  */
-class MatchSpatial {
+class SpatialMatcher {
   SHIFTED_RX = /[~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?]/
 
   readonly graphs: ReadonlyAdjencyGraphs
@@ -126,4 +126,4 @@ namespace MatchSpatial {
   }
 }
 
-export default MatchSpatial
+export default SpatialMatcher

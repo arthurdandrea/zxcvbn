@@ -22,7 +22,7 @@ export interface DateMatch {
  *  date matching ----------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-class MatchDate {
+class DateMatcher {
   match(password: string) {
     /*
      * a "date" is recognized as:
@@ -266,4 +266,4 @@ class MatchDate {
   }
 }
 
-export default MatchDate
+export default DateMatcher

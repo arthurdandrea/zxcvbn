@@ -1,16 +1,16 @@
-import MatchDictionaryReverse from '~/matching/DictionaryReverse'
+import ReverseDictionaryMatcher from '~/matching/DictionaryReverse'
 import checkMatches from '../helper/checkMatches'
 
 describe('dictionary reverse matching', () => {
   const testDicts = {
     d1: ['123', '321', '456', '654'],
   }
-  const matchDictionaryReverse = new MatchDictionaryReverse({
+  const reverseMatcher = new ReverseDictionaryMatcher({
     dictionaries: testDicts,
     userInputs: [],
   })
   const password = '0123456789'
-  const matches = matchDictionaryReverse.match(password)
+  const matches = reverseMatcher.match(password)
   const msg = 'matches against reversed words'
   checkMatches(
     msg,

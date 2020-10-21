@@ -25,7 +25,7 @@ export interface SequenceMatch {
  * sequences (abcdef) ------------------------------
  *-------------------------------------------------------------------------------
  */
-class MatchSequence {
+class SequenceMatcher {
   MAX_DELTA = 5
 
   match(password: string) {
@@ -113,4 +113,4 @@ class MatchSequence {
   }
 }
 
-export default MatchSequence
+export default SequenceMatcher

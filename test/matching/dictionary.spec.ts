@@ -1,11 +1,11 @@
-import MatchDictionary from '~/matching/Dictionary'
+import DictionaryMatcher from '~/matching/Dictionary'
 import checkMatches from '../helper/checkMatches'
 import genpws from '../helper/genpws'
 
 describe('dictionary matching', () => {
   describe('Default dictionary', () => {
-    const matchDictionary = new MatchDictionary()
-    const matches = matchDictionary.match('wow')
+    const dictMatcher = new DictionaryMatcher()
+    const matches = dictMatcher.match('wow')
     const patterns = ['wow']
     const msg = 'default dictionaries'
     checkMatches(msg, matches, 'dictionary', patterns, [[0, 2]], {
@@ -15,13 +15,13 @@ describe('dictionary matching', () => {
     })
   })
   describe('without user input', () => {
-    const matchDictionary = new MatchDictionary({
+    const dictMatcher = new DictionaryMatcher({
       dictionaries: {
         d1: ['motherboard', 'mother', 'board', 'abcd', 'cdef'],
         d2: ['z', '8', '99', '$', 'asdf1234&*'],
       },
     })
-    const dm = (pw) => matchDictionary.match(pw)
+    const dm = (pw) => dictMatcher.match(pw)
     let matches = dm('motherboard')
     let patterns = ['mother', 'motherboard', 'board']
     let msg = 'matches words that contain other words'
@@ -92,7 +92,7 @@ describe('dictionary matching', () => {
       })
     })
 
-    for (const [name, dict] of matchDictionary.rankedDictionaries) {
+    for (const [name, dict] of dictMatcher.rankedDictionaries) {
       for (const [word, rank] of dict) {
         if (word !== 'motherboard') {
           matches = dm(word)
@@ -115,10 +115,10 @@ describe('dictionary matching', () => {
   })
 
   describe('with user input', () => {
-    const matchDictionary = new MatchDictionary({
+    const dictMatcher = new DictionaryMatcher({
       userInputs: ['foo', 'bar'],
     })
-    const matches = matchDictionary
+    const matches = dictMatcher
       .match('foobar')
       .filter((match) => match.dictionaryName === 'userInputs')
 

@@ -1,6 +1,6 @@
-import MatchL33t from '~/matching/L33t'
+import L33tMatcher from '~/matching/L33t'
 import checkMatches from '../helper/checkMatches'
-import MatchDictionary from '~/matching/Dictionary'
+import DictionaryMatcher from '~/matching/Dictionary'
 
 describe('l33t matching', () => {
   let msg
@@ -17,34 +17,34 @@ describe('l33t matching', () => {
   }
 
   describe('default const', () => {
-    const matchL33t = new MatchL33t()
+    const l33tMatcher = new L33tMatcher()
     it("doesn't match single-character l33ted words", () => {
-      expect(matchL33t.match('4 1 @')).toEqual([])
+      expect(l33tMatcher.match('4 1 @')).toEqual([])
     })
-  })
-
-  const matchL33t = new MatchL33t({
-    dictionary: new MatchDictionary({
-      dictionaries: dicts,
-    }),
-    l33tTable: testTable,
   })
 
   describe('main match', () => {
+    const l33tMatcher = new L33tMatcher({
+      dictionary: new DictionaryMatcher({
+        dictionaries: dicts,
+      }),
+      l33tTable: testTable,
+    })
+
     it("doesn't match ''", () => {
-      expect(matchL33t.match('')).toEqual([])
+      expect(l33tMatcher.match('')).toEqual([])
     })
 
     it("doesn't match pure dictionary words", () => {
-      expect(matchL33t.match('password')).toEqual([])
+      expect(l33tMatcher.match('password')).toEqual([])
     })
 
     it("doesn't match when multiple l33t substitutions are needed for the same letter", () => {
-      expect(matchL33t.match('p4@ssword')).toEqual([])
+      expect(l33tMatcher.match('p4@ssword')).toEqual([])
     })
 
     it("doesn't match with subsets of possible l33t substitutions", () => {
-      expect(matchL33t.match('4sdf0')).toEqual([])
+      expect(l33tMatcher.match('4sdf0')).toEqual([])
     })
     const data = [
       [
@@ -88,7 +88,7 @@ describe('l33t matching', () => {
       msg = 'matches against common l33t substitutions'
       checkMatches(
         msg,
-        matchL33t.match(password as string),
+        l33tMatcher.match(password as string),
         'dictionary',
         [pattern],
         [ij],
@@ -101,7 +101,7 @@ describe('l33t matching', () => {
         },
       )
     })
-    const matches = matchL33t.match('@a(go{G0')
+    const matches = l33tMatcher.match('@a(go{G0')
     msg = 'matches against overlapping l33t patterns'
     checkMatches(
       msg,
@@ -165,7 +165,9 @@ describe('l33t matching', () => {
       ]
 
       data.forEach(([pw, expected]) => {
-        expect(MatchL33t.relevantL33tSubtable(pw, testTable)).toEqual(expected)
+        expect(L33tMatcher.relevantL33tSubtable(pw, testTable)).toEqual(
+          expected,
+        )
       })
     })
 
@@ -214,7 +216,7 @@ describe('l33t matching', () => {
       ]
 
       data.forEach(([table, subs]) => {
-        expect(MatchL33t.enumerateL33tSubs(table)).toEqual(subs)
+        expect(L33tMatcher.enumerateL33tSubs(table)).toEqual(subs)
       })
     })
   })

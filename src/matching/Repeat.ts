@@ -13,7 +13,7 @@ export interface RepeatMatch {
  *-------------------------------------------------------------------------------
  */
 
-class MatchRepeat {
+class RepeatMatcher {
   match(password: string) {
     const matches: RepeatMatch[] = []
     const greedy = /(.+)\1+/g
@@ -69,4 +69,4 @@ class MatchRepeat {
   }
 }
 
-export default MatchRepeat
+export default RepeatMatcher
