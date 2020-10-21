@@ -1,7 +1,6 @@
 import path from 'path'
 import alias from '@rollup/plugin-alias'
 import babel from '@rollup/plugin-babel'
-import commonjs from '@rollup/plugin-commonjs'
 import del from 'rollup-plugin-delete'
 import typescript from '@rollup/plugin-typescript'
 import pkg from '../package.json'
@@ -56,7 +55,6 @@ const generateConfig = (type) => {
         ],
       }),
       typescript(typescriptOptions),
-      commonjs(),
       babel({
         extensions: ['.ts'],
         babelHelpers: 'bundled',
