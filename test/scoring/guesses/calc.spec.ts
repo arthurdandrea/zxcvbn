@@ -4,15 +4,6 @@ import dateGuesses from '~/scoring/guesses/date'
 
 const options = normalizeOptions({})
 describe('scoring', () => {
-  it('estimate_guesses returns cached guesses when available', () => {
-    const match = {
-      guesses: 1,
-    }
-    expect(estimate(match as any, '', options)).toEqual({
-      guesses: 1,
-    })
-  })
-
   it('estimate_guesses delegates based on pattern', () => {
     const match = {
       pattern: 'date',

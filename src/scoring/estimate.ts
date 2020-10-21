@@ -38,10 +38,6 @@ export default function estimateGuesses(
   password: string,
   options: NormalizedOptions,
 ): AnyEstimatedMatch {
-  // a match's guess estimate doesn't change. cache it.
-  if ('guesses' in match && (match as any).guesses != null) {
-    return match
-  }
   if (match.pattern === 'dictionary') {
     const result = dictionaryGuesses(match)
     return {
