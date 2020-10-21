@@ -13,7 +13,17 @@ import {
 } from './TimeEstimates'
 import type { Options } from './types'
 
-export { Options } from './types'
+export type { FeedbackType } from './Feedback'
+export type { AnyEstimatedMatch } from './scoring/estimate'
+export type { CrackTimesDisplay, CrackTimesSeconds } from './TimeEstimates'
+export type {
+  Dictionary,
+  Graphs,
+  Keyboards,
+  Keypads,
+  Options,
+  Translations,
+} from './types'
 
 const time = () => new Date().getTime()
 
