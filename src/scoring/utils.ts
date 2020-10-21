@@ -16,12 +16,15 @@ export function nCk(n: number, k: number) {
   }
   return coEff
 }
-export function log10(n: number) {
-  return Math.log(n) / Math.log(10) // IE doesn't support Math.log10 :(
-}
-export function log2(n: number) {
-  return Math.log(n) / Math.log(2)
-}
+
+export const log10 = Math.log10 ?? ((n: number) => Math.log(n) / Math.log(10))
+
+export const log2 =
+  Math.log2 ??
+  (Math.LOG2E
+    ? (n: number) => Math.log(n) * Math.LOG2E
+    : (n: number) => Math.log(n) / Math.log(2))
+
 export function factorial(num: number) {
   let rval = 1
   for (let i = 2; i <= num; i += 1) rval *= i
