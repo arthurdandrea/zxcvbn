@@ -26,7 +26,7 @@ class SpatialMatcher implements Matcher {
 
   readonly graphs: ReadonlyAdjencyGraphs
 
-  constructor(options: MatchSpatial.Options) {
+  constructor(options: SpatialMatcher.Options) {
     this.graphs = options.adjacencyGraphs
   }
 
@@ -121,7 +121,7 @@ class SpatialMatcher implements Matcher {
   }
 }
 
-namespace MatchSpatial {
+namespace SpatialMatcher {
   export interface Options {
     adjacencyGraphs: ReadonlyAdjencyGraphs
   }

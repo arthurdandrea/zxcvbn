@@ -1,14 +1,6 @@
 import { ALL_UPPER, ALL_LOWER, ALL_DIGIT } from '~/data/const'
 import { Matcher } from '~/types'
 
-type UpdateParams = {
-  i: number
-  j: number
-  delta: number
-  password: string
-  result: SequenceMatch[]
-}
-
 export type SequenceName = 'unicode' | 'lower' | 'upper' | 'digits'
 
 export interface SequenceMatch {
@@ -19,6 +11,14 @@ export interface SequenceMatch {
   sequenceName: SequenceName
   sequenceSpace: number
   ascending: boolean
+}
+
+interface UpdateParams {
+  i: number
+  j: number
+  delta: number
+  password: string
+  result: SequenceMatch[]
 }
 
 /*

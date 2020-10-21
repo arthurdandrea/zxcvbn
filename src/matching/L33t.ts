@@ -19,7 +19,7 @@ class L33tMatcher implements Matcher {
 
   readonly l33tTable: Readonly<Record<string, readonly string[]>>
 
-  constructor(options?: MatchL33t.Options) {
+  constructor(options?: L33tMatcher.Options) {
     this.dictionary = options?.dictionary ?? new DictionaryMatcher()
     this.l33tTable = options?.l33tTable ?? defaultL33tTable
   }
@@ -160,7 +160,7 @@ class L33tMatcher implements Matcher {
   }
 }
 
-namespace MatchL33t {
+namespace L33tMatcher {
   export interface Options {
     dictionary?: DictionaryMatcher
     l33tTable?: OptionsL33tTable
