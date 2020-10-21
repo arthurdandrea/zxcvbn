@@ -1,9 +1,9 @@
-import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from './data/const'
-import type { NormalizedOptions } from './Options'
-import type { AnyEstimatedMatch } from './scoring/estimate'
-import estimateGuesses from './scoring/estimate'
-import { factorial } from './scoring/utils'
-import type { AnyMatch } from './types'
+import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from '../data/const'
+import type { NormalizedOptions } from '../Options'
+import type { AnyMatch } from '../types'
+import type { AnyEstimatedMatch } from './estimate'
+import estimateGuesses from './estimate'
+import { factorial } from './utils'
 
 export interface BruteforceMatch {
   pattern: 'bruteforce'
