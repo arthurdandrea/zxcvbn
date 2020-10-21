@@ -18,19 +18,21 @@ import { log10 } from './utils'
 // guess estimation -- one function per match pattern ---------------------------
 // ------------------------------------------------------------------------------
 
-export type AnyDictionaryEstimatedMatch = AnyDictionaryMatch & {
+export interface Guesses {
   readonly guesses: number
   readonly guessesLog10: number
+}
+
+export interface DictionaryGuesses extends Guesses {
   baseGuesses: number
   uppercaseVariations: number
   l33tVariations: number
 }
 
+export type AnyDictionaryEstimatedMatch = AnyDictionaryMatch & DictionaryGuesses
+
 export type AnyEstimatedMatch =
-  | (Exclude<AnyMatch, AnyDictionaryMatch> & {
-      readonly guesses: number
-      readonly guessesLog10: number
-    })
+  | (Exclude<AnyMatch, AnyDictionaryMatch> & Guesses)
   | AnyDictionaryEstimatedMatch
 
 export default function estimateGuesses(
