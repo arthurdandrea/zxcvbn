@@ -2,7 +2,7 @@ import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from './data/const'
 import type { NormalizedOptions } from './Options'
 import type { AnyEstimatedMatch } from './scoring/estimate'
 import estimateGuesses from './scoring/estimate'
-import utils from './scoring/utils'
+import { factorial } from './scoring/utils'
 import type { AnyMatch } from './types'
 
 export interface BruteforceMatch {
@@ -89,7 +89,7 @@ class ScoringHelper {
       pi *= this.optimal.pi[estimatedMatch.i - 1][sequenceLength - 1]
     }
     // calculate the minimization func
-    let g = utils.factorial(sequenceLength) * pi
+    let g = factorial(sequenceLength) * pi
     if (!this.excludeAdditive) {
       g += MIN_GUESSES_BEFORE_GROWING_SEQUENCE ** (sequenceLength - 1)
     }

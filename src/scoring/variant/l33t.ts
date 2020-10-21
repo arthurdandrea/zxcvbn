@@ -1,4 +1,4 @@
-import utils from '~/scoring/utils'
+import { nCk } from '~/scoring/utils'
 import type { AnyDictionaryMatch } from '~/types'
 
 export default (match: Pick<AnyDictionaryMatch, 'l33t' | 'sub' | 'token'>) => {
@@ -27,7 +27,7 @@ export default (match: Pick<AnyDictionaryMatch, 'l33t' | 'sub' | 'token'>) => {
       const p = Math.min(unsubbedCount, subbedCount)
       let possibilities = 0
       for (let i = 1; i <= p; i += 1) {
-        possibilities += utils.nCk(unsubbedCount + subbedCount, i)
+        possibilities += nCk(unsubbedCount + subbedCount, i)
       }
       variations *= possibilities
     }

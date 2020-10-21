@@ -7,7 +7,7 @@ import {
   ONE_UPPER,
   START_UPPER,
 } from '~/data/const'
-import utils from '~/scoring/utils'
+import { nCk } from '~/scoring/utils'
 
 export default (word: string) => {
   // clean words of non alpha characters to remove the reward effekt to capitalize the first letter https://github.com/dropbox/zxcvbn/issues/232
@@ -41,7 +41,7 @@ export default (word: string) => {
   let variations = 0
   const variationLength = Math.min(upperCaseCount, lowerCaseCount)
   for (let i = 1; i <= variationLength; i += 1) {
-    variations += utils.nCk(upperCaseCount + lowerCaseCount, i)
+    variations += nCk(upperCaseCount + lowerCaseCount, i)
   }
   return variations
 }

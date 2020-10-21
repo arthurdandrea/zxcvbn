@@ -1,6 +1,4 @@
-import utils from '~/scoring/utils'
-
-const { nCk } = utils
+import { nCk } from '~/scoring/utils'
 
 describe('scoring: utils nck', () => {
   it('should calculate correctly', () => {

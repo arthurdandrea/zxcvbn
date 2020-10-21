@@ -4,7 +4,7 @@ import Matching from './Matching'
 import { normalizeOptions } from './Options'
 import { mostGuessableMatchSequence } from './scoring'
 import type { AnyEstimatedMatch } from './scoring/estimate'
-import utils from './scoring/utils'
+import { log10 } from './scoring/utils'
 import type { CrackTimesDisplay, CrackTimesSeconds } from './TimeEstimates'
 import {
   estimateAttackTimes,
@@ -60,7 +60,7 @@ export default function zxcvbn(
     password,
     calcTime,
     guesses,
-    guessesLog10: utils.log10(guesses),
+    guessesLog10: log10(guesses),
     sequence,
     crackTimesSeconds,
     crackTimesDisplay: translateAttackTimes(

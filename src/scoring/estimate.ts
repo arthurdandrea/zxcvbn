@@ -12,7 +12,7 @@ import regexGuesses from './guesses/regex'
 import repeatGuesses from './guesses/repeat'
 import sequenceGuesses from './guesses/sequence'
 import spatialGuesses from './guesses/spatial'
-import utils from './utils'
+import { log10 } from './utils'
 
 // ------------------------------------------------------------------------------
 // guess estimation -- one function per match pattern ---------------------------
@@ -100,7 +100,7 @@ export default function estimateGuesses(
     const matchGuesses = Math.max(guesses, minGuesses)
     return {
       guesses: matchGuesses,
-      guessesLog10: utils.log10(matchGuesses),
+      guessesLog10: log10(matchGuesses),
     }
   }
 }

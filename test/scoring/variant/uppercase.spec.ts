@@ -1,7 +1,5 @@
-import utils from '~/scoring/utils'
+import { nCk } from '~/scoring/utils'
 import uppercase from '~/scoring/variant/uppercase'
-
-const { nCk } = utils
 
 describe('scoring: variant uppercase', () => {
   const data = [

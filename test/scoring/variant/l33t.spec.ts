@@ -1,8 +1,6 @@
 import { empty } from '~/helper'
-import utils from '~/scoring/utils'
+import { nCk } from '~/scoring/utils'
 import l33t from '~/scoring/variant/l33t'
-
-const { nCk } = utils
 
 describe('scoring: variant l33t', () => {
   const data = [

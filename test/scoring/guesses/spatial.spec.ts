@@ -1,10 +1,8 @@
 import { normalizeOptions } from '~/Options'
 import spatialGuesses from '~/scoring/guesses/spatial'
-import utils from '~/scoring/utils'
+import { nCk } from '~/scoring/utils'
 
 const options = normalizeOptions({})
-
-const { nCk } = utils
 
 describe('scoring: guesses spatial', () => {
   const getKeyBoardBaseGuesses = (token) =>

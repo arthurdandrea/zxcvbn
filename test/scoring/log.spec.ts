@@ -1,7 +1,5 @@
-import utils from '~/scoring/utils'
+import { log2, log10 } from '~/scoring/utils'
 
-const { log2 } = utils
-const { log10 } = utils
 const EPSILON = 1e-10
 const truncateFloat = (float) => Math.round(float / EPSILON) * EPSILON
 
