@@ -1,6 +1,6 @@
 import Matching from './Matching'
 import { mostGuessableMatchSequence } from './scoring'
-import estimateAttackTimes from './TimeEstimates'
+import * as estimates from './TimeEstimates'
 import getFeedback from './Feedback'
 import { normalizeOptions } from './Options'
 import {
@@ -10,12 +10,15 @@ import {
   OptionsType,
 } from './types'
 import { AnyEstimatedMatch } from './scoring/estimate'
+import utils from './scoring/utils'
+
+export { OptionsType as Options } from './types'
 
 const time = () => new Date().getTime()
 
 export interface ZxcvbnResponse {
   password: string
-  score: 1 | 2 | 3 | 4
+  score: 0 | 1 | 2 | 3 | 4
   crackTimesSeconds: CrackTimesSeconds
   crackTimesDisplay: CrackTimesDisplay
   sequence: AnyEstimatedMatch[]
@@ -34,24 +37,26 @@ export default function zxcvbn(
   const start = time()
   const matching = new Matching(normalizedOptions)
   const matches = matching.match(password)
-  const matchSequence = mostGuessableMatchSequence(
+  const { guesses, sequence } = mostGuessableMatchSequence(
     password,
     matches,
     normalizedOptions,
   )
   const calcTime = time() - start
-  const attackTimes = estimateAttackTimes(
-    matchSequence.guesses,
-    normalizedOptions.translations,
-  )
+  const crackTimesSeconds = estimates.estimateAttackTimes(guesses)
+  const score = estimates.guessesToScore(guesses)
   return {
+    password,
     calcTime,
-    ...matchSequence,
-    ...attackTimes,
-    feedback: getFeedback(
-      attackTimes.score,
-      matchSequence.sequence,
+    guesses,
+    guessesLog10: utils.log10(guesses),
+    sequence,
+    crackTimesSeconds,
+    crackTimesDisplay: estimates.translateAttackTimes(
+      crackTimesSeconds,
       normalizedOptions.translations,
     ),
+    score,
+    feedback: getFeedback(score, sequence, normalizedOptions.translations),
   }
 }

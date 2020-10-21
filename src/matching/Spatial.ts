@@ -38,7 +38,7 @@ class MatchSpatial {
   }
 
   helper(password: string, graph: ReadonlyAdjencyGraph, graphName: string) {
-    let shiftedCount
+    let shiftedCount: number
     const matches: SpatialMatch[] = []
     let i = 0
     const passwordLength = password.length

@@ -166,9 +166,7 @@ class ScoringHelper {
 }
 
 export interface ScoringResult {
-  password: string
   guesses: number
-  guessesLog10: number
   sequence: AnyEstimatedMatch[]
 }
 
@@ -236,17 +234,12 @@ export function mostGuessableMatchSequence(
     scoringHelper.bruteforceUpdate(k)
   }
   const optimalMatchSequence = scoringHelper.unwind()
-  const optimalSequenceLength = optimalMatchSequence.length
-  let guesses = 0
-  if (password.length === 0) {
-    guesses = 1
-  } else {
-    guesses = scoringHelper.optimal.g[passwordLength - 1][optimalSequenceLength]
-  }
+  const guesses =
+    password.length === 0
+      ? 1
+      : scoringHelper.optimal.g[passwordLength - 1][optimalMatchSequence.length]
   return {
-    password,
     guesses,
-    guessesLog10: utils.log10(guesses),
     sequence: optimalMatchSequence,
   }
 }

@@ -18,29 +18,28 @@ function translate(
  *  Estimates time for an attacker ---------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-export default function estimateAttackTimes(
-  guesses: number,
-  translations: TranslationKeys,
-) {
-  const crackTimesSeconds: CrackTimesSeconds = {
+export function estimateAttackTimes(guesses: number): CrackTimesSeconds {
+  return {
     onlineThrottling100PerHour: guesses / (100 / 3600),
     onlineThrottling10PerSecond: guesses / 10,
     offlineSlowHashing1e4PerSecond: guesses / 1e4,
     offlineFastHashing1e10PerSecond: guesses / 1e10,
   }
+}
+
+export function translateAttackTimes(
+  crackTimesSeconds: CrackTimesSeconds,
+  translations: TranslationKeys,
+): CrackTimesDisplay {
   const crackTimesDisplay: Partial<CrackTimesDisplay> = {}
   Object.keys(crackTimesSeconds).forEach((scenario: string) => {
     const seconds = crackTimesSeconds[scenario as keyof CrackTimesSeconds]
     crackTimesDisplay[scenario] = displayTime(seconds, translations)
   })
-  return {
-    crackTimesSeconds,
-    crackTimesDisplay: crackTimesDisplay as CrackTimesDisplay,
-    score: guessesToScore(guesses) as 1 | 2 | 3 | 4,
-  }
+  return crackTimesDisplay as any
 }
 
-function guessesToScore(guesses: number) {
+export function guessesToScore(guesses: number): 0 | 1 | 2 | 3 | 4 {
   const DELTA = 5
   if (guesses < 1e3 + DELTA) {
     // risky password: "too guessable"
