@@ -74,7 +74,7 @@ describe('scoring: variant l33t', () => {
         '+': 't',
       },
     ],
-  ]
+  ] as [string, number, Record<string, string>][]
 
   data.forEach(([word, variants, sub]) => {
     it(`extra l33t guesses of ${word} is ${variants}`, () => {

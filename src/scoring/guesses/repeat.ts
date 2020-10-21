@@ -1,1 +1,1 @@
-export default ({ baseGuesses, repeatCount }) => baseGuesses * repeatCount
+export default ({ baseGuesses, repeatCount }: any) => baseGuesses * repeatCount

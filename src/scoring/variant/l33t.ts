@@ -1,12 +1,8 @@
-import { DictionaryMatch } from '~/matching/Dictionary'
-import { ReverseDictionaryMatch } from '~/matching/DictionaryReverse'
-import { L33tMatch } from '~/matching/L33t'
 import utils from '~/scoring/utils'
+import { AnyDictionaryMatch } from '~/types'
 
-export default (
-  match: DictionaryMatch | L33tMatch | ReverseDictionaryMatch,
-) => {
-  if (!match.l33t) {
+export default (match: Pick<AnyDictionaryMatch, 'l33t' | 'sub' | 'token'>) => {
+  if (!match.l33t || !match.sub) {
     return 1
   }
   const { sub: subs, token } = match

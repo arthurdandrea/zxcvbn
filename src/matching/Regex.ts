@@ -7,7 +7,7 @@ export interface RegexMatch {
   i: number
   j: number
   regexName: string
-  regexMatch: RegExpExecArray
+  regexMatch: RegExpExecArray | string[]
 }
 
 /*

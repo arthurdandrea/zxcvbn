@@ -1,6 +1,11 @@
 import { MIN_YEAR_SPACE, REFERENCE_YEAR } from '~/data/const'
+import { RegexMatch } from '~/matching/Regex'
 
-export default ({ regexName, regexMatch, token }) => {
+export default ({
+  regexName,
+  regexMatch,
+  token,
+}: Pick<RegexMatch, 'regexName' | 'regexMatch' | 'token'>) => {
   const charClassBases = {
     alphaLower: 26,
     alphaUpper: 26,
