@@ -19,8 +19,8 @@ import { log10 } from './utils'
 // ------------------------------------------------------------------------------
 
 export type AnyDictionaryEstimatedMatch = AnyDictionaryMatch & {
-  guesses: number
-  guessesLog10: number
+  readonly guesses: number
+  readonly guessesLog10: number
   baseGuesses: number
   uppercaseVariations: number
   l33tVariations: number
@@ -28,8 +28,8 @@ export type AnyDictionaryEstimatedMatch = AnyDictionaryMatch & {
 
 export type AnyEstimatedMatch =
   | (Exclude<AnyMatch, AnyDictionaryMatch> & {
-      guesses: number
-      guessesLog10: number
+      readonly guesses: number
+      readonly guessesLog10: number
     })
   | AnyDictionaryEstimatedMatch
 
@@ -96,7 +96,14 @@ export default function estimateGuesses(
     const matchGuesses = Math.max(guesses, minGuesses)
     return {
       guesses: matchGuesses,
-      guessesLog10: log10(matchGuesses),
+      get guessesLog10() {
+        const value = log10(this.guesses)
+        Object.defineProperty(this, 'guessesLog10', {
+          value,
+          enumerable: true,
+        })
+        return value
+      },
     }
   }
 }

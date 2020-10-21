@@ -33,8 +33,8 @@ export interface ZxcvbnResponse {
   crackTimesSeconds: CrackTimesSeconds
   crackTimesDisplay: CrackTimesDisplay
   sequence: AnyEstimatedMatch[]
-  guesses: number
-  guessesLog10: number
+  readonly guesses: number
+  readonly guessesLog10: number
   calcTime: number
   feedback: FeedbackType
 }
@@ -60,7 +60,14 @@ export default function zxcvbn(
     password,
     calcTime,
     guesses,
-    guessesLog10: log10(guesses),
+    get guessesLog10() {
+      const value = log10(guesses)
+      Object.defineProperty(this, 'guessesLog10', {
+        value,
+        enumerable: true,
+      })
+      return value
+    },
     sequence,
     crackTimesSeconds,
     crackTimesDisplay: translateAttackTimes(
