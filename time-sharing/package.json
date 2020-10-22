@@ -1,0 +1,5 @@
+{
+  "main": "../dist/time-sharing.js",
+  "module": "../dist/time-sharing.mjs",
+  "types": "../dist/time-sharing.d.ts"
+}

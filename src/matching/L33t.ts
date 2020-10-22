@@ -11,6 +11,10 @@ export interface L33tMatch extends Omit<DictionaryMatch, 'l33t' | 'sub'> {
   subDisplay: string
 }
 
+type Subs = [string, string][][]
+
+type ReadonlyL33tTable = Readonly<Record<string, readonly string[]>>
+
 /*
  * -------------------------------------------------------------------------------
  *  date matching ----------------------------------------------------------------
@@ -18,8 +22,7 @@ export interface L33tMatch extends Omit<DictionaryMatch, 'l33t' | 'sub'> {
  */
 class L33tMatcher implements Matcher {
   readonly dictionary: DictionaryMatcher
-
-  readonly l33tTable: Readonly<Record<string, readonly string[]>>
+  readonly l33tTable: ReadonlyL33tTable
 
   constructor(options?: L33tMatcher.Options) {
     this.dictionary = options?.dictionary ?? new DictionaryMatcher()
@@ -28,18 +31,15 @@ class L33tMatcher implements Matcher {
 
   match(password: string) {
     const matches: L33tMatch[] = []
-    const enumeratedSubs = L33tMatcher.enumerateL33tSubs(
+    for (const sub of L33tMatcher.enumerateL33tSubs(
       L33tMatcher.relevantL33tSubtable(password, this.l33tTable),
-    )
-    for (let i = 0; i < enumeratedSubs.length; i += 1) {
-      const sub = enumeratedSubs[i]
+    )) {
       // corner case: password has no relevant subs.
       if (empty(sub)) {
         break
       }
       const subbedPassword = translate(password, sub)
-      const matchedDictionary = this.dictionary.match(subbedPassword)
-      matchedDictionary.forEach((match: DictionaryMatch) => {
+      for (const match of this.dictionary.match(subbedPassword)) {
         const token = password.slice(match.i, +match.j + 1 || 9e9)
         // only return the matches that contain an actual substitution
         if (token.toLowerCase() !== match.matchedWord) {
@@ -51,18 +51,17 @@ class L33tMatcher implements Matcher {
               matchSub[subbedChr] = chr
             }
           })
-          const subDisplay = Object.keys(matchSub)
-            .map((k) => `${k} -> ${matchSub[k]}`)
-            .join(', ')
           matches.push({
             ...match,
             l33t: true,
             token,
             sub: matchSub,
-            subDisplay,
+            subDisplay: Object.keys(matchSub)
+              .map((k) => `${k} -> ${matchSub[k]}`)
+              .join(', '),
           })
         }
-      })
+      }
     }
     // filter single-character l33t matches to reduce noise.
     // otherwise '1' matches 'i', '4' matches 'a', both very common English words
@@ -71,19 +70,12 @@ class L33tMatcher implements Matcher {
   }
 
   // makes a pruned copy of l33t_table that only includes password's possible substitutions
-  static relevantL33tSubtable(
-    password: string,
-    l33tTable: Readonly<Record<string, readonly string[]>>,
-  ) {
-    const passwordChars: Record<string, true> = {}
+  static relevantL33tSubtable(password: string, l33tTable: ReadonlyL33tTable) {
+    const passwordChars = new Set<string>(password)
     const subTable: Record<string, string[]> = {}
-    password.split('').forEach((char: string) => {
-      passwordChars[char] = true
-    })
-
     Object.keys(l33tTable).forEach((letter) => {
       const subs = l33tTable[letter]
-      const relevantSubs = subs.filter((sub: string) => sub in passwordChars)
+      const relevantSubs = subs.filter((sub) => passwordChars.has(sub))
       if (relevantSubs.length > 0) {
         subTable[letter] = relevantSubs
       }
@@ -92,9 +84,8 @@ class L33tMatcher implements Matcher {
   }
 
   // returns the list of possible 1337 replacement dictionaries for a given password
-  static enumerateL33tSubs(table: Readonly<Record<string, readonly string[]>>) {
-    const tableKeys = Object.keys(table)
-    const subs = L33tMatcher.getSubs(tableKeys, [[]], table)
+  static enumerateL33tSubs(table: ReadonlyL33tTable) {
+    const subs = L33tMatcher.getSubs(table)
     // convert from assoc lists to dicts
     return subs.map((sub) => {
       const subDict: Record<string, string> = {}
@@ -105,49 +96,40 @@ class L33tMatcher implements Matcher {
     })
   }
 
-  static getSubs(
-    keys: string[],
-    subs: string[][],
-    table: Readonly<Record<string, readonly string[]>>,
-  ): string[][] {
-    if (!keys.length) {
-      return subs
-    }
-    const firstKey = keys[0]
-    const restKeys = keys.slice(1)
-    const nextSubs: string[][] = []
-    table[firstKey].forEach((l33tChr) => {
-      subs.forEach((sub) => {
-        let dupL33tIndex = -1
-        for (let i = 0; i < sub.length; i += 1) {
-          if (sub[i][0] === l33tChr) {
-            dupL33tIndex = i
-            break
+  static getSubs(table: ReadonlyL33tTable): Subs {
+    const keys = Object.keys(table)
+    let subs: Subs = [[]]
+    let firstKey: string | undefined
+    while ((firstKey = keys.pop())) {
+      const nextSubs: Subs = []
+      for (const l33tChr of table[firstKey]) {
+        for (const sub of subs) {
+          let dupL33tIndex = -1
+          for (let i = 0; i < sub.length; i += 1) {
+            if (sub[i][0] === l33tChr) {
+              dupL33tIndex = i
+              break
+            }
+          }
+          if (dupL33tIndex === -1) {
+            const subExtension = sub.concat([[l33tChr, firstKey]])
+            nextSubs.push(subExtension)
+          } else {
+            const subAlternative = sub.slice()
+            subAlternative.splice(dupL33tIndex, 1)
+            subAlternative.push([l33tChr, firstKey])
+            nextSubs.push(sub)
+            nextSubs.push(subAlternative)
           }
         }
-        if (dupL33tIndex === -1) {
-          // @ts-ignore
-          const subExtension = sub.concat([[l33tChr, firstKey]])
-          nextSubs.push(subExtension)
-        } else {
-          const subAlternative = sub.slice(0)
-          subAlternative.splice(dupL33tIndex, 1)
-          // @ts-ignore
-          subAlternative.push([l33tChr, firstKey])
-          nextSubs.push(sub)
-          nextSubs.push(subAlternative)
-        }
-      })
-    })
-    const newSubs = L33tMatcher.dedup(nextSubs)
-    if (restKeys.length) {
-      return L33tMatcher.getSubs(restKeys, newSubs, table)
+      }
+      subs = L33tMatcher.dedup(nextSubs)
     }
-    return newSubs
+    return subs
   }
 
-  static dedup(subs: string[][]) {
-    const deduped: string[][] = []
+  static dedup(subs: Subs) {
+    const deduped: Subs = []
     const members = new Set<string>()
     subs.forEach((sub) => {
       const assoc = sub.map((k, index) => [k, index])

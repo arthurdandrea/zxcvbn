@@ -26,6 +26,7 @@ const generateConfig = (type) => {
     sourcemap: true,
     exports: 'auto',
   }
+  const input = new Set(['./src/main.ts', './src/time-sharing.ts'])
   if (type === 'esm') {
     typescriptOptions.declarationDir = `dist/`
     typescriptOptions.declaration = true
@@ -35,13 +36,14 @@ const generateConfig = (type) => {
     babelrc = false
   }
   if (type === 'iife') {
+    input.delete('./src/time-sharing.ts')
     output.name = pkg.name
     output.entryFileNames = '[name].browser.js'
     output.assetFileNames = '[name].browser.js'
     delTargets = ['dist/browser.js', 'dist/browser.js.map']
   }
   return {
-    input: './src/main.ts',
+    input: Array.from(input),
     output,
     plugins: [
       del({

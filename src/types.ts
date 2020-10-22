@@ -55,6 +55,21 @@ export interface Options {
   userInputs?: string[]
 }
 
+export interface IdleDeadline {
+  timeRemaining(): number
+}
+
 export interface Matcher {
   match(password: string): AnyMatch[]
+  timeSharingMatch?: (
+    password: string,
+    idleDeadline: IdleDeadline,
+  ) => Iterator<void, AnyMatch[]>
 }
+
+export type TimeSharingContinuation = () => TimeSharingContinuation | void
+
+export type TimeSharingCallback<R> = (
+  // ...args: [err: null, result: R] | [err: Exclude<any, null>]
+  ...args: [null, R] | [Exclude<any, null>, undefined]
+) => TimeSharingContinuation | void
