@@ -25,10 +25,10 @@ class ReverseDictionaryMatcher implements Matcher {
   }
 
   match(password: string): ReverseDictionaryMatch[] {
-    const passwordReversed = password.split('').reverse().join('')
+    const passwordReversed = Array.from(password).reverse().join('')
     const matches = this.dictionary.match(passwordReversed).map((match) => ({
       ...match,
-      token: match.token.split('').reverse().join(''), // reverse back
+      token: Array.from(match.token).reverse().join(''), // reverse back
       reversed: true as const,
       // map coordinates back to original string
       i: password.length - 1 - match.j,

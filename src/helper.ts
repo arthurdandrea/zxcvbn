@@ -7,8 +7,7 @@ export const extend = <T>(listToExtend: T[], list: T[]) =>
   listToExtend.push.apply(listToExtend, list) // eslint-disable-line prefer-spread
 
 export const translate = (string: string, chrMap: Record<string, string>) => {
-  const tempArray = string.split('')
-  return tempArray.map((char) => chrMap[char] || char).join('')
+  return Array.from(string, (char) => chrMap[char] || char).join('')
 }
 
 // mod implementation that works for negative numbers

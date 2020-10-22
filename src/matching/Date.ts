@@ -18,6 +18,12 @@ export interface DateMatch {
   day: number
 }
 
+interface Candidate {
+  day: number
+  month: number
+  year: number
+}
+
 /*
  * -------------------------------------------------------------------------------
  *  date matching ----------------------------------------------------------------
@@ -45,7 +51,7 @@ class DateMatcher implements Matcher {
      * this uses a ^...$ regex against every substring of the password -- less performant but leads
      * to every possible date match.
      */
-    const metric = (candidate: DateMatch) =>
+    const metric = (candidate: Candidate) =>
       Math.abs(candidate.year - REFERENCE_YEAR)
     const matches: DateMatch[] = []
     const maybeDateNoSeparator = /^\d{4,8}$/
@@ -58,51 +64,57 @@ class DateMatcher implements Matcher {
           break
         }
         const token = password.slice(i, +j + 1 || 9e9)
-        if (maybeDateNoSeparator.exec(token)) {
-          const candidates: any[] = []
-          const index = token.length
-          const splittedDates = DATE_SPLITS[index as keyof typeof DATE_SPLITS]
-          splittedDates.forEach(([k, l]: readonly [number, number]) => {
-            const dmy = this.mapIntegersToDayMonthYear([
-              parseInt(token.slice(0, k), 10),
-              parseInt(token.slice(k, l), 10),
-              parseInt(token.slice(l), 10),
-            ])
-            if (dmy != null) {
-              candidates.push(dmy)
-            }
-          })
-          if (candidates.length > 0) {
-            /*
-             * at this point: different possible dmy mappings for the same i,j substring.
-             * match the candidate date that likely takes the fewest guesses: a year closest
-             * to 2000.
-             * (scoring.REFERENCE_YEAR).
-             *
-             * ie, considering '111504', prefer 11-15-04 to 1-1-1504
-             * (interpreting '04' as 2004)
-             */
-            let bestCandidate = candidates[0]
-            let minDistance = metric(candidates[0])
-            candidates.slice(1).forEach((candidate) => {
-              const distance = metric(candidate)
-              if (distance < minDistance) {
-                bestCandidate = candidate
-                minDistance = distance
-              }
-            })
-            matches.push({
-              pattern: 'date',
-              token,
-              i,
-              j,
-              separator: '',
-              year: bestCandidate.year,
-              month: bestCandidate.month,
-              day: bestCandidate.day,
-            })
+        if (!maybeDateNoSeparator.exec(token)) {
+          continue
+        }
+        const splittedDates =
+          DATE_SPLITS[token.length as keyof typeof DATE_SPLITS]
+        // @ts-expect-error better safe than sorry
+        if (!splittedDates || splittedDates.length === 0) {
+          continue
+        }
+        const candidates: Candidate[] = []
+        for (const [k, l] of splittedDates) {
+          const dmy = this.mapIntegersToDayMonthYear(
+            parseInt(token.slice(0, k), 10),
+            parseInt(token.slice(k, l), 10),
+            parseInt(token.slice(l), 10),
+          )
+          if (dmy != null) {
+            candidates.push(dmy)
           }
         }
+        if (candidates.length === 0) {
+          continue
+        }
+        /*
+         * at this point: different possible dmy mappings for the same i,j substring.
+         * match the candidate date that likely takes the fewest guesses: a year closest
+         * to 2000.
+         * (scoring.REFERENCE_YEAR).
+         *
+         * ie, considering '111504', prefer 11-15-04 to 1-1-1504
+         * (interpreting '04' as 2004)
+         */
+        let bestCandidate = candidates.pop()!
+        let minDistance = metric(bestCandidate)
+        for (const candidate of candidates) {
+          const distance = metric(candidate)
+          if (distance < minDistance) {
+            bestCandidate = candidate
+            minDistance = distance
+          }
+        }
+        matches.push({
+          pattern: 'date',
+          token,
+          i,
+          j,
+          separator: '',
+          year: bestCandidate.year,
+          month: bestCandidate.month,
+          day: bestCandidate.day,
+        })
       }
     }
 
@@ -114,54 +126,49 @@ class DateMatcher implements Matcher {
         }
         const token = password.slice(i, +j + 1 || 9e9)
         const regexMatch = maybeDateWithSeparator.exec(token)
-        if (regexMatch != null) {
-          const dmy = this.mapIntegersToDayMonthYear([
-            parseInt(regexMatch[1], 10),
-            parseInt(regexMatch[3], 10),
-            parseInt(regexMatch[4], 10),
-          ])
-          if (dmy != null) {
-            matches.push({
-              pattern: 'date',
-              token,
-              i,
-              j,
-              separator: regexMatch[2],
-              year: dmy.year,
-              month: dmy.month,
-              day: dmy.day,
-            })
-          }
+        if (regexMatch == null) {
+          continue
         }
+        const dmy = this.mapIntegersToDayMonthYear(
+          parseInt(regexMatch[1], 10),
+          parseInt(regexMatch[3], 10),
+          parseInt(regexMatch[4], 10),
+        )
+        if (dmy == null) {
+          continue
+        }
+        matches.push({
+          pattern: 'date',
+          token,
+          i,
+          j,
+          separator: regexMatch[2],
+          year: dmy.year,
+          month: dmy.month,
+          day: dmy.day,
+        })
       }
     }
-    /*
-     * matches now contains all valid date strings in a way that is tricky to capture
-     * with regexes only. while thorough, it will contain some unintuitive noise:
-     *
-     * '2015_06_04', in addition to matching 2015_06_04, will also contain
-     * 5(!) other date matches: 15_06_04, 5_06_04, ..., even 2015 (matched as 5/1/2020)
-     *
-     * to reduce noise, remove date matches that are strict substrings of others
-     */
-    const filteredMatches = matches.filter((match) => {
-      let isSubmatch = false
-      const matchesLength = matches.length
-      for (let o = 0; o < matchesLength; o += 1) {
-        const otherMatch = matches[o]
-        if (match !== otherMatch) {
-          if (otherMatch.i <= match.i && otherMatch.j >= match.j) {
-            isSubmatch = true
-            break
-          }
-        }
-      }
-      return !isSubmatch
-    })
-    return sorted(filteredMatches)
+    return sorted(
+      /*
+       * matches now contains all valid date strings in a way that is tricky to capture
+       * with regexes only. while thorough, it will contain some unintuitive noise:
+       *
+       * '2015_06_04', in addition to matching 2015_06_04, will also contain
+       * 5(!) other date matches: 15_06_04, 5_06_04, ..., even 2015 (matched as 5/1/2020)
+       *
+       * to reduce noise, remove date matches that are strict substrings of others
+       */
+      matches.filter(
+        (self) =>
+          !matches.some(
+            (other) => self !== other && other.i <= self.i && other.j >= self.j,
+          ),
+      ),
+    )
   }
 
-  mapIntegersToDayMonthYear(integers: number[]) {
+  mapIntegersToDayMonthYear(...integers: [number, number, number]) {
     /*
      * given a 3-tuple, discard if:
      *   middle int is over 31 (for all dmy formats, years are never allowed in the middle)

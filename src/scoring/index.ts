@@ -97,40 +97,38 @@ class ScoringHelper {
   update(match: AnyMatch, sequenceLength: number) {
     const { j, i } = match
     const estimatedMatch = this.estimateGuesses(match)
-    let pi = estimatedMatch.guesses
-    if (sequenceLength > 1) {
+    const pi =
+      estimatedMatch.guesses *
       // we're considering a length-sequenceLength sequence ending with match m:
       // obtain the product term in the minimization function by multiplying m's guesses
       // by the product of the length-(sequenceLength-1)
       // sequence ending just before m, at m.i - 1.
-      pi *= this.optimal.pi[i - 1].get(sequenceLength - 1)!
-    }
+      (sequenceLength > 1 ? this.optimal.pi[i - 1].get(sequenceLength - 1)! : 1)
     // calculate the minimization func
-    let g = factorial(sequenceLength) * pi
-    if (!this.excludeAdditive) {
-      g += MIN_GUESSES_BEFORE_GROWING_SEQUENCE ** (sequenceLength - 1)
-    }
+    const g =
+      factorial(sequenceLength) * pi +
+      (this.excludeAdditive
+        ? 0
+        : MIN_GUESSES_BEFORE_GROWING_SEQUENCE ** (sequenceLength - 1))
     // update state if new best.
     // first see if any competing sequences covering this prefix,
     // with sequenceLength or fewer matches,
     // fare better than this sequence. if so, skip it and return.
-    let shouldSkip = false
     for (const [competingPatternLength, competingMetricMatch] of this.optimal.g[
       j
     ]) {
-      if (competingPatternLength <= sequenceLength) {
-        if (competingMetricMatch <= g) {
-          shouldSkip = true
-          break
-        }
+      if (
+        competingPatternLength <= sequenceLength &&
+        competingMetricMatch <= g
+      ) {
+        return // skip and return immediatelly
       }
     }
-    if (!shouldSkip) {
-      // this sequence might be part of the final optimal sequence.
-      this.optimal.g[j].set(sequenceLength, g)
-      this.optimal.m[j].set(sequenceLength, estimatedMatch)
-      this.optimal.pi[j].set(sequenceLength, pi)
-    }
+    // if not returned during the loop
+    // this sequence might be part of the final optimal sequence.
+    this.optimal.g[j].set(sequenceLength, g)
+    this.optimal.m[j].set(sequenceLength, estimatedMatch)
+    this.optimal.pi[j].set(sequenceLength, pi)
   }
 
   // helper: evaluate bruteforce matches ending at passwordCharIndex.

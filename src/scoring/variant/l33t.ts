@@ -6,31 +6,33 @@ export default (match: Pick<AnyDictionaryMatch, 'l33t' | 'sub' | 'token'>) => {
     return 1
   }
   const { sub: subs, token } = match
-  let variations = 1
-  Object.keys(subs).forEach((subbed) => {
-    const unsubbed = subs[subbed]
+  const lowerCaseToken = token.toLowerCase()
+  return Object.entries(subs).reduce((variations, [subbed, unsubbed]) => {
+    let subbedCount = 0 // num of subbed chars
+    let unsubbedCount = 0 // num of unsubbed chars
     // lower-case match.token before calculating: capitalization shouldn't affect l33t calc.
-    const chrs = token.toLowerCase().split('')
-    // num of subbed chars
-    const subbedCount = chrs.filter((char) => char === subbed).length
-    // num of unsubbed chars
-    const unsubbedCount = chrs.filter((char) => char === unsubbed).length
+    for (const char of lowerCaseToken) {
+      if (char === subbed) {
+        subbedCount++
+      }
+      if (char === unsubbed) {
+        unsubbedCount++
+      }
+    }
 
     if (subbedCount === 0 || unsubbedCount === 0) {
       // for this sub, password is either fully subbed (444) or fully unsubbed (aaa)
       // treat that as doubling the space (attacker needs to try fully subbed chars in addition to
       // unsubbed.)
-      variations *= 2
-    } else {
-      // this case is similar to capitalization:
-      // with aa44a, U = 3, S = 2, attacker needs to try unsubbed + one sub + two subs
-      const p = Math.min(unsubbedCount, subbedCount)
-      let possibilities = 0
-      for (let i = 1; i <= p; i += 1) {
-        possibilities += nCk(unsubbedCount + subbedCount, i)
-      }
-      variations *= possibilities
+      return variations * 2
     }
-  })
-  return variations
+    // this case is similar to capitalization:
+    // with aa44a, U = 3, S = 2, attacker needs to try unsubbed + one sub + two subs
+    const p = Math.min(unsubbedCount, subbedCount)
+    let possibilities = 0
+    for (let i = 1; i <= p; i += 1) {
+      possibilities += nCk(unsubbedCount + subbedCount, i)
+    }
+    return variations * possibilities
+  }, 1)
 }

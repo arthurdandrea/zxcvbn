@@ -109,13 +109,12 @@ export function buildRankedDictionaries(
 
   let ranked =
     (dictionary === frequencyLists && defaultRankedDictionaries) ||
-    (() => {
-      const map = new Map<string, RankedDictionary>()
-      Object.keys(dictionary).forEach((name) => {
-        map.set(name, buildRankedDictionary(dictionary![name]))
-      })
-      return map
-    })()
+    new Map<string, RankedDictionary>(
+      Object.keys(dictionary).map((name) => [
+        name,
+        buildRankedDictionary(dictionary![name]),
+      ]),
+    )
   if (dictionary === frequencyLists) {
     defaultRankedDictionaries = ranked
   }
